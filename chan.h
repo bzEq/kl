@@ -4,7 +4,6 @@
 #define KL_CHAN_H_
 #include <atomic>
 #include <condition_variable>
-#include <iostream>
 #include <mutex>
 #include <queue>
 #include <thread>
