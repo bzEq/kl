@@ -38,6 +38,8 @@ public:
     return true;
   }
 
+  bool Push(T &&v) { return *this << std::forward<T>(v); }
+
   Option<T> Pop() {
     std::unique_lock<std::mutex> l(mu_);
     while (!closed_ && q_.empty()) {
