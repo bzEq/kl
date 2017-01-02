@@ -9,6 +9,8 @@ TEST(kl::Buffer, ExtendTo) {
   int cap = Cap();
   ExtendTo(2 * cap);
   ASSERT(Cap() == 2 * cap);
+  ExtendTo(cap);
+  ASSERT(Cap() == 2 * cap);
 }
 
 int main() {
