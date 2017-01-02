@@ -3,7 +3,7 @@
 
 namespace kl {
 namespace logging {
-const char *LogLevelString[5] = {"INFO", "DEBUG", "WARN", "ERROR", "FATAL"};
+const char *kLogLevelString[5] = {"INFO", "DEBUG", "WARN", "ERROR", "FATAL"};
 
 Logger::Logger(std::function<void(const char *)> &&output)
     : log_level_(kInfo), output_(std::move(output)) {}
@@ -29,7 +29,9 @@ void Logger::Logging(int log_level, const char *file, const char *func,
 
 void Logger::Logging(const char *file, const char *func, int line,
                      const char *fmt, va_list ap) {
-  int prefix_size = std::snprintf(nullptr, 0, "[%s:%s:%d] ", file, func, line);
+  int prefix_size =
+      std::snprintf(nullptr, 0, "[%s %s:%s:%d] ", kLogLevelString[log_level_],
+                    file, func, line);
   va_list backup_ap;
   va_copy(backup_ap, ap);
   int msg_size = std::vsnprintf(nullptr, 0, fmt, backup_ap);
@@ -38,7 +40,8 @@ void Logger::Logging(const char *file, const char *func, int line,
   int buf_size = prefix_size + msg_size + 1;
   char *buf = new char[buf_size];
   const char *base = buf;
-  prefix_size = std::snprintf(buf, buf_size, "[%s:%s:%d] ", file, func, line);
+  prefix_size = std::snprintf(buf, buf_size, "[%s %s:%s:%d] ",
+                              kLogLevelString[log_level_], file, func, line);
   buf += prefix_size;
   assert(buf_size >= prefix_size);
   std::vsnprintf(buf, buf_size - prefix_size, fmt, ap);

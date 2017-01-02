@@ -16,7 +16,7 @@ enum LogLevel {
   kFatal,
 };
 
-extern const char *LogLevelString[5];
+extern const char *kLogLevelString[5];
 
 class Logger {
 public:
