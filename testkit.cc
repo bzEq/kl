@@ -42,6 +42,9 @@ int RunAllTests() {
     }
   }
   std::fprintf(stderr, "==== PASSED %d tests\n", passed);
+  if (passed == tests->size()) {
+    std::fprintf(stderr, "==== ALL TESTS PASSED\n");
+  }
   return 0;
 }
 
