@@ -19,16 +19,9 @@ namespace kl {
 
 class Epoll {
 public:
-  Epoll() {
-    // Since Linux 2.6.8, the size argument is ignored, but must be
-    // greater than zero
-    epfd_ = epoll_create(1);
-    if (epfd_ < 0) {
-      throw std::runtime_error(static_cast<const char *>(std::strerror(errno)));
-    }
-  }
+  Epoll();
   Epoll(const Epoll &) = delete;
-  Epoll(Epoll &&) = delete;
+  Epoll(Epoll &&) = default;
   Result<void> AddFd(int fd, uint32_t flags);
   Result<void> ModFd(int fd, uint32_t flags);
   Result<void> DelFd(int fd);

@@ -4,6 +4,15 @@
 
 namespace kl {
 
+Epoll::Epoll() {
+  // Since Linux 2.6.8, the size argument is ignored, but must be
+  // greater than zero
+  epfd_ = epoll_create(1);
+  if (epfd_ < 0) {
+    throw std::runtime_error(static_cast<const char *>(std::strerror(errno)));
+  }
+}
+
 Result<void> Epoll::AddFd(int fd, uint32_t flags) {
   struct epoll_event event = {.events = flags, .data = {.fd = fd}};
   int ret = epoll_ctl(epfd_, EPOLL_CTL_ADD, fd, &event);
