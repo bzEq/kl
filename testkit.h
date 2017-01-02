@@ -16,11 +16,11 @@ extern bool RegisterTest(const char *base, const char *name,
 #define TEST(base, name, ...)                                                  \
   class TOKCAT(name, Test) : public base {                                     \
   public:                                                                      \
+    TOKCAT(name, Test)() : base(__VA_ARGS__) {}                                \
     void Run();                                                                \
     static void RunIt() {                                                      \
-      auto t = std::unique_ptr<TOKCAT(name, Test)>(                            \
-          new TOKCAT(name, Test)(__VA_ARGS__));                                \
-      t->Run();                                                                \
+      TOKCAT(name, Test) t;                                                    \
+      t.Run();                                                                 \
     }                                                                          \
   };                                                                           \
   bool TOKCAT(name, TestResult) =                                              \
