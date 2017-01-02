@@ -9,10 +9,13 @@ class O {};
 kl::Option<int> Foo() { return kl::Some(13); }
 kl::Option<int> Spam() { return kl::None(); }
 
-TEST(O, Option) {
+TEST(O, foo) {
   auto foo = Foo();
   ASSERT(foo);
   std::cout << *foo << std::endl;
+}
+
+TEST(O, spam) {
   auto spam = Spam();
   ASSERT(!spam);
 }
