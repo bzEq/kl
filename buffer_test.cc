@@ -14,6 +14,6 @@ TEST(kl::Buffer, ExtendTo) {
 }
 
 int main() {
-  kl::test::RunAllTests();
+  KL_TEST();
   return 0;
 }

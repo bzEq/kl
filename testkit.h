@@ -41,5 +41,6 @@ inline void Assert(const char *file, int line, const char *expr, T &&v) {
 }  // namespace kl
 
 #define ASSERT(expr) kl::test::Assert(__FILE__, __LINE__, #expr, (expr))
+#define KL_TEST kl::test::RunAllTests
 
 #endif
