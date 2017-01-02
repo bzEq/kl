@@ -7,3 +7,4 @@ cscope.out
 *.a
 *.pb.cc
 *.pb.h
+*_test
