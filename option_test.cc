@@ -12,7 +12,7 @@ kl::Option<int> Spam() { return kl::None(); }
 TEST(O, foo) {
   auto foo = Foo();
   ASSERT(foo);
-  std::cout << *foo << std::endl;
+  ASSERT(*foo == 13);
 }
 
 TEST(O, spam) {
