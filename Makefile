@@ -3,7 +3,7 @@ TESTS := $(patsubst %.cc,%,$(wildcard *_test.cc))
 STATIC_LIB := libkl.a
 CXX := clang++
 CXXFLAGS := -std=c++14 -g -Wall
-LDFLAGS := -L. -lkl
+LDFLAGS := -L. -lkl -lpthread
 
 .PHONY : all clean
 
