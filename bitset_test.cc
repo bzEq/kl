@@ -34,7 +34,7 @@ TEST(kl::BitSet, SetAndClear, num_of_bits) {
   }
 }
 
-TEST(kl::BitSet, FirstZeroBit, 128) {
+TEST(kl::BitSet, FirstZeroBit, num_of_bits) {
   Set(7);
   int i = SetFirstZeroBit();
   ASSERT(i == 0);
@@ -44,6 +44,14 @@ TEST(kl::BitSet, FirstZeroBit, 128) {
   ASSERT(!Test(2));
   i = SetFirstZeroBit();
   ASSERT(i == 2);
+}
+
+TEST(kl::BitSet, NoMoreZeroBit, num_of_bits) {
+  for (int i = 0; i < num_of_bits; ++i) {
+    Set(i);
+  }
+  int i = SetFirstZeroBit();
+  ASSERT(i == -1);
 }
 
 int main() {
