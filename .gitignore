@@ -1,0 +1,9 @@
+cscope.files
+cscope.out
+*.o
+*.gch
+*.log
+*.so
+*.a
+*.pb.cc
+*.pb.h
