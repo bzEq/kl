@@ -12,6 +12,7 @@ public:
   Option() = default;
   Option(const Option &) = delete;
   Option(Option &&) = default;
+  Option &operator=(Option &&o) { v_ = std::move(o.v_); }
   Option(T &&v) : v_(std::make_unique<T>(std::forward<T>(v))) {}
   Option(std::nullptr_t) {}
   explicit operator bool() const { return v_ != nullptr; }
