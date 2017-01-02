@@ -13,9 +13,6 @@ std::unique_ptr<Logger> Logger::default_logger_(new Logger([](const char *msg) {
   std::fprintf(stderr, "%s\n", msg);
 }));
 
-// Logger *Logger::default_logger_ =
-//     (new Logger([](const char *msg) { std::fprintf(stderr, "%s\n", msg); }));
-
 void Logger::Logging(int log_level, const char *file, const char *func,
                      int line, const char *fmt, ...) {
   if (log_level < log_level_) {
@@ -56,10 +53,6 @@ Logger &Logger::DefaultLogger() {
 
 void Logger::SetDefaultLogger(Logger &&logger) {
   default_logger_ = std::make_unique<Logger>(std::move(logger));
-  // if (default_logger_) {
-  //   delete default_logger_;
-  // }
-  // default_logger_ = new Logger(std::move(logger));
 }
 
 void Logger::SetLogLevel(int log_level) { log_level_ = log_level; }

@@ -37,7 +37,6 @@ private:
                va_list ap);
 
   static std::unique_ptr<Logger> default_logger_;
-  // static Logger *default_logger_;
   int log_level_;
   std::function<void(const char *)> output_;
 };
