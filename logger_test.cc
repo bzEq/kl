@@ -12,7 +12,4 @@ TEST(L, DefaultLogger) {
   KL_DEBUG("message from %s", "imfao");
 }
 
-int main() {
-  kl::test::RunAllTests();
-  return 0;
-}
+int main() { return KL_TEST(); }

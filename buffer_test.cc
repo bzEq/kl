@@ -13,7 +13,4 @@ TEST(kl::Buffer, ExtendTo) {
   ASSERT(Cap() == 2 * cap);
 }
 
-int main() {
-  KL_TEST();
-  return 0;
-}
+int main() { return KL_TEST(); }

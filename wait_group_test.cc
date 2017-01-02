@@ -18,7 +18,4 @@ TEST(kl::WaitGroup, Sum) {
   ASSERT(sum == 5050);
 }
 
-int main() {
-  kl::test::RunAllTests();
-  return 0;
-}
+int main() { return KL_TEST(); }

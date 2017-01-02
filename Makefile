@@ -5,9 +5,9 @@ CXX := clang++
 CXXFLAGS := -std=c++14 -g -Wall -O2
 LDFLAGS := -L. -lkl -lpthread
 
-.PHONY : all clean
+.PHONY : all clean test
 
-all: $(STATIC_LIB) $(TESTS)
+all: test
 
 $(TESTS): $(STATIC_LIB)
 
@@ -19,6 +19,9 @@ $(TESTS): %_test: %_test.o
 
 $(STATIC_LIB): $(OBJECTS)
 	ar rcsv $@ $^
+
+test: $(TESTS)
+	@for test in $^; do ./$$test || exit 1; done
 
 clean:
 	@rm -rvf *.o *.a

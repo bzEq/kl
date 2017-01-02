@@ -20,7 +20,4 @@ TEST(O, spam) {
   ASSERT(!spam);
 }
 
-int main() {
-  kl::test::RunAllTests();
-  return 0;
-}
+int main() { return KL_TEST(); }

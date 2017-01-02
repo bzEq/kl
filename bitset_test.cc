@@ -54,7 +54,4 @@ TEST(kl::BitSet, NoMoreZeroBit, kNumOfBits) {
   ASSERT(i == -1);
 }
 
-int main() {
-  KL_TEST();
-  return 0;
-}
+int main() { return KL_TEST(); }
