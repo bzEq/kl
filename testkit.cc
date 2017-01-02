@@ -27,7 +27,7 @@ bool RegisterTest(const char *base, const char *name, void (*func)(void)) {
 }
 
 int RunAllTests() {
-  int passed = 0;
+  size_t passed = 0;
   if (tests) {
     for (size_t i = 0; i < tests->size(); ++i) {
       const auto &t = (*tests)[i];
@@ -41,11 +41,10 @@ int RunAllTests() {
       }
     }
   }
-  std::fprintf(stderr, "==== PASSED %d tests\n", passed);
+  std::fprintf(stderr, "==== %lu/%lu TESTS PASSED\n", passed, tests->size());
   if (passed != tests->size()) {
     return 1;
   }
-  std::fprintf(stderr, "==== ALL TESTS PASSED\n");
   return 0;
 }
 
