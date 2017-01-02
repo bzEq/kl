@@ -1,6 +1,5 @@
 // Copyright (c) 2017 Kai Luo <gluokai@gmail.com>. All rights reserved.
 #include "logger.h"
-#include "logger.h"
 #include "testkit.h"
 
 class L {};
