@@ -7,7 +7,7 @@ LDFLAGS := -L. -lkl -lpthread
 
 .PHONY : all clean test
 
-all: test
+all: $(STATIC_LIB)
 
 $(TESTS): $(STATIC_LIB)
 
@@ -22,6 +22,7 @@ $(STATIC_LIB): $(OBJECTS)
 
 test: $(TESTS)
 	@for test in $^; do ./$$test || exit 1; done
+	@echo "==== CONG! ALL TESTS PASSED."
 
 clean:
 	@rm -rvf *.o *.a
