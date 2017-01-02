@@ -16,17 +16,17 @@ TEST(kl::BitSet, C8, 8) { ASSERT(Size() == 8); }
 TEST(kl::BitSet, C9, 9) { ASSERT(Size() == 16); }
 TEST(kl::BitSet, C10, 10) { ASSERT(Size() == 16); }
 
-static const size_t num_of_bits = 1024;
+static const size_t kNumOfBits = 1023;
 
-TEST(kl::BitSet, SetAndTest, num_of_bits) {
-  for (int i = 0; i < 128; ++i) {
+TEST(kl::BitSet, SetAndTest, kNumOfBits) {
+  for (int i = 0; i < Size(); ++i) {
     Set(i);
     ASSERT(Test(i));
   }
 }
 
-TEST(kl::BitSet, SetAndClear, num_of_bits) {
-  for (int i = 0; i < 128; ++i) {
+TEST(kl::BitSet, SetAndClear, kNumOfBits) {
+  for (int i = 0; i < Size(); ++i) {
     Set(i);
     ASSERT(Test(i));
     Clear(i);
@@ -34,7 +34,7 @@ TEST(kl::BitSet, SetAndClear, num_of_bits) {
   }
 }
 
-TEST(kl::BitSet, FirstZeroBit, num_of_bits) {
+TEST(kl::BitSet, FirstZeroBit, kNumOfBits) {
   Set(7);
   int i = SetFirstZeroBit();
   ASSERT(i == 0);
@@ -46,8 +46,8 @@ TEST(kl::BitSet, FirstZeroBit, num_of_bits) {
   ASSERT(i == 2);
 }
 
-TEST(kl::BitSet, NoMoreZeroBit, num_of_bits) {
-  for (int i = 0; i < num_of_bits; ++i) {
+TEST(kl::BitSet, NoMoreZeroBit, kNumOfBits) {
+  for (int i = 0; i < Size(); ++i) {
     Set(i);
   }
   int i = SetFirstZeroBit();
