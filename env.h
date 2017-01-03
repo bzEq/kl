@@ -142,6 +142,18 @@ inline Result<void> DeleteDir(const char *dir) {
   return Ok();
 }
 
+inline Result<void> SetNonBlocking(int fd) {
+  int flags = ::fcntl(fd, F_GETFL, 0);
+  if (flags < 0) {
+    return Err(errno, std::strerror(errno));
+  }
+  int err = ::fcntl(fd, F_SETFL, flags | O_NONBLOCK);
+  if (err < 0) {
+    return Err(errno, std::strerror(errno));
+  }
+  return Ok();
+}
+
 }  // namespace env
 }  // namespace kl
 #endif
