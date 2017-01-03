@@ -7,7 +7,7 @@ LDFLAGS := -L. -lkl -lpthread
 
 .PHONY : all clean test
 
-all: $(STATIC_LIB)
+all: $(STATIC_LIB) $(TESTS)
 
 $(TESTS): $(STATIC_LIB)
 
