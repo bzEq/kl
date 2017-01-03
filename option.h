@@ -16,6 +16,7 @@ public:
     v_ = std::move(o.v_);
     return *this;
   }
+  Option(const T &v) : v_(std::make_unique<T>(v)) {}
   Option(T &&v) : v_(std::make_unique<T>(std::forward<T>(v))) {}
   Option(std::nullptr_t) {}
   explicit operator bool() const { return v_ != nullptr; }
