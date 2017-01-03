@@ -18,6 +18,7 @@ struct Error {
   int32_t Code() const { return code; }
   const std::string &ToString() const { return message; }
   const char *ToCString() const { return message.c_str(); }
+  std::string &&MoveString() { return std::move(message); }
 };
 
 template <typename T>
