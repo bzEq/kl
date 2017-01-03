@@ -3,6 +3,7 @@
 #define KL_TESTKIT_H_
 #include <cstdio>
 #include <cstdlib>
+#include <stdexcept>
 #include <string>
 
 namespace kl {
