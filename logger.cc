@@ -20,15 +20,14 @@ void Logger::Logging(int log_level, const char *file, const char *func,
   }
   va_list ap;
   va_start(ap, fmt);
-  Logging(file, func, line, fmt, ap);
+  Logging(log_level, file, func, line, fmt, ap);
   va_end(ap);
 }
 
-void Logger::Logging(const char *file, const char *func, int line,
-                     const char *fmt, va_list ap) {
-  int prefix_size =
-      std::snprintf(nullptr, 0, "[%s %s:%s:%d] ", kLogLevelString[log_level_],
-                    file, func, line);
+void Logger::Logging(int log_level, const char *file, const char *func,
+                     int line, const char *fmt, va_list ap) {
+  int prefix_size = std::snprintf(nullptr, 0, "[%s %s:%s:%d] ",
+                                  kLogLevelString[log_level], file, func, line);
   va_list backup_ap;
   va_copy(backup_ap, ap);
   int msg_size = std::vsnprintf(nullptr, 0, fmt, backup_ap);
@@ -38,7 +37,7 @@ void Logger::Logging(const char *file, const char *func, int line,
   char *buf = new char[buf_size];
   const char *base = buf;
   prefix_size = std::snprintf(buf, buf_size, "[%s %s:%s:%d] ",
-                              kLogLevelString[log_level_], file, func, line);
+                              kLogLevelString[log_level], file, func, line);
   buf += prefix_size;
   assert(buf_size >= prefix_size);
   std::vsnprintf(buf, buf_size - prefix_size, fmt, ap);

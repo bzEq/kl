@@ -33,8 +33,8 @@ public:
                const char *fmt, ...);
 
 private:
-  void Logging(const char *file, const char *func, int line, const char *fmt,
-               va_list ap);
+  void Logging(int log_level, const char *file, const char *func, int line,
+               const char *fmt, va_list ap);
 
   static std::unique_ptr<Logger> default_logger_;
   int log_level_;
