@@ -35,18 +35,16 @@ public:
     }
   }
   int FD() const { return fd_; }
-  void Release() {
-    ::close(fd_);
-    fd_ = -1;
-  }
-  ~IoctlFD() {
+  void Close() {
     if (fd_ >= 0) {
       ::close(fd_);
+      fd_ = -1;
     }
   }
+  ~IoctlFD() { Close(); }
+}
 
-private:
-  int fd_;
+private : int fd_;
 };
 }
 
