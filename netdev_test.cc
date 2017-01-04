@@ -16,8 +16,13 @@ TEST(N, PrintIPv4Interfaces) {
 }
 
 TEST(N, RetrieveIFIndex) {
-  auto retrive = kl::netdev::RetrieveIFIndex("wlan0");
+  auto retrive = kl::netdev::RetrieveIFIndex("lo");
   ASSERT(retrive);
+}
+
+TEST(N, FailRetrieveIFIndex) {
+  auto retrive = kl::netdev::RetrieveIFIndex("lol");
+  ASSERT(!retrive);
 }
 
 int main() { return KL_TEST(); }
