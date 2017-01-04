@@ -99,6 +99,17 @@ inline Result<int> RetrieveIFIndex(const char *ifname) {
   return Ok(ifr.ifr_ifindex);
 }
 
+inline Result<std::string> RetrieveIFName(int ifindex) {
+  struct ifreq ifr {
+    .ifr_ifindex = ifindex,
+  };
+  int err = ::ioctl(IoctlFD().FD(), SIOCGIFNAME, &ifr);
+  if (err < 0) {
+    return Err(errno, std::strerror(errno));
+  }
+  return Ok(std::string(ifr.ifr_name));
+}
+
 }  // namespace netdev
 }  // namespace kl
 #endif

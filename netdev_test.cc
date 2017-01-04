@@ -16,13 +16,16 @@ TEST(N, PrintIPv4Interfaces) {
 }
 
 TEST(N, RetrieveIFIndex) {
-  auto retrive = kl::netdev::RetrieveIFIndex("lo");
-  ASSERT(retrive);
+  auto index = kl::netdev::RetrieveIFIndex("lo");
+  ASSERT(index);
+  auto name = kl::netdev::RetrieveIFName(*index);
+  ASSERT(name);
+  ASSERT(*name == "lo");
 }
 
 TEST(N, FailRetrieveIFIndex) {
-  auto retrive = kl::netdev::RetrieveIFIndex("lol");
-  ASSERT(!retrive);
+  auto index = kl::netdev::RetrieveIFIndex("lol");
+  ASSERT(!index);
 }
 
 int main() { return KL_TEST(); }
