@@ -39,9 +39,9 @@ Result<void> Epoll::DelFd(int fd) {
   return Ok();
 }
 
-Result<std::vector<struct epoll_event>> Epoll::Wait(int maxEvents,
+Result<std::vector<struct epoll_event>> Epoll::Wait(int max_events,
                                                     int timeout) {
-  std::vector<struct epoll_event> events(maxEvents);
+  std::vector<struct epoll_event> events(max_events);
   int ret = epoll_wait(epfd_, events.data(), events.size(), timeout);
   if (ret < 0) {
     return Err(errno, std::strerror(errno));

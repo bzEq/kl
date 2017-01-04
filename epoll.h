@@ -25,7 +25,7 @@ public:
   Result<void> AddFd(int fd, uint32_t flags);
   Result<void> ModFd(int fd, uint32_t flags);
   Result<void> DelFd(int fd);
-  Result<std::vector<struct epoll_event>> Wait(int, int);
+  Result<std::vector<struct epoll_event>> Wait(int max_events, int timeout);
   ~Epoll() {
     if (epfd_ >= 0) {
       close(epfd_);
