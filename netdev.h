@@ -23,7 +23,7 @@
 namespace kl {
 namespace netdev {
 
-inline Result<std::vector<struct ifreq>> ListInterfaces() {
+inline Result<std::vector<struct ifreq>> ListIPv4Interfaces() {
   int fd = ::socket(AF_INET, SOCK_DGRAM, IPPROTO_IP);
   if (fd < 0) {
     return Err(errno, std::strerror(errno));
@@ -47,8 +47,8 @@ inline Result<std::vector<struct ifreq>> ListInterfaces() {
   return Ok(std::move(ret));
 }
 
-inline Result<void> PrintInterfaces(std::ostream &out) {
-  auto list = ListInterfaces();
+inline Result<void> PrintIPv4Interfaces(std::ostream &out) {
+  auto list = ListIPv4Interfaces();
   if (!list) {
     return Err(list.MoveErr());
   }

@@ -5,12 +5,14 @@
 #include "testkit.h"
 
 class N {};
-TEST(N, ListInterfaces) {
-  auto list = kl::netdev::ListInterfaces();
+TEST(N, ListIPv4Interfaces) {
+  auto list = kl::netdev::ListIPv4Interfaces();
   ASSERT(list);
   ASSERT((*list).size());
 }
 
-TEST(N, PrintInterfaces) { ASSERT(kl::netdev::PrintInterfaces(std::cout)); }
+TEST(N, PrintIPv4Interfaces) {
+  ASSERT(kl::netdev::PrintIPv4Interfaces(std::cout));
+}
 
 int main() { return KL_TEST(); }
