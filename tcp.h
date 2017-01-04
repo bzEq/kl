@@ -23,15 +23,14 @@ inline Result<int> Listen(const char *host, uint16_t port) {
   if (fd < 0) {
     return kl::Err(errno, std::strerror(errno));
   }
-  struct in_addr in;
-  int err = inet_aton(host, &in);
+  struct sockaddr_in addr = {
+      .sin_family = AF_INET, .sin_port = htons(port),
+  };
+  int err = inet_aton(host, &addr.sin_addr);
   if (!err) {
     ::close(fd);
     return kl::Err("invalid ip address: %s", host);
   }
-  struct sockaddr_in addr = {
-      .sin_family = AF_INET, .sin_port = htons(port), .sin_addr = in,
-  };
   err = ::bind(fd, reinterpret_cast<struct sockaddr *>(&addr), sizeof(addr));
   if (err != 0) {
     ::close(fd);
