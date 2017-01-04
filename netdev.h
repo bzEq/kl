@@ -15,6 +15,7 @@
 #include <cerrno>
 #include <cstring>
 #include <iostream>
+#include <stdexcept>
 #include <vector>
 
 #include "env.h"
@@ -23,8 +24,34 @@
 namespace kl {
 namespace netdev {
 
+namespace {
+// Used for one shot ioctl call.
+class IoctlFD {
+public:
+  IoctlFD() : fd_(-1) {
+    fd_ = ::socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd_ < 0) {
+      throw std::runtime_error(std::strerror(errno));
+    }
+  }
+  int FD() const { return fd_; }
+  void Release() {
+    ::close(fd_);
+    fd_ = -1;
+  }
+  ~IoctlFD() {
+    if (fd_ >= 0) {
+      ::close(fd_);
+    }
+  }
+
+private:
+  int fd_;
+};
+}
+
 inline Result<std::vector<struct ifreq>> ListIPv4Interfaces() {
-  int fd = ::socket(AF_INET, SOCK_DGRAM, IPPROTO_IP);
+  int fd = ::socket(AF_INET, SOCK_DGRAM, 0);
   if (fd < 0) {
     return Err(errno, std::strerror(errno));
   }
@@ -60,6 +87,16 @@ inline Result<void> PrintIPv4Interfaces(std::ostream &out) {
     out << ifname << ": " << addr << "\n";
   }
   return Ok();
+}
+
+inline Result<int> RetrieveIFIndex(const char *ifname) {
+  struct ifreq ifr;
+  ::strncpy(ifr.ifr_name, ifname, IFNAMSIZ);
+  int err = ::ioctl(IoctlFD().FD(), SIOCGIFINDEX, &ifr);
+  if (err < 0) {
+    return Err(errno, std::strerror(errno));
+  }
+  return Ok(ifr.ifr_ifindex);
 }
 
 }  // namespace netdev

@@ -26,7 +26,7 @@ inline Result<int> Listen(const char *host, uint16_t port) {
   struct sockaddr_in addr = {
       .sin_family = AF_INET, .sin_port = htons(port),
   };
-  int err = inet_aton(host, &addr.sin_addr);
+  int err = ::inet_aton(host, &addr.sin_addr);
   if (!err) {
     ::close(fd);
     return kl::Err("invalid ip address: %s", host);
@@ -34,12 +34,14 @@ inline Result<int> Listen(const char *host, uint16_t port) {
   err = ::bind(fd, reinterpret_cast<struct sockaddr *>(&addr), sizeof(addr));
   if (err != 0) {
     ::close(fd);
-    return kl::Err("can't bind the socket on port %u", port);
+    return kl::Err(errno, "can't bind the socket on port %u, %s", port,
+                   std::strerror(errno));
   }
   err = ::listen(fd, 64);
   if (err != 0) {
     ::close(fd);
-    return kl::Err("can't listen on port %u", port);
+    return kl::Err(errno, "can't listen on port %u, %s", port,
+                   std::strerror(errno));
   }
   return kl::Ok(fd);
 }
