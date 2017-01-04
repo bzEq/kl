@@ -68,23 +68,25 @@ inline Result<void> TruncateFile(const char *file, off_t len) {
 }
 
 inline Result<std::string> ReadFile(const char *file) {
-  auto fsize = FileSize(file);
-  if (!fsize) {
-    return Err(fsize.MoveErr());
-  }
   int fd = ::open(file, O_RDONLY);
   if (fd < 0) {
-    return Err(std::strerror(errno));
+    return Err(errno, std::strerror(errno));
   }
   Defer defer([fd]() { ::close(fd); });
+  struct stat buff;
+  int err = fstat(fd, &buff);
+  if (err < 0) {
+    return Err(errno, std::strerror(errno));
+  }
+  off_t fsize = buff.st_size;
   std::string data;
   // in case of an empty file
-  data.resize(*fsize + 1);
-  ssize_t n = ::read(fd, static_cast<void *>(&data[0]), *fsize);
-  if (n != *fsize) {
+  data.resize(fsize + 1);
+  ssize_t n = ::read(fd, static_cast<void *>(&data[0]), fsize);
+  if (n != fsize) {
     return Err(std::strerror(errno));
   }
-  data.resize(*fsize);
+  data.resize(fsize);
   return Ok(std::move(data));
 }
 
