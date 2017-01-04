@@ -14,6 +14,7 @@
 
 #include <cerrno>
 #include <cstring>
+#include <iostream>
 #include <vector>
 
 #include "env.h"
@@ -22,8 +23,8 @@
 namespace kl {
 namespace netdev {
 
-inline Result<std::vector<struct ifreq>> ListInterface() {
-  int fd = ::socket(AF_INET, SOCK_DGRAM, 0);
+inline Result<std::vector<struct ifreq>> ListInterfaces() {
+  int fd = ::socket(AF_INET, SOCK_DGRAM, IPPROTO_IP);
   if (fd < 0) {
     return Err(errno, std::strerror(errno));
   }
@@ -44,6 +45,21 @@ inline Result<std::vector<struct ifreq>> ListInterface() {
     return Err(errno, std::strerror(errno));
   }
   return Ok(std::move(ret));
+}
+
+inline Result<void> PrintInterfaces(std::ostream &out) {
+  auto list = ListInterfaces();
+  if (!list) {
+    return Err(list.MoveErr());
+  }
+  for (const auto &ifreq : *list) {
+    const char *ifname = ifreq.ifr_name;
+    const char *addr =
+        inet_ntoa(reinterpret_cast<const struct sockaddr_in *>(&ifreq.ifr_addr)
+                      ->sin_addr);
+    out << ifname << ": " << addr << "\n";
+  }
+  return Ok();
 }
 
 }  // namespace netdev

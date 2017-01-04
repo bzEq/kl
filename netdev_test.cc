@@ -5,17 +5,12 @@
 #include "testkit.h"
 
 class N {};
-TEST(N, ListInterface) {
-  auto list = kl::netdev::ListInterface();
+TEST(N, ListInterfaces) {
+  auto list = kl::netdev::ListInterfaces();
   ASSERT(list);
   ASSERT((*list).size());
-  for (const auto &ifreq : *list) {
-    const char *ifname = ifreq.ifr_name;
-    const char *addr =
-        inet_ntoa(reinterpret_cast<const struct sockaddr_in *>(&ifreq.ifr_addr)
-                      ->sin_addr);
-    std::cout << ifname << ": " << addr << std::endl;
-  }
 }
+
+TEST(N, PrintInterfaces) { ASSERT(kl::netdev::PrintInterfaces(std::cout)); }
 
 int main() { return KL_TEST(); }
