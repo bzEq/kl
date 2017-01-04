@@ -9,7 +9,6 @@
 namespace kl {
 
 namespace {
-
 inline size_t CountZeroBits(uint8_t x) {
   if (x == 0) {
     return 8;
@@ -25,6 +24,7 @@ inline size_t CountZeroBits(uint8_t x) {
   }
   return n - (x & 1);
 }
+
 inline int AlignTo8(int n) { return (n + 7) & (~7); }
 }
 
