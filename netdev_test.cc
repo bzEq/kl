@@ -10,7 +10,11 @@ TEST(N, ListInterface) {
   ASSERT(list);
   ASSERT((*list).size());
   for (const auto &ifreq : *list) {
-    std::cout << ifreq.ifr_name << std::endl;
+    const char *ifname = ifreq.ifr_name;
+    const char *addr =
+        inet_ntoa(reinterpret_cast<const struct sockaddr_in *>(&ifreq.ifr_addr)
+                      ->sin_addr);
+    std::cout << ifname << ": " << addr << std::endl;
   }
 }
 

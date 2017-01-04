@@ -2,9 +2,14 @@
 // Manipulate NIC, so that programs can be free from ifconfig
 #ifndef KL_NETDEV_H_
 #define KL_NETDEV_H_
+#include <arpa/inet.h>
+#include <fcntl.h>
 #include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
+#include <sys/types.h>
 #include <unistd.h>
 
 #include <cerrno>
