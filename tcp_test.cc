@@ -32,4 +32,13 @@ TEST(T, InetSockAddr) {
   ASSERT(!addr1);
 }
 
+TEST(T, Connect) {
+  auto listen = kl::tcp::Listen("127.0.0.1", 4000);
+  ASSERT(listen);
+  kl::env::Defer defer([fd = *listen]() { ::close(fd); });
+  auto connect = kl::tcp::BlockingConnect("127.0.0.1", 4000);
+  ASSERT(connect);
+  defer([fd = *connect]() { ::close(fd); });
+}
+
 int main() { return KL_TEST(); }

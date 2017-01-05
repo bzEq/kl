@@ -60,7 +60,7 @@ inline Result<int> BlockingConnect(const char *host, uint16_t port) {
   }
   int fd = *sock;
   auto addr = InetSockAddr(host, port);
-  int err = ::connect(fd, reinterpret_cast<const struct sockaddr *>(&*addr),
+  int err = ::connect(fd, reinterpret_cast<const struct sockaddr *>(&(*addr)),
                       sizeof(*addr));
   if (err < 0) {
     ::close(fd);
