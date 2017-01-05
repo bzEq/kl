@@ -28,4 +28,21 @@ TEST(N, FailRetrieveIFIndex) {
   ASSERT(!index);
 }
 
+TEST(N, GetAddress) {
+  auto addr = kl::netdev::GetAddress("lo");
+  ASSERT(addr);
+  ASSERT(*addr == "127.0.0.1");
+}
+
+TEST(N, GetMTU) {
+  auto list = kl::netdev::ListIPv4Interfaces();
+  ASSERT(list);
+  for (const auto &ifr : *list) {
+    auto mtu = kl::netdev::GetMTU(ifr.ifr_name);
+    ASSERT(mtu);
+    ASSERT(*mtu >= 0);
+    std::cout << ifr.ifr_name << "'s mtu: " << *mtu << "\n";
+  }
+}
+
 int main() { return KL_TEST(); }
