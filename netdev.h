@@ -127,6 +127,25 @@ inline Result<void> SetAddress(const char *ifname, const char *host) {
   return Ok();
 }
 
+inline Result<void> SetDestAddress(const char *ifname, const char *host) {
+  struct ifreq ifr;
+  ::strncpy(ifr.ifr_name, ifname, IFNAMSIZ - 1);
+  struct sockaddr_in &addr =
+      *reinterpret_cast<struct sockaddr_in *>(&ifr.ifr_dstaddr);
+  addr = {
+      .sin_family = AF_INET, .sin_port = 0,
+  };
+  int err = ::inet_aton(host, &addr.sin_addr);
+  if (!err) {
+    return kl::Err("invalid ip address: %s", host);
+  }
+  err = ::ioctl(IoctlFD().FD(), SIOCSIFDSTADDR, &ifr);
+  if (err < 0) {
+    return Err(errno, std::strerror(errno));
+  }
+  return Ok();
+}
+
 inline Result<std::string> GetAddress(const char *ifname) {
   struct ifreq ifr;
   ::strncpy(ifr.ifr_name, ifname, IFNAMSIZ - 1);
