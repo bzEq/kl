@@ -18,15 +18,15 @@ extern bool RegisterTest(const char *base, const char *name,
   class TOKCAT(name, Test) : public base {                                     \
   public:                                                                      \
     TOKCAT(name, Test)() : base(__VA_ARGS__) {}                                \
-    void Run();                                                                \
-    static void RunIt() {                                                      \
+    void _Run();                                                               \
+    static void _RunIt() {                                                     \
       TOKCAT(name, Test) t;                                                    \
-      t.Run();                                                                 \
+      t._Run();                                                                \
     }                                                                          \
   };                                                                           \
   bool TOKCAT(name, TestResult) =                                              \
-      kl::test::RegisterTest(#base, #name, &TOKCAT(name, Test)::RunIt);        \
-  void TOKCAT(name, Test)::Run()
+      kl::test::RegisterTest(#base, #name, &TOKCAT(name, Test)::_RunIt);       \
+  void TOKCAT(name, Test)::_Run()
 
 template <typename T>
 inline void Assert(const char *file, int line, const char *expr, T &&v) {
