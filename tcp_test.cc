@@ -25,4 +25,11 @@ TEST(T, Rebind) {
   ASSERT(!bind1);
 }
 
+TEST(T, InetSockAddr) {
+  auto addr0 = kl::tcp::InetSockAddr("192.168.1.1", 3000);
+  ASSERT(addr0);
+  auto addr1 = kl::tcp::InetSockAddr("192.168.1.257", 2000);
+  ASSERT(!addr1);
+}
+
 int main() { return KL_TEST(); }

@@ -25,6 +25,18 @@ inline Result<int> Socket() {
   return kl::Ok(fd);
 }
 
+inline Result<struct sockaddr_in> InetSockAddr(const char *host,
+                                               uint16_t port) {
+  struct sockaddr_in addr = {
+      .sin_family = AF_INET, .sin_port = htons(port),
+  };
+  int err = ::inet_aton(host, &addr.sin_addr);
+  if (!err) {
+    return kl::Err("invalid ip address: %s", host);
+  }
+  return kl::Ok(std::move(addr));
+}
+
 inline Result<void> Bind(int fd, const char *host, uint16_t port) {
   struct sockaddr_in addr = {
       .sin_family = AF_INET, .sin_port = htons(port),
@@ -39,6 +51,22 @@ inline Result<void> Bind(int fd, const char *host, uint16_t port) {
                    std::strerror(errno));
   }
   return kl::Ok();
+}
+
+inline Result<int> BlockingConnect(const char *host, uint16_t port) {
+  auto sock = Socket();
+  if (!sock) {
+    return kl::Err(sock.MoveErr());
+  }
+  int fd = *sock;
+  auto addr = InetSockAddr(host, port);
+  int err = ::connect(fd, reinterpret_cast<const struct sockaddr *>(&*addr),
+                      sizeof(*addr));
+  if (err < 0) {
+    ::close(fd);
+    return kl::Err(errno, std::strerror(errno));
+  }
+  return kl::Ok(fd);
 }
 
 // RETURN: fd
