@@ -42,9 +42,9 @@ public:
     }
   }
   ~IoctlFD() { Close(); }
-}
 
-private : int fd_;
+private:
+  int fd_;
 };
 }
 
