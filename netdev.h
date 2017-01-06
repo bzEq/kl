@@ -188,6 +188,18 @@ inline Result<int> GetMTU(const char *ifname) {
   return Ok(ifr.ifr_mtu);
 }
 
+inline Result<void> SetMTU(const char *ifname, int mtu) {
+  struct ifreq ifr {
+    .ifr_mtu = mtu,
+  };
+  ::strncpy(ifr.ifr_name, ifname, IFNAMSIZ - 1);
+  int err = ::ioctl(IoctlFD().FD(), SIOCSIFMTU, &ifr);
+  if (err < 0) {
+    return Err(errno, std::strerror(errno));
+  }
+  return Ok();
+}
+
 inline Result<void> AddRoute(const char *ifname, const char *host,
                              const char *mask) {
   auto host_addr = inet::InetSockAddr(host, 0);

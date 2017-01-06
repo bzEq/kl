@@ -45,4 +45,15 @@ TEST(N, GetMTU) {
   }
 }
 
+TEST(N, SetMTU) {
+  auto old = kl::netdev::GetMTU("lo");
+  ASSERT(old);
+  auto set = kl::netdev::SetMTU("lo", 1280);
+  ASSERT(set);
+  auto get = kl::netdev::GetMTU("lo");
+  ASSERT(get);
+  ASSERT(*get == 1280);
+  ASSERT(kl::netdev::SetMTU("lo", *old));
+}
+
 int main() { return KL_TEST(); }
