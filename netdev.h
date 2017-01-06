@@ -202,7 +202,9 @@ inline Result<void> AddRoute(const char *ifname, const char *host,
   ::memset(&rt, 0, sizeof(rt));
   rt.rt_dst = *reinterpret_cast<struct sockaddr *>(&(*host_addr));
   rt.rt_genmask = *reinterpret_cast<struct sockaddr *>(&(*mask_addr));
-  ::strncpy(rt.rt_dev, ifname, IFNAMSIZ - 1);
+  char dev[IFNAMSIZ];
+  ::strncpy(dev, ifname, IFNAMSIZ - 1);
+  rt.rt_dev = dev;
   rt.rt_flags = RTF_UP | RTF_HOST;
   int err = ::ioctl(IoctlFD().FD(), SIOCADDRT, &rt);
   if (err < 0) {
