@@ -214,14 +214,15 @@ inline Result<void> AddRoute(const char *ifname, const char *host,
 }
 
 inline Result<void> InterfaceUp(const char *ifname) {
+  IoctlFD ioctl_fd;
   struct ifreq ifr;
   ::strncpy(ifr.ifr_name, ifname, IFNAMSIZ - 1);
-  int err = ::ioctl(IoctlFD().FD(), SIOCGIFFLAGS, &ifr);
+  int err = ::ioctl(ioctl_fd.FD(), SIOCGIFFLAGS, &ifr);
   if (err < 0) {
     return kl::Err(errno, std::strerror(errno));
   }
   ifr.ifr_flags |= IFF_UP;
-  err = ::ioctl(IoctlFD().FD(), SIOCSIFFLAGS, &ifr);
+  err = ::ioctl(ioctl_fd.FD(), SIOCSIFFLAGS, &ifr);
   if (err < 0) {
     return kl::Err(errno, std::strerror(errno));
   }
