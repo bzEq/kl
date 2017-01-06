@@ -1,6 +1,7 @@
 // Copyright (c) 2017 Kai Luo <gluokai@gmail.com>. All rights reserved.
 #include "tcp.h"
 #include "env.h"
+#include "inet.h"
 #include "testkit.h"
 
 class T {};
@@ -16,20 +17,13 @@ TEST(T, Rebind) {
   auto sock0 = kl::tcp::Socket();
   ASSERT(sock0);
   kl::env::Defer defer([fd = *sock0]() { ::close(fd); });
-  auto bind0 = kl::tcp::Bind(*sock0, "127.0.0.1", 4000);
+  auto bind0 = kl::inet::Bind(*sock0, "127.0.0.1", 4000);
   ASSERT(bind0);
   auto sock1 = kl::tcp::Socket();
   ASSERT(sock1);
   defer([fd = *sock1]() { ::close(fd); });
-  auto bind1 = kl::tcp::Bind(*sock1, "127.0.0.1", 4000);
+  auto bind1 = kl::inet::Bind(*sock1, "127.0.0.1", 4000);
   ASSERT(!bind1);
-}
-
-TEST(T, InetSockAddr) {
-  auto addr0 = kl::tcp::InetSockAddr("192.168.1.1", 3000);
-  ASSERT(addr0);
-  auto addr1 = kl::tcp::InetSockAddr("192.168.1.257", 2000);
-  ASSERT(!addr1);
 }
 
 TEST(T, Connect) {
