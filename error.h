@@ -2,9 +2,12 @@
 
 #ifndef KL_ERROR_H_
 #define KL_ERROR_H_
+#include <cstring>
 #include <string>
+#include <vector>
 
 #include "result.h"
+#include "string.h"
 
 namespace kl {
 
@@ -52,29 +55,13 @@ inline auto Err(int32_t code, const char *msg) {
 inline auto Err(const char *msg) { return Err(kGeneralErrCode, msg); }
 
 template <typename... Args>
-inline auto FormatString(const char *fmt, Args &&... args) {
-  static const size_t init_size = 256;
-  static const size_t size_limit = 2048;
-  char *buf = new char[init_size];
-  int total = std::snprintf(buf, init_size, fmt, std::forward<Args>(args)...);
-  if (total > init_size) {
-    delete[] buf;
-    buf = new char[size_limit];
-    std::snprintf(buf, size_limit, fmt, std::forward<Args>(args)...);
-  }
-  std::string msg(buf);
-  delete[] buf;
-  return msg;
-}
-
-template <typename... Args>
 inline auto Err(int32_t code, const char *fmt, Args &&... args) {
-  return Err(code, FormatString(fmt, std::forward<Args>(args)...));
+  return Err(code, string::FormatString(fmt, std::forward<Args>(args)...));
 }
 
 template <typename... Args>
 inline auto Err(const char *fmt, Args &&... args) {
-  return Err(FormatString(fmt, std::forward<Args>(args)...));
+  return Err(string::FormatString(fmt, std::forward<Args>(args)...));
 }
 
 }  // namespace kl
