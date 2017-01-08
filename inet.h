@@ -10,12 +10,25 @@
 #include <unistd.h>
 
 #include <cerrno>
+#include <cstdlib>
 #include <cstring>
 
 #include "error.h"
+#include "string.h"
 
 namespace kl {
 namespace inet {
+
+inline Result<void> SplitAddr(const char *addr, std::string *host,
+                              uint16_t *port) {
+  auto result = string::SplitString(addr, ":");
+  if (result.size() != 2) {
+    return Err("invalid addr: %s", addr);
+  }
+  *host = std::move(result[0]);
+  *port = ::atoi(result[1].c_str());
+  return Ok();
+}
 
 inline Result<struct sockaddr_in> InetSockAddr(const char *host,
                                                uint16_t port) {
