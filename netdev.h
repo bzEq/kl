@@ -241,6 +241,15 @@ inline Result<void> InterfaceUp(const char *ifname) {
   return kl::Ok();
 }
 
+inline Result<void> BindInterface(int fd, const char *ifname) {
+  int err =
+      ::setsockopt(fd, SOL_SOCKET, SO_BINDTODEVICE, ifname, ::strlen(ifname));
+  if (err < 0) {
+    return kl::Err(errno, std::strerror(errno));
+  }
+  return kl::Ok();
+}
+
 }  // namespace netdev
 }  // namespace kl
 #endif
