@@ -50,15 +50,15 @@ InetAddr(const struct sockaddr_in &addr) {
   return std::make_tuple(std::move(host), port);
 }
 
-inline std::tuple<std::string, uint16_t> InetAddr(int fd) {
+inline Result<std::tuple<std::string, uint16_t>> InetAddr(int fd) {
   struct sockaddr_in addr;
   socklen_t len;
   int err = ::getsockname(fd, reinterpret_cast<struct sockaddr *>(&addr), &len);
   if (err < 0) {
     return kl::Err(errno, std::strerror(errno));
   }
-  return std::make_tuple(std::string(inet_ntoa(addr.sin_addr)),
-                         ntohs(addr.sin_port));
+  return kl::Ok(std::make_tuple(std::string(inet_ntoa(addr.sin_addr)),
+                                ntohs(addr.sin_port)));
 }
 
 inline Result<void> Bind(int fd, const char *host, uint16_t port) {
