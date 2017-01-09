@@ -135,14 +135,6 @@ inline Result<ssize_t> Sendto(int fd, const void *buf, size_t size, int flags,
   }
   return Sendto(fd, buf, size, flags,
                 reinterpret_cast<const struct sockaddr *>(&(*sockaddr)));
-  // socklen_t len = sizeof(*sockaddr);
-  // ssize_t nwrite =
-  //     ::sendto(fd, buf, size, flags,
-  //              reinterpret_cast<const struct sockaddr *>(&(*sockaddr)), len);
-  // if (nwrite < 0) {
-  //   return Err(errno, std::strerror(errno));
-  // }
-  // return kl::Ok(nwrite);
 }
 
 }  // namespace inet
