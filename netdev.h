@@ -110,7 +110,7 @@ inline Result<std::string> RetrieveIFName(int ifindex) {
   return Ok(std::string(ifr.ifr_name));
 }
 
-inline Result<void> SetAddress(const char *ifname, const char *host) {
+inline Result<void> SetAddr(const char *ifname, const char *host) {
   struct ifreq ifr;
   ::strncpy(ifr.ifr_name, ifname, IFNAMSIZ - 1);
   struct sockaddr_in &addr =
@@ -129,7 +129,7 @@ inline Result<void> SetAddress(const char *ifname, const char *host) {
   return Ok();
 }
 
-inline Result<void> SetDestAddress(const char *ifname, const char *host) {
+inline Result<void> SetDstAddr(const char *ifname, const char *host) {
   struct ifreq ifr;
   ::strncpy(ifr.ifr_name, ifname, IFNAMSIZ - 1);
   struct sockaddr_in &addr =
@@ -148,7 +148,7 @@ inline Result<void> SetDestAddress(const char *ifname, const char *host) {
   return Ok();
 }
 
-inline Result<std::string> GetAddress(const char *ifname) {
+inline Result<std::string> GetAddr(const char *ifname) {
   struct ifreq ifr;
   ::strncpy(ifr.ifr_name, ifname, IFNAMSIZ - 1);
   int err = ::ioctl(IoctlFD().FD(), SIOCGIFADDR, &ifr);

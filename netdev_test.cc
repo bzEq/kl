@@ -29,7 +29,7 @@ TEST(N, FailRetrieveIFIndex) {
 }
 
 TEST(N, GetAddress) {
-  auto addr = kl::netdev::GetAddress("lo");
+  auto addr = kl::netdev::GetAddr("lo");
   ASSERT(addr);
   ASSERT(*addr == "127.0.0.1");
 }
