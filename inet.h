@@ -118,19 +118,31 @@ RecvFrom(int fd, void *buf, size_t size, int flags) {
 }
 
 inline Result<ssize_t> Sendto(int fd, const void *buf, size_t size, int flags,
+                              const struct sockaddr *addr) {
+  socklen_t len = sizeof(*addr);
+  ssize_t nwrite = ::sendto(fd, buf, size, flags, addr, len);
+  if (nwrite < 0) {
+    return Err(errno, std::strerror(errno));
+  }
+  return kl::Ok(nwrite);
+}
+
+inline Result<ssize_t> Sendto(int fd, const void *buf, size_t size, int flags,
                               const char *host, uint16_t port) {
   auto sockaddr = InetSockAddr(host, port);
   if (!sockaddr) {
     return Err(errno, std::strerror(errno));
   }
-  socklen_t len = sizeof(*sockaddr);
-  ssize_t nwrite =
-      ::sendto(fd, buf, size, flags,
-               reinterpret_cast<const struct sockaddr *>(&(*sockaddr)), len);
-  if (nwrite < 0) {
-    return Err(errno, std::strerror(errno));
-  }
-  return kl::Ok(nwrite);
+  return Sendto(fd, buf, size, flags,
+                reinterpret_cast<const struct sockaddr *>(&(*sockaddr)));
+  // socklen_t len = sizeof(*sockaddr);
+  // ssize_t nwrite =
+  //     ::sendto(fd, buf, size, flags,
+  //              reinterpret_cast<const struct sockaddr *>(&(*sockaddr)), len);
+  // if (nwrite < 0) {
+  //   return Err(errno, std::strerror(errno));
+  // }
+  // return kl::Ok(nwrite);
 }
 
 }  // namespace inet
