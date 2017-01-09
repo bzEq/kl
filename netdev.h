@@ -225,6 +225,56 @@ inline Result<void> AddRoute(const char *ifname, const char *host,
   return kl::Ok();
 }
 
+inline Result<void> AddGateway(const char *ifname, const char *host,
+                               const char *mask) {
+  auto host_addr = inet::InetSockAddr(host, 0);
+  if (!host_addr) {
+    return kl::Err(host_addr.MoveErr());
+  }
+  auto mask_addr = inet::InetSockAddr(mask, 0);
+  if (!mask_addr) {
+    return kl::Err(mask_addr.MoveErr());
+  }
+  struct rtentry rt;
+  ::memset(&rt, 0, sizeof(rt));
+  rt.rt_dst = *reinterpret_cast<struct sockaddr *>(&(*host_addr));
+  rt.rt_genmask = *reinterpret_cast<struct sockaddr *>(&(*mask_addr));
+  char dev[IFNAMSIZ];
+  ::strncpy(dev, ifname, IFNAMSIZ - 1);
+  rt.rt_dev = dev;
+  rt.rt_flags = RTF_GATEWAY | RTF_HOST;
+  int err = ::ioctl(IoctlFD().FD(), SIOCADDRT, &rt);
+  if (err < 0) {
+    return kl::Err(errno, std::strerror(errno));
+  }
+  return kl::Ok();
+}
+
+inline Result<void> AddNetRoute(const char *ifname, const char *host,
+                                const char *mask) {
+  auto host_addr = inet::InetSockAddr(host, 0);
+  if (!host_addr) {
+    return kl::Err(host_addr.MoveErr());
+  }
+  auto mask_addr = inet::InetSockAddr(mask, 0);
+  if (!mask_addr) {
+    return kl::Err(mask_addr.MoveErr());
+  }
+  struct rtentry rt;
+  ::memset(&rt, 0, sizeof(rt));
+  rt.rt_dst = *reinterpret_cast<struct sockaddr *>(&(*host_addr));
+  rt.rt_genmask = *reinterpret_cast<struct sockaddr *>(&(*mask_addr));
+  char dev[IFNAMSIZ];
+  ::strncpy(dev, ifname, IFNAMSIZ - 1);
+  rt.rt_dev = dev;
+  rt.rt_flags = RTF_UP;
+  int err = ::ioctl(IoctlFD().FD(), SIOCADDRT, &rt);
+  if (err < 0) {
+    return kl::Err(errno, std::strerror(errno));
+  }
+  return kl::Ok();
+}
+
 inline Result<void> InterfaceUp(const char *ifname) {
   IoctlFD ioctl_fd;
   struct ifreq ifr;
