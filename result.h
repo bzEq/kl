@@ -7,6 +7,7 @@
 
 namespace kl {
 namespace result {
+namespace {
 template <typename V>
 struct result_value {
   std::unique_ptr<V> v;
@@ -16,6 +17,7 @@ template <typename E>
 struct result_error {
   std::unique_ptr<E> e;
 };
+}
 
 template <typename V, typename VV = typename std::decay<V>::type>
 inline result_value<VV> Ok(V &&v) {
