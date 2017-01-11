@@ -15,7 +15,7 @@ inline auto FormatString(const char *fmt, Args &&... args) {
   static const size_t size_limit = 2048;
   char *buf = new char[init_size];
   int total = std::snprintf(buf, init_size, fmt, std::forward<Args>(args)...);
-  if (total > init_size) {
+  if (total > static_cast<int>(init_size)) {
     delete[] buf;
     buf = new char[size_limit];
     std::snprintf(buf, size_limit, fmt, std::forward<Args>(args)...);

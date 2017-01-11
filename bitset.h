@@ -40,7 +40,7 @@ public:
 
   void Set(int index) {
     std::unique_lock<std::mutex> _(mu_);
-    if (index >= 0 && index < size_) {
+    if (index >= 0 && index < static_cast<int>(size_)) {
       int i = index >> 3;
       int k = index & 7;
       set_[i] |= (1 << k);
@@ -49,7 +49,7 @@ public:
 
   void Clear(int index) {
     std::unique_lock<std::mutex> _(mu_);
-    if (index >= 0 && index < size_) {
+    if (index >= 0 && index < static_cast<int>(size_)) {
       int i = index >> 3;
       int k = index & 7;
       set_[i] &= ~(1 << k);
@@ -58,7 +58,7 @@ public:
 
   int Test(int index) {
     std::unique_lock<std::mutex> _(mu_);
-    if (index >= 0 && index < size_) {
+    if (index >= 0 && index < static_cast<int>(size_)) {
       int i = index >> 3;
       int k = index & 7;
       return set_[i] & (1 << k);
@@ -68,7 +68,7 @@ public:
 
   int SetFirstZeroBit() {
     std::unique_lock<std::mutex> _(mu_);
-    for (int i = 0; i < (size_ >> 3); ++i) {
+    for (int i = 0; i < static_cast<int>(size_ >> 3); ++i) {
       int k = CountZeroBits(~set_[i]);
       if (k >= 0 && k < 8) {
         int index = (i << 3) + k;

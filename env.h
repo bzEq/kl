@@ -97,7 +97,7 @@ inline Result<void> FillFileWith(const char *file, const std::string &data) {
   }
   Defer defer([fd]() { ::close(fd); });
   ssize_t n = ::write(fd, static_cast<const void *>(data.c_str()), data.size());
-  if (n != data.size()) {
+  if (n != static_cast<ssize_t>(data.size())) {
     return Err(std::strerror(errno));
   }
   n = ::fsync(fd);

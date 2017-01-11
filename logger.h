@@ -2,6 +2,7 @@
 #ifndef KL_LOGGER_H_
 #define KL_LOGGER_H_
 #include <cassert>
+#include <cstdarg>
 #include <functional>
 #include <memory>
 

@@ -19,14 +19,14 @@ TEST(kl::BitSet, C10, 10) { ASSERT(Size() == 16); }
 static const size_t kNumOfBits = 1023;
 
 TEST(kl::BitSet, SetAndTest, kNumOfBits) {
-  for (int i = 0; i < Size(); ++i) {
+  for (size_t i = 0; i < Size(); ++i) {
     Set(i);
     ASSERT(Test(i));
   }
 }
 
 TEST(kl::BitSet, SetAndClear, kNumOfBits) {
-  for (int i = 0; i < Size(); ++i) {
+  for (size_t i = 0; i < Size(); ++i) {
     Set(i);
     ASSERT(Test(i));
     Clear(i);
@@ -47,7 +47,7 @@ TEST(kl::BitSet, FirstZeroBit, kNumOfBits) {
 }
 
 TEST(kl::BitSet, NoMoreZeroBit, kNumOfBits) {
-  for (int i = 0; i < Size(); ++i) {
+  for (size_t i = 0; i < Size(); ++i) {
     Set(i);
   }
   int i = SetFirstZeroBit();

@@ -56,9 +56,9 @@ inline Result<std::vector<struct ifreq>> ListIPv4Interfaces() {
     return Err(errno, std::strerror(errno));
   }
   env::Defer defer([fd]() { ::close(fd); });
-  struct ifconf conf {
-    .ifc_len = 0, .ifc_req = nullptr,
-  };
+  struct ifconf conf;
+  conf.ifc_len = 0;
+  conf.ifc_req = nullptr;
   int err = ::ioctl(fd, SIOCGIFCONF, &conf);
   if (err < 0) {
     return Err(errno, std::strerror(errno));
@@ -100,9 +100,8 @@ inline Result<int> RetrieveIFIndex(const char *ifname) {
 }
 
 inline Result<std::string> RetrieveIFName(int ifindex) {
-  struct ifreq ifr {
-    .ifr_ifindex = ifindex,
-  };
+  struct ifreq ifr;
+  ifr.ifr_ifindex = ifindex;
   int err = ::ioctl(IoctlFD().FD(), SIOCGIFNAME, &ifr);
   if (err < 0) {
     return Err(errno, std::strerror(errno));
@@ -189,9 +188,8 @@ inline Result<int> GetMTU(const char *ifname) {
 }
 
 inline Result<void> SetMTU(const char *ifname, int mtu) {
-  struct ifreq ifr {
-    .ifr_mtu = mtu,
-  };
+  struct ifreq ifr;
+  ifr.ifr_mtu = mtu;
   ::strncpy(ifr.ifr_name, ifname, IFNAMSIZ - 1);
   int err = ::ioctl(IoctlFD().FD(), SIOCSIFMTU, &ifr);
   if (err < 0) {
