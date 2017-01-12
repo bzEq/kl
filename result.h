@@ -48,6 +48,15 @@ public:
   Result(Result &&) = default;
   Result(result_value<V> &&v) : v_(std::move(v.v)) {}
   Result(result_error<E> &&e) : e_(std::move(e.e)) {}
+  Result &operator=(const Result &result) {
+    if (result.v_) {
+      v_ = std::make_unique<V>(*result.v_);
+    }
+    if (result.e_) {
+      e_ = std::make_unique<E>(*result.e_);
+    }
+    return *this;
+  }
   Result &operator=(result_value<V> &&v) {
     v_ = std::move(v.v);
     e_ = nullptr;
@@ -104,6 +113,12 @@ public:
   Result(Result &&) = default;
   Result(std::nullptr_t) {}
   Result(result_error<E> &&e) : e_(std::move(e.e)) {}
+  Result &operator=(const Result &result) {
+    if (result.e_) {
+      e_ = std::make_unique<E>(*result.e_);
+    }
+    return *this;
+  }
   Result &operator=(std::nullptr_t) {
     e_ = nullptr;
     return *this;
