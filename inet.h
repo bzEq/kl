@@ -106,7 +106,7 @@ inline Result<void> Listen(int fd, const char *host, uint16_t port) {
 inline Result<std::tuple<ssize_t, std::string, uint16_t>>
 RecvFrom(int fd, void *buf, size_t size, int flags) {
   struct sockaddr_in from;
-  socklen_t len;
+  socklen_t len = sizeof(from);
   ssize_t nread = ::recvfrom(fd, buf, size, flags,
                              reinterpret_cast<struct sockaddr *>(&from), &len);
   if (nread < 0) {
