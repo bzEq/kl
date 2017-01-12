@@ -52,7 +52,7 @@ InetAddr(const struct sockaddr_in &addr) {
 
 inline Result<std::tuple<std::string, uint16_t>> InetAddr(int fd) {
   struct sockaddr_in addr;
-  socklen_t len;
+  socklen_t len = sizeof(addr);
   int err = ::getsockname(fd, reinterpret_cast<struct sockaddr *>(&addr), &len);
   if (err < 0) {
     return kl::Err(errno, std::strerror(errno));
