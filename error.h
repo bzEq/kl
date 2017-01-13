@@ -64,5 +64,7 @@ inline auto Err(const char *fmt, Args &&... args) {
   return Err(string::FormatString(fmt, std::forward<Args>(args)...));
 }
 
+using Status = Result<void>;
+
 }  // namespace kl
 #endif
