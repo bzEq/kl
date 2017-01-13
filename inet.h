@@ -137,6 +137,15 @@ inline Result<ssize_t> Sendto(int fd, const void *buf, size_t size, int flags,
                 reinterpret_cast<const struct sockaddr *>(&(*sockaddr)));
 }
 
+int SocketError(int fd) {
+  int error = 0;
+  socklen_t len = sizeof(error);
+  if (::getsockopt(fd, SOL_SOCKET, SO_ERROR, &error, &len) == 0) {
+    return error;
+  }
+  return error;
+}
+
 }  // namespace inet
 }  // namespace kl
 #endif
