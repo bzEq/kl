@@ -198,18 +198,46 @@ inline Result<void> SetMTU(const char *ifname, int mtu) {
   return Ok();
 }
 
-inline Result<void> AddRoute(const char *ifname, const char *host) {
-  auto host_addr = inet::InetSockAddr(host, 0);
-  if (!host_addr) {
-    return kl::Err(host_addr.MoveErr());
+// route add default gw <addr>
+inline Result<void> AddDefaultGateway(const char *addr) {
+  struct rtentry rt = {};
+  auto inet_addr = inet::InetSockAddr(addr, 0);
+  if (!inet_addr) {
+    return kl::Err(inet_addr.MoveErr());
   }
-  struct rtentry rt;
-  ::memset(&rt, 0, sizeof(rt));
-  rt.rt_dst = *reinterpret_cast<struct sockaddr *>(&(*host_addr));
-  char dev[IFNAMSIZ];
-  ::strncpy(dev, ifname, IFNAMSIZ - 1);
-  rt.rt_dev = dev;
-  rt.rt_flags = RTF_UP | RTF_HOST;
+  rt.rt_gateway = *reinterpret_cast<struct sockaddr *>(&(*inet_addr));
+  rt.rt_flags = RTF_UP | RTF_GATEWAY;
+  int err = ::ioctl(IoctlFD().FD(), SIOCADDRT, &rt);
+  if (err < 0) {
+    return kl::Err(errno, std::strerror(errno));
+  }
+  return kl::Ok();
+}
+
+// route add -host <dst> gw <gateway> dev <ifname>
+// REQUIRES: dst != nullptr
+inline Result<void> AddRoute(const char *dst, const char *gateway,
+                             const char *ifname) {
+  assert(dst);
+  struct rtentry rt = {};
+  auto inet_dst = inet::InetSockAddr(dst, 0);
+  if (!inet_dst) {
+    return kl::Err(inet_dst.MoveErr());
+  }
+  rt.rt_dst = *reinterpret_cast<struct sockaddr *>(&(*inet_dst));
+  rt.rt_flags |= RTF_UP | RTF_HOST;
+  if (gateway) {
+    auto inet_gateway = inet::InetSockAddr(gateway, 0);
+    if (inet_gateway) {
+      rt.rt_gateway = *reinterpret_cast<struct sockaddr *>(&(*inet_gateway));
+      rt.rt_flags |= RTF_GATEWAY;
+    }
+  }
+  if (ifname) {
+    char dev[IFNAMSIZ];
+    ::strncpy(dev, ifname, IFNAMSIZ - 1);
+    rt.rt_dev = dev;
+  }
   int err = ::ioctl(IoctlFD().FD(), SIOCADDRT, &rt);
   if (err < 0) {
     return kl::Err(errno, std::strerror(errno));
