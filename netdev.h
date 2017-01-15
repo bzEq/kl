@@ -199,12 +199,15 @@ inline Result<void> SetMTU(const char *ifname, int mtu) {
 }
 
 // route add default gw <addr>
+// REQUIRES: addr must be address of AF_INET
 inline Result<void> AddDefaultGateway(const char *addr) {
   struct rtentry rt = {};
   auto inet_addr = inet::InetSockAddr(addr, 0);
   if (!inet_addr) {
     return kl::Err(inet_addr.MoveErr());
   }
+  auto inet_dst = *inet::InetSockAddr("0.0.0.0", 0);
+  rt.rt_dst = *reinterpret_cast<struct sockaddr *>(&inet_dst);
   rt.rt_gateway = *reinterpret_cast<struct sockaddr *>(&(*inet_addr));
   rt.rt_flags = RTF_UP | RTF_GATEWAY;
   int err = ::ioctl(IoctlFD().FD(), SIOCADDRT, &rt);
