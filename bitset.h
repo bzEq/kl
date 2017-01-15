@@ -1,4 +1,6 @@
 // Copyright (c) 2016 Kai Luo. All rights reserved.
+// Use of this source code is governed by the BSD license that can be found in
+// the LICENSE file.
 
 #ifndef KL_BITSET_H_
 #define KL_BITSET_H_

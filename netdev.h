@@ -1,4 +1,7 @@
 // Copyright (c) 2017 Kai Luo <gluokai@gmail.com>. All rights reserved.
+// Use of this source code is governed by the BSD license that can be found in
+// the LICENSE file.
+
 // Manipulate NIC, so that programs can be free from ifconfig
 #ifndef KL_NETDEV_H_
 #define KL_NETDEV_H_
