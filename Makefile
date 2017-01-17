@@ -1,4 +1,4 @@
-OBJECTS := testkit.o epoll.o logger.o
+OBJECTS := testkit.o epoll.o logger.o scheduler.o
 TESTS := $(patsubst %.cc, %, $(wildcard *_test.cc))
 STATIC_LIB := libkl.a
 CXX := g++
