@@ -15,8 +15,13 @@ const int kWorkerThreadWaitTimeout = 5000;
 
 // REQUIRES: num_of_worker_threads >= 1
 Scheduler::Scheduler(size_t num_of_worker_threads)
-    : num_of_worker_threads_(num_of_worker_threads), stop_(false),
-      task_queues_(nullptr), queue_round_robin_(0) {}
+    : num_of_worker_threads_(num_of_worker_threads), enable_epoll_(true),
+      stop_(false), task_queues_(nullptr), queue_round_robin_(0) {}
+
+Scheduler::Scheduler(size_t num_of_worker_threads, bool enable_epoll)
+    : num_of_worker_threads_(num_of_worker_threads),
+      enable_epoll_(enable_epoll), stop_(false), task_queues_(nullptr),
+      queue_round_robin_(0) {}
 
 Scheduler::~Scheduler() {
   if (task_queues_) {
@@ -129,10 +134,12 @@ kl::Status Scheduler::Go() {
     Stop(status.Err().ToCString());
     return status;
   }
-  status = LaunchEpollThread();
-  if (!status) {
-    Stop(status.Err().ToCString());
-    return status;
+  if (enable_epoll_) {
+    status = LaunchEpollThread();
+    if (!status) {
+      Stop(status.Err().ToCString());
+      return status;
+    }
   }
   status = LaunchWorkerThreads();
   if (!status) {

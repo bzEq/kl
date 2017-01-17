@@ -11,6 +11,7 @@
 class T {};
 
 TEST(kl::Scheduler, Constructor, 8) {}
+TEST(kl::Scheduler, Constructor1, 8, false) {}
 
 TEST(kl::Scheduler, Stop, 8) {
   auto stop_thread = std::thread([this] {

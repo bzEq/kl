@@ -25,6 +25,7 @@ class Scheduler {
 public:
   typedef std::function<void(uint32_t events)> EpollHandler;
   explicit Scheduler(size_t num_of_worker_threads);
+  Scheduler(size_t num_of_worker_threads, bool enable_epoll);
   kl::Status Go();
   void Stop();
   kl::Status RegisterEpollEvent(int fd, uint32_t events,
@@ -48,6 +49,7 @@ private:
   kl::WaitGroup sync_;
   kl::Epoll epoll_;
   size_t num_of_worker_threads_;
+  bool enable_epoll_;
   std::atomic<bool> stop_;
   kl::Chan<std::function<void(void)>> *task_queues_;
   std::atomic<size_t> queue_round_robin_;
