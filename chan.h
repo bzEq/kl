@@ -56,6 +56,21 @@ public:
     return std::move(f);
   }
 
+  Option<T> Pop(int timeout) {
+    std::unique_lock<std::mutex> l(mu_);
+    if (cv_.wait_for(l, std::chrono::milliseconds(timeout),
+                     [this] { return closed_ || (!q_.empty()); })) {
+      if (closed_) {
+        return None();
+      }
+      auto f(std::move(q_.front()));
+      q_.pop();
+      l.unlock();
+      return std::move(f);
+    }
+    return None();
+  }
+
 private:
   std::mutex mu_;
   std::condition_variable cv_;

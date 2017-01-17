@@ -27,4 +27,10 @@ TEST(C, PushAndPop) {
   ASSERT(ch->Closed());
 }
 
+TEST(C, PopTimeout) {
+  auto ch = std::make_shared<kl::Chan<int>>();
+  auto ret = ch->Pop(2000);
+  ASSERT(!ret);
+}
+
 int main() { return KL_TEST(); }
