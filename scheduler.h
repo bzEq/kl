@@ -27,7 +27,6 @@ public:
   explicit Scheduler(size_t num_of_worker_threads);
   Scheduler(size_t num_of_worker_threads, bool enable_epoll);
   kl::Status Go();
-  void Stop();
   kl::Status RegisterEpollEvent(int fd, uint32_t events,
                                 EpollHandler &&callback);
   kl::Status UnregisterEpollEvent(int fd);

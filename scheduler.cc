@@ -53,6 +53,9 @@ kl::Status Scheduler::LaunchLoggingThread() {
 
 kl::Status Scheduler::RegisterEpollEvent(int fd, uint32_t events,
                                          EpollHandler &&callback) {
+  if (!enable_epoll_) {
+    return kl::Err("epoll not enabled");
+  }
   auto status = epoll_.AddFd(fd, events);
   if (!status) {
     return status;
@@ -64,6 +67,9 @@ kl::Status Scheduler::RegisterEpollEvent(int fd, uint32_t events,
 }
 
 kl::Status Scheduler::UnregisterEpollEvent(int fd) {
+  if (!enable_epoll_) {
+    return kl::Err("epoll not enabled");
+  }
   auto status = epoll_.DelFd(fd);
   if (!status) {
     return status;
