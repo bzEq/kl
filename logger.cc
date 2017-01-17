@@ -33,14 +33,16 @@ void Logger::Logging(int log_level, const char *file, const char *func,
   if (log_level < log_level_) {
     return;
   }
+  static const char *kPrefixFormat =
+      "[%s %04d/%02d/%02d-%02d:%02d:%02d.%06ld %s:%s:%d] ";
   struct timeval now;
   ::gettimeofday(&now, nullptr);
   struct tm t;
   ::localtime_r(&now.tv_sec, &t);
-  int prefix_size = std::snprintf(
-      nullptr, 0, "[%s %04d/%02d/%02d-%02d:%02d:%02d.%06ld %s:%s:%d] ",
-      kLogLevelString[log_level], t.tm_year + 1900, t.tm_mon + 1, t.tm_mday,
-      t.tm_hour, t.tm_min, t.tm_sec, now.tv_usec, file, func, line);
+  int prefix_size =
+      std::snprintf(nullptr, 0, kPrefixFormat, kLogLevelString[log_level],
+                    t.tm_year + 1900, t.tm_mon + 1, t.tm_mday, t.tm_hour,
+                    t.tm_min, t.tm_sec, now.tv_usec, file, func, line);
   va_list backup_ap;
   va_copy(backup_ap, ap);
   int msg_size = std::vsnprintf(nullptr, 0, fmt, backup_ap);
@@ -49,10 +51,10 @@ void Logger::Logging(int log_level, const char *file, const char *func,
   int buf_size = prefix_size + msg_size + 1;
   char *buf = new char[buf_size];
   const char *base = buf;
-  prefix_size = std::snprintf(
-      buf, buf_size, "[%s %04d/%02d/%02d-%02d:%02d:%02d.%06ld %s:%s:%d] ",
-      kLogLevelString[log_level], t.tm_year + 1900, t.tm_mon + 1, t.tm_mday,
-      t.tm_hour, t.tm_min, t.tm_sec, now.tv_usec, file, func, line);
+  prefix_size =
+      std::snprintf(buf, buf_size, kPrefixFormat, kLogLevelString[log_level],
+                    t.tm_year + 1900, t.tm_mon + 1, t.tm_mday, t.tm_hour,
+                    t.tm_min, t.tm_sec, now.tv_usec, file, func, line);
   buf += prefix_size;
   assert(buf_size >= prefix_size);
   std::vsnprintf(buf, buf_size - prefix_size, fmt, ap);
