@@ -81,9 +81,14 @@ kl::Status Scheduler::UnregisterEpollEvent(int fd) {
 }
 
 void Scheduler::SubmitTask(std::function<void(void)> &&task) {
-  size_t current = queue_round_robin_++;
-  current = current % num_of_worker_threads_;
+  size_t current = PickQueue();
+  assert(current < num_of_worker_threads_);
   task_queues_[current].Push(std::move(task));
+}
+
+size_t Scheduler::PickQueue() {
+  size_t current = queue_round_robin_++;
+  return current % num_of_worker_threads_;
 }
 
 kl::Status Scheduler::LaunchEpollThread() {

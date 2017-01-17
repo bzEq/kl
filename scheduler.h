@@ -36,6 +36,7 @@ public:
   ~Scheduler();
 
 private:
+  size_t PickQueue();
   kl::Status LaunchLoggingThread();
   kl::Status LaunchEpollThread();
   kl::Status LaunchWorkerThreads();
