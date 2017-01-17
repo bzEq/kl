@@ -5,6 +5,7 @@
 #ifndef KL_OPTION_H_
 #define KL_OPTION_H_
 #include <cassert>
+#include <cstddef>
 #include <memory>
 
 namespace kl {
