@@ -36,6 +36,8 @@ public:
     }
   }
 
+  int64_t Counter() const { return counter_; }
+
 private:
   int64_t counter_;
   std::mutex mu_;
