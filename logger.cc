@@ -33,6 +33,7 @@ void Logger::Logging(int log_level, const char *file, const char *func,
   if (log_level < log_level_) {
     return;
   }
+  // [<log_level> yy/mm/dd-hr:min:sec.usec file:func:line]
   static const char *kPrefixFormat =
       "[%s %04d/%02d/%02d-%02d:%02d:%02d.%06ld %s:%s:%d] ";
   struct timeval now;
