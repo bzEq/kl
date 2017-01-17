@@ -59,7 +59,7 @@ public:
   Option<T> Pop(int timeout) {
     std::unique_lock<std::mutex> l(mu_);
     if (cv_.wait_for(l, std::chrono::milliseconds(timeout),
-                     [this] { return closed_ || (!q_.empty()); })) {
+                     [this] { return closed_ || !q_.empty(); })) {
       if (closed_) {
         return None();
       }
