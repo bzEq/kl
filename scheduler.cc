@@ -7,6 +7,12 @@
 
 namespace kl {
 
+namespace {
+const int kLoggingThreadWaitTimeout = 5000;
+const int kEpollThreadWaitTimeout = 5000;
+const int kWorkerThreadWaitTimeout = 5000;
+}
+
 // REQUIRES: num_of_worker_threads >= 1
 Scheduler::Scheduler(size_t num_of_worker_threads)
     : num_of_worker_threads_(num_of_worker_threads), stop_(false),
@@ -27,7 +33,7 @@ kl::Status Scheduler::LaunchLoggingThread() {
   std::thread([this] {
     kl::env::Defer defer([this] { sync_.Done(); });
     while (!stop_) {
-      auto next = logging_queue_.Pop(5000);
+      auto next = logging_queue_.Pop(kLoggingThreadWaitTimeout);
       if (!next && logging_queue_.Closed()) {
         break;
       }
@@ -74,7 +80,7 @@ kl::Status Scheduler::LaunchEpollThread() {
   std::thread([this] {
     kl::env::Defer defer([this] { sync_.Done(); });
     while (!stop_) {
-      auto wait = epoll_.Wait(64, 5000);
+      auto wait = epoll_.Wait(64, kEpollThreadWaitTimeout);
       if (!wait) {
         Stop(wait.Err().ToCString());
         break;
@@ -100,7 +106,7 @@ kl::Status Scheduler::LaunchEpollThread() {
 void Scheduler::WorkerRoutine(size_t id) {
   kl::env::Defer defer([this] { sync_.Done(); });
   while (!stop_) {
-    auto task = task_queues_[id].Pop(5000);
+    auto task = task_queues_[id].Pop(kWorkerThreadWaitTimeout);
     if (!task && task_queues_[id].Closed()) {
       break;
     }
