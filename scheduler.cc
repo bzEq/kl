@@ -88,15 +88,13 @@ kl::Status Scheduler::LaunchEpollThread() {
       for (const auto &event : *wait) {
         int fd = event.data.fd;
         uint32_t events = event.events;
-        callback_mapping_rwlock_.RLock();
+        kl::rwlock::RDGuard _(&callback_mapping_rwlock_);
         auto iter = callbacks_.find(fd);
         if (iter == callbacks_.end()) {
           KL_DEBUG_L(Logger(), "callback for fd %d is empty");
-          callback_mapping_rwlock_.RUnlock();
           continue;
         }
         SubmitTask([ handler = iter->second, events ] { handler(events); });
-        callback_mapping_rwlock_.RUnlock();
       }
     }
   }).detach();
