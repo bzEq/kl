@@ -36,7 +36,11 @@ public:
     }
   }
 
-  int64_t Counter() const { return counter_; }
+  int64_t Counter() {
+    std::unique_lock<std::mutex> l(mu_);
+    int64_t ret = counter_;
+    return ret;
+  }
 
 private:
   int64_t counter_;
