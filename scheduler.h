@@ -42,6 +42,7 @@ private:
   kl::Status LaunchWorkerThreads();
   void WorkerRoutine(size_t id);
   std::unique_ptr<kl::logging::Logger> logger_;
+  std::mutex exit_reason_mutex_;
   std::string exit_reason_;
   kl::Chan<std::string> logging_queue_;
   std::map<int, EpollHandler> callbacks_;

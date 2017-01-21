@@ -166,7 +166,9 @@ kl::Status Scheduler::Go() {
 
 void Scheduler::Stop(const char *reason) {
   if (reason) {
+    exit_reason_mutex_.lock();
     exit_reason_ = reason;
+    exit_reason_mutex_.unlock();
   }
   stop_.store(true);
 }
