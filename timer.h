@@ -28,6 +28,15 @@ inline R FunctionCost(std::chrono::duration<T> *diff, R (*f)(Params...),
   return result;
 }
 
+template <typename T, typename R, typename... Params, typename... Args>
+inline R FunctionCost(std::chrono::duration<T> *diff,
+                      std::function<R(Params...)> &&func, Args &&... args) {
+  auto start = std::chrono::high_resolution_clock::now();
+  auto result = func(std::forward<Args>(args)...);
+  *diff = std::chrono::high_resolution_clock::now() - start;
+  return result;
+}
+
 }  // namespace timer
 }  // namespace kl
 #endif
