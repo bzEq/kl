@@ -9,6 +9,7 @@
 namespace kl {
 namespace timer {
 
+// FIXME(Kai Luo): any trick to decrease function overloading?
 template <typename T, typename R, typename C, typename... Params,
           typename... Args>
 inline R FunctionCost(std::chrono::duration<T> *diff, R (C::*f)(Params...),
@@ -17,6 +18,14 @@ inline R FunctionCost(std::chrono::duration<T> *diff, R (C::*f)(Params...),
   auto result = (c->*f)(std::forward<Args>(args)...);
   *diff = std::chrono::high_resolution_clock::now() - start;
   return result;
+}
+
+template <typename T, typename C, typename... Params, typename... Args>
+inline void FunctionCost(std::chrono::duration<T> *diff,
+                         void (C::*f)(Params...), C *c, Args &&... args) {
+  auto start = std::chrono::high_resolution_clock::now();
+  (c->*f)(std::forward<Args>(args)...);
+  *diff = std::chrono::high_resolution_clock::now() - start;
 }
 
 template <typename T, typename R, typename... Params, typename... Args>
@@ -28,6 +37,14 @@ inline R FunctionCost(std::chrono::duration<T> *diff, R (*f)(Params...),
   return result;
 }
 
+template <typename T, typename... Params, typename... Args>
+inline void FunctionCost(std::chrono::duration<T> *diff, void (*f)(Params...),
+                         Args &&... args) {
+  auto start = std::chrono::high_resolution_clock::now();
+  (*f)(std::forward<Args>(args)...);
+  *diff = std::chrono::high_resolution_clock::now() - start;
+}
+
 template <typename T, typename R, typename... Params, typename... Args>
 inline R FunctionCost(std::chrono::duration<T> *diff,
                       std::function<R(Params...)> &&func, Args &&... args) {
@@ -35,6 +52,15 @@ inline R FunctionCost(std::chrono::duration<T> *diff,
   auto result = func(std::forward<Args>(args)...);
   *diff = std::chrono::high_resolution_clock::now() - start;
   return result;
+}
+
+template <typename T, typename... Params, typename... Args>
+inline void FunctionCost(std::chrono::duration<T> *diff,
+                         std::function<void(Params...)> &&func,
+                         Args &&... args) {
+  auto start = std::chrono::high_resolution_clock::now();
+  func(std::forward<Args>(args)...);
+  *diff = std::chrono::high_resolution_clock::now() - start;
 }
 
 }  // namespace timer

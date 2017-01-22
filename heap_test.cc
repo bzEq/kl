@@ -21,12 +21,11 @@ TEST(kl::Heap<uint32_t>, RandomInsert) {
   }
   std::vector<uint32_t> result;
   std::chrono::duration<float> cost;
-  kl::timer::FunctionCost(&cost, std::function<size_t(void)>([this, &result] {
+  kl::timer::FunctionCost(&cost, std::function<void(void)>([this, &result] {
     while (!Empty()) {
       result.push_back(std::move(Top()));
       Pop();
     }
-    return Size();
   }));
   ASSERT(Empty());
   ASSERT(std::is_sorted(result.begin(), result.end()));
