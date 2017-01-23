@@ -77,7 +77,7 @@ inline Result<std::vector<struct ifreq>> ListIPv4Interfaces() {
   return Ok(std::move(ret));
 }
 
-inline Result<void> PrintIPv4Interfaces(std::ostream &out) {
+inline Status PrintIPv4Interfaces(std::ostream &out) {
   auto list = ListIPv4Interfaces();
   if (!list) {
     return Err(list.MoveErr());
@@ -112,7 +112,7 @@ inline Result<std::string> RetrieveIFName(int ifindex) {
   return Ok(std::string(ifr.ifr_name));
 }
 
-inline Result<void> SetAddr(const char *ifname, const char *host) {
+inline Status SetAddr(const char *ifname, const char *host) {
   struct ifreq ifr;
   ::strncpy(ifr.ifr_name, ifname, IFNAMSIZ - 1);
   struct sockaddr_in &addr =
@@ -131,7 +131,7 @@ inline Result<void> SetAddr(const char *ifname, const char *host) {
   return Ok();
 }
 
-inline Result<void> SetDstAddr(const char *ifname, const char *host) {
+inline Status SetDstAddr(const char *ifname, const char *host) {
   struct ifreq ifr;
   ::strncpy(ifr.ifr_name, ifname, IFNAMSIZ - 1);
   struct sockaddr_in &addr =
@@ -161,7 +161,7 @@ inline Result<std::string> GetAddr(const char *ifname) {
       reinterpret_cast<struct sockaddr_in *>(&ifr.ifr_addr)->sin_addr)));
 }
 
-inline Result<void> SetNetMask(const char *ifname, const char *mask) {
+inline Status SetNetMask(const char *ifname, const char *mask) {
   struct ifreq ifr;
   ::strncpy(ifr.ifr_name, ifname, IFNAMSIZ - 1);
   struct sockaddr_in &addr =
@@ -190,7 +190,7 @@ inline Result<int> GetMTU(const char *ifname) {
   return Ok(ifr.ifr_mtu);
 }
 
-inline Result<void> SetMTU(const char *ifname, int mtu) {
+inline Status SetMTU(const char *ifname, int mtu) {
   struct ifreq ifr;
   ifr.ifr_mtu = mtu;
   ::strncpy(ifr.ifr_name, ifname, IFNAMSIZ - 1);
@@ -203,7 +203,7 @@ inline Result<void> SetMTU(const char *ifname, int mtu) {
 
 // route add default gw <addr>
 // REQUIRES: addr must be address of AF_INET
-inline Result<void> AddDefaultGateway(const char *addr) {
+inline Status AddDefaultGateway(const char *addr) {
   struct rtentry rt = {};
   auto inet_addr = inet::InetSockAddr(addr, 0);
   if (!inet_addr) {
@@ -222,7 +222,7 @@ inline Result<void> AddDefaultGateway(const char *addr) {
 
 // route add -host <dst> gw <gateway> dev <ifname>
 // REQUIRES: dst != nullptr
-inline Result<void> AddRoute(const char *dst, const char *gateway,
+inline Status AddRoute(const char *dst, const char *gateway,
                              const char *ifname) {
   assert(dst);
   struct rtentry rt = {};
@@ -251,7 +251,7 @@ inline Result<void> AddRoute(const char *dst, const char *gateway,
   return kl::Ok();
 }
 
-inline Result<void> InterfaceUp(const char *ifname) {
+inline Status InterfaceUp(const char *ifname) {
   IoctlFD ioctl_fd;
   struct ifreq ifr;
   ::strncpy(ifr.ifr_name, ifname, IFNAMSIZ - 1);
@@ -267,7 +267,7 @@ inline Result<void> InterfaceUp(const char *ifname) {
   return kl::Ok();
 }
 
-inline Result<void> BindInterface(int fd, const char *ifname) {
+inline Status BindInterface(int fd, const char *ifname) {
   int err =
       ::setsockopt(fd, SOL_SOCKET, SO_BINDTODEVICE, ifname, ::strlen(ifname));
   if (err < 0) {

@@ -22,7 +22,7 @@
 namespace kl {
 namespace inet {
 
-inline Result<void> SplitAddr(const char *addr, std::string *host,
+inline Status SplitAddr(const char *addr, std::string *host,
                               uint16_t *port) {
   auto result = string::SplitString(addr, ":");
   if (result.size() != 2) {
@@ -64,7 +64,7 @@ inline Result<std::tuple<std::string, uint16_t>> InetAddr(int fd) {
                                 ntohs(addr.sin_port)));
 }
 
-inline Result<void> Bind(int fd, const char *host, uint16_t port) {
+inline Status Bind(int fd, const char *host, uint16_t port) {
   struct sockaddr_in addr = {
       .sin_family = AF_INET, .sin_port = htons(port),
   };
@@ -80,7 +80,7 @@ inline Result<void> Bind(int fd, const char *host, uint16_t port) {
   return kl::Ok();
 }
 
-inline Result<void> BlockingConnect(int fd, const char *host, uint16_t port) {
+inline Status BlockingConnect(int fd, const char *host, uint16_t port) {
   auto addr = InetSockAddr(host, port);
   int err = ::connect(fd, reinterpret_cast<const struct sockaddr *>(&(*addr)),
                       sizeof(*addr));
@@ -91,7 +91,7 @@ inline Result<void> BlockingConnect(int fd, const char *host, uint16_t port) {
   return kl::Ok();
 }
 
-inline Result<void> Listen(int fd, const char *host, uint16_t port) {
+inline Status Listen(int fd, const char *host, uint16_t port) {
   auto bind = Bind(fd, host, port);
   if (!bind) {
     ::close(fd);

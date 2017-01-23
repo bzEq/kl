@@ -24,9 +24,9 @@ public:
   Epoll();
   Epoll(const Epoll &) = delete;
   Epoll(Epoll &&) = default;
-  Result<void> AddFd(int fd, uint32_t flags);
-  Result<void> ModFd(int fd, uint32_t flags);
-  Result<void> DelFd(int fd);
+  Status AddFd(int fd, uint32_t flags);
+  Status ModFd(int fd, uint32_t flags);
+  Status DelFd(int fd);
   Result<std::vector<struct epoll_event>> Wait(int max_events, int timeout);
   ~Epoll() {
     if (epfd_ >= 0) {

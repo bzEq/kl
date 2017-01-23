@@ -62,7 +62,7 @@ inline Result<int64_t> FileSize(const char *file) {
   return Ok(buff.st_size);
 }
 
-inline Result<void> TruncateFile(const char *file, off_t len) {
+inline Status TruncateFile(const char *file, off_t len) {
   int ret = ::truncate(file, len);
   if (ret != 0) {
     return Err(std::strerror(errno));
@@ -93,7 +93,7 @@ inline Result<std::string> ReadFile(const char *file) {
   return Ok(std::move(data));
 }
 
-inline Result<void> FillFileWith(const char *file, const std::string &data) {
+inline Status FillFileWith(const char *file, const std::string &data) {
   int fd = ::open(file, O_CREAT | O_TRUNC | O_WRONLY, 0644);
   if (fd < 0) {
     return Err(std::strerror(errno));
@@ -110,7 +110,7 @@ inline Result<void> FillFileWith(const char *file, const std::string &data) {
   return Ok();
 }
 
-inline Result<void> CreateEmptyFile(const char *file) {
+inline Status CreateEmptyFile(const char *file) {
   return FillFileWith(file, "");
 }
 
@@ -119,35 +119,35 @@ inline void MemoryBarrier() {
   asm volatile("" ::: "memory");
 }
 
-inline Result<void> DeleteFile(const char *file) {
+inline Status DeleteFile(const char *file) {
   if (::unlink(file) != 0 && errno != ENOENT) {
     return Err(errno, std::strerror(errno));
   }
   return Ok();
 }
 
-inline Result<void> RenameFile(const char *oldpath, const char *newpath) {
+inline Status RenameFile(const char *oldpath, const char *newpath) {
   if (::rename(oldpath, newpath) != 0) {
     return Err(errno, std::strerror(errno));
   }
   return Ok();
 }
 
-inline Result<void> CreateDir(const char *dir) {
+inline Status CreateDir(const char *dir) {
   if (::mkdir(dir, 0755) != 0) {
     return Err(errno, std::strerror(errno));
   }
   return Ok();
 }
 
-inline Result<void> DeleteDir(const char *dir) {
+inline Status DeleteDir(const char *dir) {
   if (::rmdir(dir) != 0) {
     return Err(errno, std::strerror(errno));
   }
   return Ok();
 }
 
-inline Result<void> SetNonBlocking(int fd) {
+inline Status SetNonBlocking(int fd) {
   int flags = ::fcntl(fd, F_GETFL, 0);
   if (flags < 0) {
     return Err(errno, std::strerror(errno));

@@ -15,7 +15,7 @@ Epoll::Epoll() {
   }
 }
 
-Result<void> Epoll::AddFd(int fd, uint32_t flags) {
+Status Epoll::AddFd(int fd, uint32_t flags) {
   struct epoll_event event = {.events = flags, .data = {.fd = fd}};
   int ret = epoll_ctl(epfd_, EPOLL_CTL_ADD, fd, &event);
   if (ret != 0) {
@@ -24,7 +24,7 @@ Result<void> Epoll::AddFd(int fd, uint32_t flags) {
   return Ok();
 }
 
-Result<void> Epoll::ModFd(int fd, uint32_t flags) {
+Status Epoll::ModFd(int fd, uint32_t flags) {
   struct epoll_event event = {.events = flags, .data = {.fd = fd}};
   int ret = epoll_ctl(epfd_, EPOLL_CTL_MOD, fd, &event);
   if (ret != 0) {
@@ -33,7 +33,7 @@ Result<void> Epoll::ModFd(int fd, uint32_t flags) {
   return Ok();
 }
 
-Result<void> Epoll::DelFd(int fd) {
+Status Epoll::DelFd(int fd) {
   int ret = epoll_ctl(epfd_, EPOLL_CTL_DEL, fd, nullptr);
   if (ret != 0) {
     return Err(errno, std::strerror(errno));

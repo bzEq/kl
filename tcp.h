@@ -59,7 +59,7 @@ inline Result<int> BlockingConnect(const char *host, uint16_t port) {
   return kl::Ok(fd);
 }
 
-inline kl::Result<void> SetNoDelay(int fd) {
+inline kl::Status SetNoDelay(int fd) {
   int tcp_nodelay = 1;
   int ret = ::setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &tcp_nodelay,
                          sizeof(tcp_nodelay));
