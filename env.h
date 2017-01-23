@@ -20,6 +20,7 @@
 #include <utility>
 
 #include "error.h"
+#include "random.h"
 
 namespace kl {
 namespace env {
@@ -157,6 +158,28 @@ inline Status SetNonBlocking(int fd) {
     return Err(errno, std::strerror(errno));
   }
   return Ok();
+}
+
+// Something like emacs' make-temp-name
+inline std::string MakeTempName(const char *prefix) {
+  std::string name(prefix);
+  name += std::to_string(::getpid());
+  for (int i = 0; i < 3; ++i) {
+    name.push_back(random::RandomPrintableChar());
+  }
+  return name;
+}
+
+// Something like emacs' make-temp-file
+// RETURNS: path of the temp file
+inline Result<std::string> MakeTempFile(const char *prefix) {
+  static const std::string temp_root("/tmp/");
+  std::string filename(temp_root + MakeTempName(prefix));
+  auto status = CreateEmptyFile(filename.c_str());
+  if (!status) {
+    return kl::Err(status.MoveErr());
+  }
+  return kl::Ok(std::move(filename));
 }
 
 }  // namespace env

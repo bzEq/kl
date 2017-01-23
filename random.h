@@ -20,6 +20,12 @@ T UniformSample() {
 inline float UniformSampleFloat() { return UniformSample<float>(); }
 inline double UniformSampleDouble() { return UniformSample<double>(); }
 
+inline char RandomPrintableChar() {
+  static const char char_begin = 48;  // '0'
+  static const char char_end = 122;   // 'z'
+  return char_begin + (char_end - char_begin) * UniformSampleFloat();
+}
+
 }  // namespace random
 }  // namespace kl
 #endif

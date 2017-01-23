@@ -3,6 +3,7 @@
 // the LICENSE file.
 
 #include "env.h"
+#include "logger.h"
 #include "testkit.h"
 
 class E {};
@@ -29,6 +30,13 @@ TEST(E, FillFileContent) {
 TEST(E, FileExists) {
   static const char *dir = "/usr/";
   ASSERT(kl::env::FileExists(dir));
+}
+
+TEST(E, TempFile) {
+  auto make = kl::env::MakeTempFile("c++");
+  ASSERT(make);
+  KL_DEBUG("temp file name: %s", make->c_str());
+  ASSERT(kl::env::DeleteFile(make->c_str()));
 }
 
 int main() { return KL_TEST(); }
