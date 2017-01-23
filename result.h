@@ -83,6 +83,16 @@ public:
     return *v_;
   }
 
+  V *operator->() {
+    assert(v_);
+    return v_.operator->();
+  }
+
+  const V *operator->() const {
+    assert(v_);
+    return v_.operator->();
+  }
+
   V &&Move() {
     assert(v_);
     return std::move(*v_);
@@ -121,10 +131,12 @@ public:
     }
     return *this;
   }
+
   Result &operator=(std::nullptr_t) {
     e_ = nullptr;
     return *this;
   }
+
   Result &operator=(result_error<E> &&e) {
     e_ = std::move(e.e);
     return *this;
