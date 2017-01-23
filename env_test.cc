@@ -35,6 +35,7 @@ TEST(E, FileExists) {
 TEST(E, TempFile) {
   auto make = kl::env::MakeTempFile("c++");
   ASSERT(make);
+  ASSERT(kl::env::FileExists(make->c_str()));
   KL_DEBUG("temp file name: %s", make->c_str());
   ASSERT(kl::env::DeleteFile(make->c_str()));
 }
