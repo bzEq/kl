@@ -30,6 +30,16 @@ public:
     return *v_;
   }
 
+  T *operator->() {
+    assert(v_);
+    return v_.operator->();
+  }
+
+  const T *operator->() const {
+    assert(v_);
+    return v_.operator->();
+  }
+
   const T &operator*() const {
     assert(v_);
     return *v_;
