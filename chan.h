@@ -27,7 +27,6 @@ public:
   bool Closed() { return closed_; }
   size_t Size() const { return q_.size(); }
 
-  // TODO(Kai Luo): version of dealing with time out is required.
   friend bool operator<<(Chan &c, T &&v) {
     std::unique_lock<std::mutex> l(c.mu_);
     if (c.closed_) {
