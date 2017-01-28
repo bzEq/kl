@@ -42,11 +42,13 @@ TEST(O, PassByValue) {
 class Foobar {
 public:
   int Value() { return 7; }
+  std::string String() const { return "Foobar"; }
 };
 
 TEST(O, MethodAccess) {
   auto f = kl::Some(Foobar());
   ASSERT(f->Value() == 7);
+  ASSERT(f->String() == "Foobar");
 }
 
 int main() { return KL_TEST(); }
