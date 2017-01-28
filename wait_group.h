@@ -23,7 +23,7 @@ public:
   void Done() {
     std::unique_lock<std::mutex> l(mu_);
     --counter_;
-    if (counter_ <= 0) {
+    if (counter_ == 0) {
       l.unlock();
       cv_.notify_one();
     }
