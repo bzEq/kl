@@ -36,14 +36,14 @@ public:
     }
   }
 
-  int64_t Counter() {
+  size_t Counter() {
     std::unique_lock<std::mutex> l(mu_);
-    int64_t ret = counter_;
+    size_t ret = counter_;
     return ret;
   }
 
 private:
-  int64_t counter_;
+  size_t counter_;
   std::mutex mu_;
   std::condition_variable cv_;
 };
