@@ -39,4 +39,14 @@ TEST(O, PassByValue) {
   ASSERT(f);
 }
 
+class Foobar {
+public:
+  int Value() { return 7; }
+};
+
+TEST(O, MethodAccess) {
+  auto f = kl::Some(Foobar());
+  ASSERT(f->Value() == 7);
+}
+
 int main() { return KL_TEST(); }
