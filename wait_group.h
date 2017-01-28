@@ -25,7 +25,7 @@ public:
     --counter_;
     if (counter_ == 0) {
       l.unlock();
-      cv_.notify_one();
+      cv_.notify_all();
     }
   }
 
