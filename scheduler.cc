@@ -16,12 +16,24 @@ const int kWorkerThreadWaitTimeout = 5000;
 // REQUIRES: num_of_worker_threads >= 1
 Scheduler::Scheduler(size_t num_of_worker_threads)
     : num_of_worker_threads_(num_of_worker_threads), enable_epoll_(true),
-      stop_(false), task_queues_(nullptr), queue_round_robin_(0) {}
+      stop_(false), task_queues_(nullptr), queue_round_robin_(0) {
+  task_queues_ =
+      new kl::Chan<std::function<void(void)>>[num_of_worker_threads_];
+  logger_ = std::make_unique<kl::logging::Logger>([this](const char *message) {
+    logging_queue_.Push(std::string(message));
+  });
+}
 
 Scheduler::Scheduler(size_t num_of_worker_threads, bool enable_epoll)
     : num_of_worker_threads_(num_of_worker_threads),
       enable_epoll_(enable_epoll), stop_(false), task_queues_(nullptr),
-      queue_round_robin_(0) {}
+      queue_round_robin_(0) {
+  task_queues_ =
+      new kl::Chan<std::function<void(void)>>[num_of_worker_threads_];
+  logger_ = std::make_unique<kl::logging::Logger>([this](const char *message) {
+    logging_queue_.Push(std::string(message));
+  });
+}
 
 Scheduler::~Scheduler() {
   if (task_queues_) {
@@ -31,9 +43,6 @@ Scheduler::~Scheduler() {
 }
 
 kl::Status Scheduler::LaunchLoggingThread() {
-  logger_ = std::make_unique<kl::logging::Logger>([this](const char *message) {
-    logging_queue_.Push(std::string(message));
-  });
   sync_.Add();
   std::thread([this] {
     kl::env::Defer defer([this] { sync_.Done(); });
@@ -174,8 +183,6 @@ void Scheduler::Stop(const char *reason) {
 }
 
 kl::Status Scheduler::LaunchWorkerThreads() {
-  task_queues_ =
-      new kl::Chan<std::function<void(void)>>[num_of_worker_threads_];
   for (size_t i = 0; i < num_of_worker_threads_; ++i) {
     sync_.Add();
     std::thread([this, i] { WorkerRoutine(i); }).detach();
