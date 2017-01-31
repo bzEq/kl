@@ -22,9 +22,9 @@ private:
   pthread_rwlock_t lock_;
 };
 
-class RDGuard {
+class ReadGuard {
 public:
-  explicit RDGuard(Lock *lock) : lock_(lock) {
+  explicit ReadGuard(Lock *lock) : lock_(lock) {
     lock_->RLock();
     locked_ = true;
   }
@@ -34,16 +34,16 @@ public:
       lock_->RUnlock();
     }
   }
-  ~RDGuard() { Unlock(); }
+  ~ReadGuard() { Unlock(); }
 
 private:
   bool locked_;
   Lock *lock_;
 };
 
-class WRGuard {
+class WriteGuard {
 public:
-  explicit WRGuard(Lock *lock) : lock_(lock) {
+  explicit WriteGuard(Lock *lock) : lock_(lock) {
     locked_ = true;
     lock_->WLock();
   }
@@ -53,7 +53,7 @@ public:
       locked_ = false;
     }
   }
-  ~WRGuard() { Unlock(); }
+  ~WriteGuard() { Unlock(); }
 
 private:
   bool locked_;
