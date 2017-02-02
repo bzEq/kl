@@ -4,11 +4,8 @@
 
 #ifndef KL_BUFFER_H_
 #define KL_BUFFER_H_
-#include <sys/socket.h>
-#include <sys/types.h>
 #include <unistd.h>
 
-#include <algorithm>
 #include <cassert>
 #include <cstring>
 #include <iostream>
