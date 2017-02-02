@@ -52,12 +52,18 @@ public:
   }
 
   void Reset() { r_ = w_ = 0; }
-  int Len() const { return w_ - r_; }
-  int Cap() const { return cap_; }
+  size_t Len() const {
+    assert(w_ >= r_);
+    return w_ - r_;
+  }
+  size_t Cap() const { return cap_; }
   bool Empty() const { return r_ == w_; }
-  int Avail() const { return cap_ - w_; }
+  size_t Avail() const {
+    assert(cap_ >= w_);
+    return cap_ - w_;
+  }
 
-  std::vector<char> Peek(int n) {
+  std::vector<char> Peek(size_t n) {
     n = std::min(n, Len());
     std::vector<char> res(n);
     std::memcpy(res.data(), buf_ + r_, n);
@@ -66,7 +72,7 @@ public:
   }
 
   std::vector<char> PeekAll() {
-    int n = Len();
+    size_t n = Len();
     std::vector<char> res(n);
     std::memcpy(res.data(), buf_ + r_, n);
     Reset();
@@ -91,17 +97,17 @@ public:
     return Ok(m);
   }
 
-  int ReadFrom(const char *buf, int count) {
+  size_t ReadFrom(const char *buf, size_t count) {
     if (Avail() < count) {
       ExtendTo(w_ + count);
     }
-    int n = std::min(count, Avail());
+    size_t n = std::min(count, Avail());
     std::memcpy(buf_ + w_, buf, n);
     w_ += n;
     return n;
   }
 
-  int ReadFrom(const std::vector<char> &buf) {
+  size_t ReadFrom(const std::vector<char> &buf) {
     return ReadFrom(buf.data(), buf.size());
   }
 
