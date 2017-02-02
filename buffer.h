@@ -18,9 +18,10 @@ namespace kl {
 
 class Buffer {
 public:
-  Buffer() : cap_(16), r_(0), w_(0) { buf_ = new char[cap_]; }
+  static constexpr size_t kMinimumSize = 16;
+  Buffer() : cap_(kMinimumSize), r_(0), w_(0) { buf_ = new char[cap_]; }
 
-  explicit Buffer(int n) : cap_(std::max(16, n)), r_(0), w_(0) {
+  explicit Buffer(size_t n) : cap_(std::max(kMinimumSize, n)), r_(0), w_(0) {
     buf_ = new char[cap_];
   }
 
@@ -127,7 +128,7 @@ public:
   ~Buffer() { delete[] buf_; }
 
 protected:
-  void ExtendTo(int n) {
+  void ExtendTo(size_t n) {
     if (n <= cap_) {
       return;
     }
@@ -141,9 +142,9 @@ protected:
   }
 
 private:
-  int cap_;
+  size_t cap_;
   char *buf_;
-  int r_, w_;
+  size_t r_, w_;
 };
 }  // namespace kl
 
