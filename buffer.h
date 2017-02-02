@@ -87,7 +87,7 @@ public:
       }
       n = ::read(fd, buf_ + w_, Avail());
     }
-    if (n < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
+    if (n < 0) {
       return Err(std::strerror(errno));
     }
     return Ok(m);
@@ -118,7 +118,7 @@ public:
       m += n;
       n = ::write(fd, buf_ + r_, Len());
     }
-    if (n < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
+    if (n < 0) {
       return Err(std::strerror(errno));
     }
     if (Len() == 0) {
