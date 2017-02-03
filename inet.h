@@ -22,8 +22,7 @@
 namespace kl {
 namespace inet {
 
-inline Status SplitAddr(const char *addr, std::string *host,
-                              uint16_t *port) {
+inline Status SplitAddr(const char *addr, std::string *host, uint16_t *port) {
   auto result = string::SplitString(addr, ":");
   if (result.size() != 2) {
     return Err("invalid addr: %s", addr);
@@ -106,6 +105,17 @@ inline Status Listen(int fd, const char *host, uint16_t port) {
   return kl::Ok();
 }
 
+inline Status SetRecvTimeout(int fd, int timeout) {
+  struct timeval tv;
+  tv.tv_sec = timeout / 1000;
+  tv.tv_usec = timeout % 1000;
+  int err = ::setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+  if (err < 0) {
+    return Err(errno, std::strerror(errno));
+  }
+  return kl::Ok();
+}
+
 inline Result<std::tuple<ssize_t, std::string, uint16_t>>
 RecvFrom(int fd, void *buf, size_t size, int flags) {
   struct sockaddr_in from;
@@ -118,6 +128,15 @@ RecvFrom(int fd, void *buf, size_t size, int flags) {
   auto addr = InetAddr(from);
   return kl::Ok(
       std::make_tuple(nread, std::move(std::get<0>(addr)), std::get<1>(addr)));
+}
+
+inline Result<std::tuple<ssize_t, std::string, uint16_t>>
+RecvFrom(int fd, void *buf, size_t size, int flags, int timeout) {
+  auto settimeout = SetRecvTimeout(fd, timeout);
+  if (!settimeout) {
+    return Err(settimeout.MoveErr());
+  }
+  return RecvFrom(fd, buf, size, flags);
 }
 
 inline Result<ssize_t> Sendto(int fd, const void *buf, size_t size, int flags,
