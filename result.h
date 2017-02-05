@@ -59,6 +59,11 @@ public:
     }
     return *this;
   }
+  Result &operator=(Result &&result) {
+    v_ = std::move(result.v_);
+    e_ = std::move(result.e_);
+    return *this;
+  }
   Result &operator=(result_value<V> &&v) {
     v_ = std::move(v.v);
     e_ = nullptr;
@@ -129,6 +134,11 @@ public:
     if (result.e_) {
       e_ = std::make_unique<E>(*result.e_);
     }
+    return *this;
+  }
+
+  Result &operator=(Result &&result) {
+    e_ = std::move(result.e_);
     return *this;
   }
 
