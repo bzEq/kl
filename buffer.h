@@ -79,9 +79,9 @@ public:
     return res;
   }
 
-  Result<int> ReadFrom(int fd) {
+  Result<size_t> ReadFrom(int fd) {
     assert(Avail() > 0);
-    int m = 0;
+    size_t m = 0;
     int n = ::read(fd, buf_ + w_, Avail());
     while (n > 0) {
       w_ += n;
@@ -111,11 +111,11 @@ public:
     return ReadFrom(buf.data(), buf.size());
   }
 
-  Result<int> WriteTo(int fd) {
+  Result<size_t> WriteTo(int fd) {
     if (Len() == 0) {
-      return Ok(0);
+      return Ok(Len());
     }
-    int m = 0;
+    size_t m = 0;
     int n = ::write(fd, buf_ + r_, Len());
     while (n > 0) {
       r_ += n;
