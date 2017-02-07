@@ -206,6 +206,15 @@ inline bool IsDir(const char *dir) {
   return true;
 }
 
+inline bool IsRegularFile(const char *fname) {
+  struct stat buf;
+  int err = ::lstat(fname, &buf);
+  if (err < 0 || !S_ISREG(buf.st_mode)) {
+    return false;
+  }
+  return true;
+}
+
 }  // namespace env
 }  // namespace kl
 #endif
