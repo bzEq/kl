@@ -40,4 +40,11 @@ TEST(E, TempFile) {
   ASSERT(kl::env::DeleteFile(make->c_str()));
 }
 
+TEST(E, TestDir) {
+  std::string dir_name = kl::env::MakeTempName("/tmp/temp");
+  ASSERT(kl::env::CreateDir(dir_name.c_str()));
+  kl::env::Defer defer([name = dir_name] { kl::env::DeleteDir(name.c_str()); });
+  ASSERT(kl::env::IsDir(dir_name.c_str()));
+}
+
 int main() { return KL_TEST(); }

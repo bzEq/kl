@@ -4,6 +4,7 @@
 
 #ifndef KL_ENV_H_
 #define KL_ENV_H_
+#include <dirent.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -180,6 +181,29 @@ inline Result<std::string> MakeTempFile(const char *prefix) {
     return kl::Err(status.MoveErr());
   }
   return kl::Ok(std::move(filename));
+}
+
+inline Result<std::vector<std::string>> GetChildren(const char *dir) {
+  DIR *d = ::opendir(dir);
+  if (d == nullptr) {
+    return kl::Err(errno, std::strerror(errno));
+  }
+  Defer defer([d] { ::closedir(d); });
+  std::vector<std::string> result;
+  struct dirent *entry;
+  while ((entry = ::readdir(d)) != nullptr) {
+    result.push_back(entry->d_name);
+  }
+  return kl::Ok(std::move(result));
+}
+
+inline bool IsDir(const char *dir) {
+  struct stat buf;
+  int err = ::lstat(dir, &buf);
+  if (err < 0 || !S_ISDIR(buf.st_mode)) {
+    return false;
+  }
+  return true;
 }
 
 }  // namespace env
