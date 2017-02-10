@@ -15,4 +15,13 @@ TEST(kl::Buffer, ExtendTo) {
   ASSERT(Cap() == 2 * cap);
 }
 
+TEST(kl::Buffer, Idle) {
+  size_t cap = Cap();
+  ReadFrom("wtf", 3);
+  Peek(1);
+  ASSERT(Len() == 2);
+  ASSERT(Cap() == cap);
+  ASSERT(1 + Avail() == Idle());
+}
+
 int main() { return KL_TEST(); }
