@@ -154,6 +154,8 @@ public:
     return Ok(m);
   }
 
+  const char *Data() const { return buf_; }
+
   ~Buffer() { delete[] buf_; }
 
 protected:
