@@ -18,7 +18,8 @@ TEST(kl::Buffer, ExtendTo) {
 TEST(kl::Buffer, Idle) {
   size_t cap = Cap();
   ReadFrom("wtf", 3);
-  Peek(1);
+  auto s = Peek(1);
+  ASSERT(s == "w");
   ASSERT(Len() == 2);
   ASSERT(Cap() == cap);
   ASSERT(1 + Avail() == Idle());

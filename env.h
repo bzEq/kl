@@ -85,13 +85,14 @@ inline Result<std::string> ReadFile(const char *file) {
   }
   off_t fsize = buff.st_size;
   std::string data;
-  // in case of an empty file
-  data.resize(fsize + 1);
+  if (fsize == 0) {
+    return Ok(data);
+  }
+  data.resize(fsize);
   ssize_t n = ::read(fd, static_cast<void *>(&data[0]), fsize);
   if (n != fsize) {
     return Err(std::strerror(errno));
   }
-  data.resize(fsize);
   return Ok(std::move(data));
 }
 

@@ -64,20 +64,25 @@ public:
   }
   size_t Idle() const { return r_ + Avail(); }
 
-  std::vector<char> Peek(size_t n) {
+  std::string Peek(size_t n) {
+    assert(n > 0);
     n = std::min(n, Len());
-    std::vector<char> res(n);
-    std::memcpy(res.data(), buf_ + r_, n);
+    std::string result;
+    result.resize(n);
+    std::memcpy(&result[0], buf_ + r_, n);
     r_ += n;
-    return res;
+    return result;
   }
 
-  std::vector<char> PeekAll() {
+  std::string PeekAll() {
     size_t n = Len();
-    std::vector<char> res(n);
-    std::memcpy(res.data(), buf_ + r_, n);
+    std::string result;
+    if (n == 0) {
+      return result;
+    }
+    result = Peek(n);
     Reset();
-    return res;
+    return result;
   }
 
   Result<size_t> ReadFrom(int fd) {
