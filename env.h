@@ -118,7 +118,7 @@ inline Status CreateEmptyFile(const char *file) {
 }
 
 inline void MemoryBarrier() {
-  // https:  // en.wikipedia.org/wiki/Memory_ordering
+  // https://en.wikipedia.org/wiki/Memory_ordering
   asm volatile("" ::: "memory");
 }
 
