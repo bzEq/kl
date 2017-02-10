@@ -130,6 +130,10 @@ public:
     return ReadFrom(buf.data(), buf.size());
   }
 
+  size_t ReadFrom(const std::string &buf) {
+    return ReadFrom(buf.data(), buf.size());
+  }
+
   Result<size_t> WriteTo(int fd) {
     if (Len() == 0) {
       return Ok(Len());
