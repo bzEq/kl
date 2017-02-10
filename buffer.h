@@ -6,9 +6,9 @@
 #define KL_BUFFER_H_
 #include <unistd.h>
 
+#include <algorithm>
 #include <cassert>
 #include <cstring>
-#include <iostream>
 #include <utility>
 #include <vector>
 
@@ -62,6 +62,7 @@ public:
     assert(cap_ >= w_);
     return cap_ - w_;
   }
+  size_t Idle() const { return r_ + Avail(); }
 
   std::vector<char> Peek(size_t n) {
     n = std::min(n, Len());
@@ -87,7 +88,11 @@ public:
       w_ += n;
       m += n;
       if (Avail() == 0) {
-        ExtendTo(2 * cap_);
+        if (Idle() > 0) {
+          AlignToHead();
+        } else {
+          ExtendTo(2 * cap_);
+        }
       }
       n = ::read(fd, buf_ + w_, Avail());
     }
@@ -99,7 +104,11 @@ public:
 
   size_t ReadFrom(const char *buf, size_t count) {
     if (Avail() < count) {
-      ExtendTo(w_ + count);
+      if (Idle() >= count) {
+        AlignToHead();
+      } else {
+        ExtendTo(w_ + count);
+      }
     }
     size_t n = std::min(count, Avail());
     std::memcpy(buf_ + w_, buf, n);
@@ -134,11 +143,18 @@ public:
   ~Buffer() { delete[] buf_; }
 
 protected:
-  void ExtendTo(size_t n) {
-    if (n <= cap_) {
+  void AlignToHead() {
+    size_t len = Len();
+    ::memmove(buf_, buf_ + r_, len);
+    w_ = len;
+    r_ = 0;
+  }
+
+  void ExtendTo(size_t estimated_size) {
+    if (estimated_size <= cap_) {
       return;
     }
-    cap_ = n;
+    cap_ = estimated_size;
     char *newbuf = new char[cap_];
     std::memcpy(newbuf, buf_ + r_, Len());
     delete[] buf_;
