@@ -16,12 +16,17 @@
 
 namespace kl {
 
+namespace {
+size_t Align(size_t n) { return (n + 7) & (~0 << 3); }
+}
+
 class Buffer {
 public:
   static constexpr size_t kMinimumSize = 16;
   Buffer() : cap_(kMinimumSize), r_(0), w_(0) { buf_ = new char[cap_]; }
 
-  explicit Buffer(size_t n) : cap_(std::max(kMinimumSize, n)), r_(0), w_(0) {
+  explicit Buffer(size_t n)
+      : cap_(std::max(kMinimumSize, Align(n))), r_(0), w_(0) {
     buf_ = new char[cap_];
   }
 
@@ -159,7 +164,7 @@ protected:
     if (estimated_size <= cap_) {
       return;
     }
-    cap_ = estimated_size;
+    cap_ = Align(estimated_size);
     char *newbuf = new char[cap_];
     std::memcpy(newbuf, buf_ + r_, Len());
     delete[] buf_;
