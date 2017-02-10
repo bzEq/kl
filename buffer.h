@@ -91,7 +91,7 @@ public:
   }
 
   Result<size_t> ReadFrom(int fd) {
-    assert(Avail() > 0);
+    MakeRoomForReadFrom(1);
     size_t m = 0;
     int n = ::read(fd, buf_ + w_, Avail());
     while (n > 0) {
@@ -113,17 +113,10 @@ public:
   }
 
   size_t ReadFrom(const char *buf, size_t count) {
-    if (Avail() < count) {
-      if (Idle() >= count) {
-        AlignToHead();
-      } else {
-        ExtendTo(w_ + count);
-      }
-    }
-    size_t n = std::min(count, Avail());
-    std::memcpy(buf_ + w_, buf, n);
-    w_ += n;
-    return n;
+    MakeRoomForReadFrom(count);
+    std::memcpy(buf_ + w_, buf, count);
+    w_ += count;
+    return count;
   }
 
   size_t ReadFrom(const std::vector<char> &buf) {
@@ -159,6 +152,17 @@ public:
   ~Buffer() { delete[] buf_; }
 
 protected:
+  void MakeRoomForReadFrom(size_t count) {
+    if (Avail() >= count) {
+      return;
+    }
+    if (Idle() >= count) {
+      AlignToHead();
+      return;
+    }
+    ExtendTo(cap_ + count);
+  }
+
   void AlignToHead() {
     size_t len = Len();
     ::memmove(buf_, buf_ + r_, len);
