@@ -42,9 +42,9 @@ void Event::Happened() {
   for (auto &event : wait_) {
     event->Wait();
   }
-  std::unique_lock<std::mutex> l(mu_);
+  // since only one thread can call this method, won't use lock here.
   done_ = true;
-  l.unlock();
+  kl::env::MemoryBarrier();
   cv_.notify_all();
 }
 
