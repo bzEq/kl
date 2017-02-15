@@ -50,6 +50,7 @@ inline void Event::Happened() {
 }
 
 // TODO(Kai Luo): Cycle detection
+// This problem is denoted as 'Fully Dynamic Transitive Closure on DAGs'.
 inline void HappenedBefore(Event *a, Event *b) { b->wait_.push_back(a); }
 
 }  // namespace event_order
