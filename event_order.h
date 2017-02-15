@@ -49,7 +49,7 @@ inline void Event::Happened() {
   cv_.notify_all();
 }
 
-// TODO(Kai Luo): Compile time cycle detection
+// TODO(Kai Luo): Cycle detection
 inline void HappenedBefore(Event *a, Event *b) { b->wait_.push_back(a); }
 
 }  // namespace event_order
