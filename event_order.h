@@ -30,7 +30,7 @@ private:
   std::vector<Event *> wait_;
 };
 
-void Event::Wait() {
+inline void Event::Wait() {
   std::unique_lock<std::mutex> l(mu_);
   while (!done_) {
     cv_.wait(l);
@@ -38,7 +38,7 @@ void Event::Wait() {
 }
 
 // REQUIRES: called only once
-void Event::Happened() {
+inline void Event::Happened() {
   assert(!done_);
   for (auto &event : wait_) {
     event->Wait();
@@ -50,7 +50,7 @@ void Event::Happened() {
 }
 
 // TODO(Kai Luo): Cycle detection
-void HappenedBefore(Event *a, Event *b) { b->wait_.push_back(a); }
+inline void HappenedBefore(Event *a, Event *b) { b->wait_.push_back(a); }
 
 }  // namespace event_order
 }  // namespace kl
