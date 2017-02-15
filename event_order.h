@@ -37,6 +37,7 @@ void Event::Wait() {
   }
 }
 
+// REQUIRES: called only once
 void Event::Happened() {
   assert(!done_);
   for (auto &event : wait_) {
