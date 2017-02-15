@@ -47,4 +47,15 @@ TEST(E, TestDir) {
   ASSERT(kl::env::IsDir(dir_name.c_str()));
 }
 
+TEST(E, Children) {
+  auto children = kl::env::GetChildren("./");
+  ASSERT(children);
+  std::string result;
+  for (const auto &c : *children) {
+    result.append(c.data(), c.size());
+    result.append("\n");
+  }
+  KL_DEBUG(result.c_str());
+}
+
 int main() { return KL_TEST(); }
