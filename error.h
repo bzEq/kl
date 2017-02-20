@@ -36,7 +36,7 @@ inline auto Ok(T &&v) {
 
 template <typename T, typename... Args>
 inline auto MakeResult(Args &&... args) {
-  return result::Ok<T>(std::forward<Args>(args)...);
+  return result::MakeResult<T>(std::forward<Args>(args)...);
 }
 
 inline auto Ok() { return result::Ok(); }

@@ -28,10 +28,24 @@ inline result_value<VV> Ok(V &&v) {
   };
 }
 
+template <typename V, typename... Args>
+inline result_value<V> MakeResult(Args &&... args) {
+  return result_value<V>{
+      .v = std::make_unique<V>(std::forward<Args>(args)...),
+  };
+}
+
 template <typename E, typename EE = typename std::decay<E>::type>
 inline result_error<EE> Err(E &&e) {
   return result_error<EE>{
       .e = std::make_unique<EE>(std::forward<E>(e)),
+  };
+}
+
+template <typename E, typename... Args>
+inline result_error<E> MakeError(Args &&... args) {
+  return result_error<E>{
+      .e = std::make_unique<E>(std::forward<Args>(args)...),
   };
 }
 
