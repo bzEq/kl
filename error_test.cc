@@ -19,5 +19,10 @@ TEST(E, MoveErrString) {
 
 TEST(E, StatusOk) { ASSERT(Ok()); }
 TEST(E, StatusError) { ASSERT(!Error()); }
+TEST(E, Constructor) {
+  std::string str("wtf");
+  kl::Result<std::string> ok(kl::MakeResult<std::string>("wtf"));
+  ASSERT(ok);
+}
 
 int main() { return KL_TEST(); }

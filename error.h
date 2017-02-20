@@ -34,6 +34,11 @@ inline auto Ok(T &&v) {
   return result::Ok(std::forward<T>(v));
 }
 
+template <typename T, typename... Args>
+inline auto MakeResult(Args &&... args) {
+  return result::Ok<T>(std::forward<Args>(args)...);
+}
+
 inline auto Ok() { return result::Ok(); }
 
 inline auto Err(Error &&err) { return result::Err(std::forward<Error>(err)); }
