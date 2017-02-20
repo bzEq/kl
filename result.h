@@ -29,7 +29,7 @@ inline result_value<VV> Ok(V &&v) {
 }
 
 template <typename V, typename... Args>
-inline result_value<V> MakeResult(Args &&... args) {
+inline result_value<V> MakeValue(Args &&... args) {
   return result_value<V>{
       .v = std::make_unique<V>(std::forward<Args>(args)...),
   };

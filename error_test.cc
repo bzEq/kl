@@ -22,7 +22,7 @@ TEST(E, StatusError) { ASSERT(!Error()); }
 TEST(E, Constructor) {
   std::string str("wtf");
   kl::Result<std::string> ok(
-      kl::MakeResult<std::string>(str.begin(), str.end()));
+      kl::MakeValue<std::string>(str.begin(), str.end()));
   ASSERT(ok);
   kl::Result<std::string> ok1(kl::Ok(std::move(str)));
   ASSERT(ok1);
