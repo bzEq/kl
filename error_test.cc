@@ -24,6 +24,9 @@ TEST(E, Constructor) {
   kl::Result<std::string> ok(
       kl::MakeResult<std::string>(str.begin(), str.end()));
   ASSERT(ok);
+  kl::Result<std::string> ok1(kl::Ok(std::move(str)));
+  ASSERT(ok1);
+  ASSERT(str.empty());
 }
 
 int main() { return KL_TEST(); }
