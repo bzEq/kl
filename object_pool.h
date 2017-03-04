@@ -19,7 +19,7 @@ public:
     return p;
   }
 
-  void Free() {
+  void Delete() {
     for (auto &p : pool_) {
       delete p;
     }
@@ -27,7 +27,7 @@ public:
     assert(pool_.empty());
   }
 
-  ~ObjectPool() { Free(); }
+  ~ObjectPool() { Delete(); }
 
 private:
   std::vector<T *> pool_;
