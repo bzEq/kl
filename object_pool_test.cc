@@ -13,6 +13,10 @@ TEST(kl::ObjectPool<std::string>, Allocate) {
     std::string *p = New("wtf");
     ASSERT(*p == "wtf");
   }
+  for (int i = 0; i < 1024; ++i) {
+    size_t index = NewAt("wtf");
+    ASSERT(*At(index) == "wtf");
+  }
 }
 
 int main() { return KL_TEST(); }

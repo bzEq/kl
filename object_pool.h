@@ -19,6 +19,19 @@ public:
     return p;
   }
 
+  template <typename... Args>
+  size_t NewAt(Args &&... args) {
+    New(std::forward<Args>(args)...);
+    return pool_.size() - 1;
+  }
+
+  T *At(size_t index) {
+    if (index < pool_.size()) {
+      return pool_[index];
+    }
+    return nullptr;
+  }
+
   void Delete() {
     for (auto &p : pool_) {
       delete p;
