@@ -3,6 +3,7 @@
 // the LICENSE file.
 #ifndef KL_OBJECT_POOL_H_
 #define KL_OBJECT_POOL_H_
+#include <cassert>
 #include <vector>
 
 namespace kl {
@@ -18,11 +19,15 @@ public:
     return p;
   }
 
-  ~ObjectPool() {
-    for (auto p : pool_) {
+  void Free() {
+    for (auto &p : pool_) {
       delete p;
     }
+    pool_.clear();
+    assert(pool_.empty());
   }
+
+  ~ObjectPool() { Free(); }
 
 private:
   std::vector<T *> pool_;
