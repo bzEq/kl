@@ -8,7 +8,7 @@
 #include "object_pool.h"
 #include "testkit.h"
 
-TEST(kl::ObjectPool<std::string>, Allocate) {
+TEST(kl::ObjectPool<std::string>, New) {
   for (int i = 0; i < 1024; ++i) {
     std::string *p = New("wtf");
     ASSERT(*p == "wtf");
@@ -17,6 +17,8 @@ TEST(kl::ObjectPool<std::string>, Allocate) {
     size_t index = NewAt("wtf");
     ASSERT(*At(index) == "wtf");
   }
+  ASSERT(!Empty());
+  ASSERT(Size() == 2048);
 }
 
 int main() { return KL_TEST(); }

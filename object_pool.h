@@ -32,6 +32,10 @@ public:
     return nullptr;
   }
 
+  size_t Size() { return pool_.size(); }
+
+  bool Empty() { return pool_.empty(); }
+
   void Delete() {
     for (auto &p : pool_) {
       delete p;
