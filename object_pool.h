@@ -12,7 +12,7 @@ public:
   ObjectPool() = default;
 
   template <typename... Args>
-  T *Allocate(Args &&... args) {
+  T *New(Args &&... args) {
     auto p = new T(std::forward<Args>(args)...);
     pool_.push_back(p);
     return p;

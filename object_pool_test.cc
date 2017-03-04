@@ -10,7 +10,7 @@
 
 TEST(kl::ObjectPool<std::string>, Allocate) {
   for (int i = 0; i < 1024; ++i) {
-    std::string *p = Allocate("wtf");
+    std::string *p = New("wtf");
     ASSERT(*p == "wtf");
   }
 }
