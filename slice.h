@@ -13,7 +13,7 @@ struct Slice {
   Slice() : data(nullptr), len(0) {}
   Slice(const Slice &) = default;
   Slice(Slice &&) = default;
-  Slice(const std::string &s) : data(s.data()), len(s.size()) {}
+  explicit Slice(const std::string &s) : data(s.data()), len(s.size()) {}
   Slice(const char *d, size_t l) : data(d), len(l) {}
 };
 
