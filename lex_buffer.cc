@@ -62,4 +62,11 @@ void LexBuffer::Clear() {
   len_ = 0;
 }
 
+void LexBuffer::Next(Slice *s) {
+  if (cursor_ + s->len <= len_) {
+    s->data = in_ + cursor_;
+    cursor_ += s->len;
+  }
+}
+
 }  // namespace kl

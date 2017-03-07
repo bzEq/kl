@@ -3,6 +3,7 @@
 // the LICENSE file.
 #include "lex_buffer.h"
 #include "logger.h"
+#include "slice.h"
 #include "testkit.h"
 
 TEST(kl::LexBuffer, SkipWhitespaces, "     wtf") {
@@ -36,6 +37,15 @@ TEST(kl::LexBuffer, Next, "\x02\x01") {
   auto next = Next<uint8_t>();
   ASSERT(next);
   ASSERT(*next == 1);
+}
+
+TEST(kl::LexBuffer, Next1, "wtf") {
+  Skip(1);
+  kl::Slice s(nullptr, 2);
+  Next(&s);
+  ASSERT(s.data);
+  ASSERT(std::string(s.data, s.len) == "tf");
+  ASSERT(!HasNext());
 }
 
 int main() { return KL_TEST(); }

@@ -6,6 +6,7 @@
 #include <string>
 
 #include "option.h"
+#include "slice.h"
 
 namespace kl {
 class LexBuffer {
@@ -24,6 +25,7 @@ public:
   bool Expect(const std::string &s);
   void SkipWhitespaces();
   size_t Length() { return len_; }
+  void Next(Slice *s);
   template <typename T>
   Option<T> Next() {
     size_t k = sizeof(T);
