@@ -12,6 +12,7 @@ namespace kl {
 class LexBuffer {
 public:
   LexBuffer();
+  explicit LexBuffer(const Slice &s);
   explicit LexBuffer(const std::string &in);
   LexBuffer(const char *in, size_t len);
   // Force cursor pointed to the start of the buffer

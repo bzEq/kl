@@ -4,7 +4,10 @@
 #include "lex_buffer.h"
 
 namespace kl {
+
 LexBuffer::LexBuffer() : in_(nullptr), cursor_(0), len_(0) {}
+
+LexBuffer::LexBuffer(const Slice &s) : in_(s.data), cursor_(0), len_(s.len) {}
 
 LexBuffer::LexBuffer(const std::string &in)
     : in_(in.data()), cursor_(0), len_(in.size()) {}
