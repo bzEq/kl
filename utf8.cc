@@ -34,6 +34,8 @@ Iterator::Iterator(const char *s, size_t len) : buffer_(s, len) {}
 // 110xxxxx 10xxxxxx
 // 1110xxxx 10xxxxxx 10xxxxxx
 // 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+// 111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+// 1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
 Option<Slice> Iterator::Next() {
   if (!buffer_.HasNext()) {
     return None();
@@ -45,9 +47,8 @@ Option<Slice> Iterator::Next() {
   if ((fst & (0x80)) == 0) {
     return s;
   }
-  for (uint8_t k = 3; k <= 5; ++k) {
+  for (uint8_t k = 3; k <= 7; ++k) {
     if (PrefixEqual(fst, 0xff << (9 - k), k)) {
-      // KL_DEBUG("first byte: 0x%08x", fst);
       for (uint8_t i = 0; i < k - 2; ++i) {
         if (!buffer_.HasNext()) {
           return None();

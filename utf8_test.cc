@@ -17,13 +17,13 @@ TEST(T, PrefixWith) {
   ASSERT(!kl::utf8::PrefixWith(0x70, 0x70));
 }
 
-TEST(kl::utf8::Iterator, Codepoint, "$") {
+TEST(kl::utf8::Iterator, Iterate, "$") {
   auto next = Next();
   ASSERT(next);
   ASSERT(next->len == 1);
 }
 
-TEST(kl::utf8::Iterator, Codepoint1, "¢€𐍈") {
+TEST(kl::utf8::Iterator, Iterate1, "¢€𐍈") {
   auto next = Next();
   ASSERT(next);
   ASSERT(next->len == 2);
@@ -33,6 +33,15 @@ TEST(kl::utf8::Iterator, Codepoint1, "¢€𐍈") {
   next = Next();
   ASSERT(next);
   ASSERT(next->len == 4);
+}
+
+TEST(kl::utf8::Iterator, Iterate2, "你好世界") {
+  size_t size = 0;
+  while (Next()) {
+    ++size;
+  }
+  KL_DEBUG("size: %u", size);
+  ASSERT(size == 4);
 }
 
 int main() { return KL_TEST(); }
