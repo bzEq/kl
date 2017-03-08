@@ -7,7 +7,7 @@
 namespace kl {
 namespace utf8 {
 
-// CAUTIOUS: It's *not* an universal routine.
+// CAUTIOUS: It's *not* an general routine.
 // REQUIRES: prefix > 0
 bool PrefixWith(uint8_t byte, uint8_t prefix) {
   assert(prefix > 0);
@@ -34,8 +34,6 @@ Iterator::Iterator(const char *s, size_t len) : buffer_(s, len) {}
 // 110xxxxx 10xxxxxx
 // 1110xxxx 10xxxxxx 10xxxxxx
 // 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
-// 111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
-// 1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
 Option<Slice> Iterator::Next() {
   if (!buffer_.HasNext()) {
     return None();
@@ -44,6 +42,7 @@ Option<Slice> Iterator::Next() {
   buffer_.Next(&s);
   assert(s.data != nullptr);
   uint8_t fst = static_cast<uint8_t>(s.data[0]);
+  // KL_DEBUG("fst byte: 0x%02x", fst);
   if ((fst & (0x80)) == 0) {
     return s;
   }
@@ -59,6 +58,7 @@ Option<Slice> Iterator::Next() {
         }
         ++s.len;
       }
+      // KL_DEBUG("len: %u", s.len);
       return s;
     }
   }

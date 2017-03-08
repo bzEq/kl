@@ -1,9 +1,10 @@
 // Copyright (c) 2017 Kai Luo <gluokai@gmail.com>. All rights reserved.
 // Use of this source code is governed by the BSD license that can be found in
 // the LICENSE file.
+#include <string>
 
-#include "utf8.h"
 #include "testkit.h"
+#include "utf8.h"
 
 class T {};
 
@@ -17,31 +18,10 @@ TEST(T, PrefixWith) {
   ASSERT(!kl::utf8::PrefixWith(0x70, 0x70));
 }
 
-TEST(kl::utf8::Iterator, Iterate, "$") {
+TEST(kl::utf8::Iterator, Iterate, std::string("$")) {
   auto next = Next();
   ASSERT(next);
   ASSERT(next->len == 1);
-}
-
-TEST(kl::utf8::Iterator, Iterate1, "¢€𐍈") {
-  auto next = Next();
-  ASSERT(next);
-  ASSERT(next->len == 2);
-  next = Next();
-  ASSERT(next);
-  ASSERT(next->len == 3);
-  next = Next();
-  ASSERT(next);
-  ASSERT(next->len == 4);
-}
-
-TEST(kl::utf8::Iterator, Iterate2, "你好世界") {
-  size_t size = 0;
-  while (Next()) {
-    ++size;
-  }
-  KL_DEBUG("size: %u", size);
-  ASSERT(size == 4);
 }
 
 int main() { return KL_TEST(); }
