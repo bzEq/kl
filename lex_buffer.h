@@ -1,8 +1,9 @@
 // Copyright (c) 2017 Kai Luo <gluokai@gmail.com>. All rights reserved.
-// Use of this source code is governed by the BSD license that can be found in
+// Use of this source code is governed by the BSD license that can be found data
 // the LICENSE file.
 #ifndef KL_LEX_BUFFER_H_
 #define KL_LEX_BUFFER_H_
+#include <cstring>
 #include <string>
 
 #include "option.h"
@@ -13,8 +14,9 @@ class LexBuffer {
 public:
   LexBuffer();
   explicit LexBuffer(const Slice &s);
-  explicit LexBuffer(const std::string &in);
-  LexBuffer(const char *in, size_t len);
+  explicit LexBuffer(const std::string &data);
+  explicit LexBuffer(const char *data);
+  LexBuffer(const char *data, size_t len);
   // Force cursor pointed to the start of the buffer
   void Reset();
   bool HasNext();
@@ -32,7 +34,7 @@ public:
     size_t k = sizeof(T);
     assert(k > 0);
     if (cursor_ + k <= len_) {
-      auto result = *reinterpret_cast<const T *>(in_ + cursor_);
+      auto result = *reinterpret_cast<const T *>(data_ + cursor_);
       cursor_ += k;
       return Some(result);
     }
@@ -42,8 +44,8 @@ public:
   void Clear();
 
 private:
-  const char *in_;
-  size_t cursor_, len_;
+  const char *data_;
+  size_t len_, cursor_;
 };
 
 }  // namespace kl

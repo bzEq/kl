@@ -3,6 +3,7 @@
 // the LICENSE file.
 #ifndef KL_SLICEH_H_
 #define KL_SLICEH_H_
+#include <cstring>
 #include <string>
 
 namespace kl {
@@ -14,6 +15,7 @@ struct Slice {
   Slice(const Slice &) = default;
   Slice(Slice &&) = default;
   explicit Slice(const std::string &s) : data(s.data()), len(s.size()) {}
+  explicit Slice(const char *s) : data(s), len(strlen(s)) {}
   Slice(const char *d, size_t l) : data(d), len(l) {}
 };
 
