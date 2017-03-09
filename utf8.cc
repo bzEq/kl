@@ -25,6 +25,8 @@ bool PrefixEqual(uint8_t x, uint8_t y, uint8_t bits_of_prefix) {
 
 Iterator::Iterator(const std::string &s) : buffer_(s) {}
 
+Iterator::Iterator(const char *s) : buffer_(s) {}
+
 Iterator::Iterator(const Slice &s) : buffer_(s) {}
 
 Iterator::Iterator(const char *s, size_t len) : buffer_(s, len) {}
