@@ -70,8 +70,9 @@ int RunAllTests() {
       }
     }
   }
-  std::fprintf(stderr, "==== %lu/%lu TESTS PASSED\n", passed, tests->size());
-  if (passed != tests->size()) {
+  std::fprintf(stderr, "==== %lu/%lu TESTS PASSED\n", passed,
+               tests ? tests->size() : 0);
+  if (tests && passed != tests->size()) {
     return 1;
   }
   return 0;
