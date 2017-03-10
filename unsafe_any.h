@@ -23,7 +23,7 @@ class StoreImpl : public Store {
 public:
   StoreImpl(T &&value)
       : pointer_(std::make_unique<T>(std::forward<T>(value))) {}
-  const T &Get() { return *pointer_.get(); }
+  const T &Get() { return *pointer_; }
 
 private:
   std::unique_ptr<T> pointer_;
