@@ -29,6 +29,7 @@ private:
   std::unique_ptr<T> pointer_;
 };
 
+// it seems safe.
 class UnsafeAny {
 public:
   UnsafeAny() : store_(nullptr) {}
