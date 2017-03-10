@@ -4,6 +4,8 @@
 
 // Please use std::any of c++17 if available.
 
+#ifndef KL_UNSAFE_ANY_H_
+#define KL_UNSAFE_ANY_H_
 #include <memory>
 #include <utility>
 
@@ -49,3 +51,4 @@ private:
 };
 
 }  // namespace kl
+#endif  // KL_UNSAFE_ANY_H_
