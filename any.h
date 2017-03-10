@@ -21,7 +21,9 @@ public:
 template <typename T>
 class StoreImpl : public Store {
 public:
-  StoreImpl(T &&value) : store_(std::make_unique<T>(std::forward<T>(value))) {}
+  StoreImpl() = default;
+  template <typename V>  // just a trick of utilizing forwarding reference
+  StoreImpl(V &&value) : store_(std::make_unique<T>(std::forward<V>(value))) {}
   const T &Get() { return *store_; }
 
 private:
@@ -33,8 +35,8 @@ class Any {
 public:
   Any() : store_(nullptr) {}
 
-  template <typename T>
-  Any(T &&value) : store_(new StoreImpl<T>(std::forward<T>(value))) {}
+  template <typename T, typename V = typename std::decay<T>::type>
+  Any(T &&value) : store_(new StoreImpl<V>(std::forward<T>(value))) {}
 
   template <typename T>
   Option<T> Of() {

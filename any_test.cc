@@ -11,7 +11,8 @@
 class T {};
 
 TEST(T, Any) {
-  kl::Any any(std::string("wtf"));
+  const std::string str("wtf");
+  kl::Any any(str);
   auto store = any.Of<std::string>();
   ASSERT(store);
 }
