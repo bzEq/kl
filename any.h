@@ -40,9 +40,7 @@ public:
 
   template <typename T>
   Option<T> Of() {
-    if (store_ == nullptr) {
-      return None();
-    }
+    // no need to check if store_ is nullptr
     if (StoreImpl<T> *store = dynamic_cast<StoreImpl<T> *>(store_)) {
       return store->Get();
     }
