@@ -59,6 +59,8 @@ public:
     return None();
   }
 
+  void slice(size_t base, size_t end, Slice *s);
+
   // nullptr buffer
   void Clear();
 

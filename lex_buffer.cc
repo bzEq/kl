@@ -82,4 +82,15 @@ size_t LexBuffer::Remaining() const {
 }
 
 size_t LexBuffer::Length() const { return len_; }
+
+// REQUIRES: base <= end
+void LexBuffer::slice(size_t base, size_t end, Slice *s) {
+  assert(base <= end);
+  if (base >= len_) {
+    return;
+  }
+  s->data = data_ + base;
+  s->len = std::min(end - base, len_ - base);
+}
+
 }  // namespace kl
