@@ -5,19 +5,19 @@
 #include <iostream>
 #include <string>
 
+#include "any.h"
 #include "testkit.h"
-#include "unsafe_any.h"
 
 class T {};
 
 TEST(T, Any) {
-  kl::UnsafeAny any(std::string("wtf"));
+  kl::Any any(std::string("wtf"));
   auto store = any.Of<std::string>();
   ASSERT(store);
 }
 
 TEST(T, Any1) {
-  kl::UnsafeAny any(std::string("wtf"));
+  kl::Any any(std::string("wtf"));
   auto store = any.Of<int>();
   ASSERT(!store);
 }

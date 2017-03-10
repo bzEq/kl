@@ -4,8 +4,8 @@
 
 // Please use std::any of c++17 if available.
 
-#ifndef KL_UNSAFE_ANY_H_
-#define KL_UNSAFE_ANY_H_
+#ifndef KL_ANY_H_
+#define KL_ANY_H_
 #include <memory>
 #include <utility>
 
@@ -30,12 +30,12 @@ private:
 };
 
 // it seems safe.
-class UnsafeAny {
+class Any {
 public:
-  UnsafeAny() : store_(nullptr) {}
+  Any() : store_(nullptr) {}
 
   template <typename T>
-  UnsafeAny(T &&value) : store_(new StoreImpl<T>(std::forward<T>(value))) {}
+  Any(T &&value) : store_(new StoreImpl<T>(std::forward<T>(value))) {}
 
   template <typename T>
   Option<T> Of() {
@@ -45,11 +45,11 @@ public:
     return None();
   }
 
-  ~UnsafeAny() { delete store_; }
+  ~Any() { delete store_; }
 
 private:
   Store *store_;
 };
 
 }  // namespace kl
-#endif  // KL_UNSAFE_ANY_H_
+#endif  // KL_ANY_H_
