@@ -19,9 +19,10 @@ TEST(T, PrefixWith) {
 }
 
 TEST(kl::utf8::Iterator, Iterate, std::string("$")) {
-  auto next = Next();
-  ASSERT(next);
-  ASSERT(next->len == 1);
+  kl::Slice s;
+  Next(&s);
+  ASSERT(s.data);
+  ASSERT(s.len == 1);
 }
 
 int main() { return KL_TEST(); }

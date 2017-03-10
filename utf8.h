@@ -22,8 +22,8 @@ public:
   explicit Iterator(const Slice &s);
   explicit Iterator(const char *s);
   Iterator(const char *s, size_t len);
-  // return next codepoint
-  Option<Slice> Next();
+  // return next utf8 character
+  void Next(Slice *s);
 
 private:
   LexBuffer buffer_;

@@ -36,35 +36,35 @@ Iterator::Iterator(const char *s, size_t len) : buffer_(s, len) {}
 // 110xxxxx 10xxxxxx
 // 1110xxxx 10xxxxxx 10xxxxxx
 // 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
-Option<Slice> Iterator::Next() {
+void Iterator::Next(Slice *s) {
   if (!buffer_.HasNext()) {
-    return None();
+    return;
   }
-  Slice s(nullptr, 1);
-  buffer_.Next(&s);
-  assert(s.data != nullptr);
-  uint8_t fst = static_cast<uint8_t>(s.data[0]);
+  s->data = nullptr;
+  s->len = 1;
+  buffer_.Next(s);
+  assert(s->data != nullptr);
+  uint8_t fst = static_cast<uint8_t>(s->data[0]);
   // KL_DEBUG("fst byte: 0x%02x", fst);
   if ((fst & (0x80)) == 0) {
-    return s;
+    return;
   }
   for (uint8_t k = 3; k <= 7; ++k) {
     if (PrefixEqual(fst, 0xff << (9 - k), k)) {
       for (uint8_t i = 0; i < k - 2; ++i) {
         if (!buffer_.HasNext()) {
-          return None();
+          s->data = nullptr;
+          return;
         }
         uint8_t sub = static_cast<uint8_t>(buffer_.Next());
         if (!PrefixWith(sub, 0x2)) {
-          return None();
+          s->data = nullptr;
+          return;
         }
-        ++s.len;
+        ++s->len;
       }
-      // KL_DEBUG("len: %u", s.len);
-      return s;
     }
   }
-  return None();
 }
 
 }  // namespace utf8
