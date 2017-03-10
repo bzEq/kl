@@ -21,12 +21,11 @@ public:
 template <typename T>
 class StoreImpl : public Store {
 public:
-  StoreImpl(T &&value)
-      : pointer_(std::make_unique<T>(std::forward<T>(value))) {}
-  const T &Get() { return *pointer_; }
+  StoreImpl(T &&value) : store_(std::make_unique<T>(std::forward<T>(value))) {}
+  const T &Get() { return *store_; }
 
 private:
-  std::unique_ptr<T> pointer_;
+  std::unique_ptr<T> store_;
 };
 
 // it seems safe.
