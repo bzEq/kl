@@ -37,7 +37,7 @@ public:
   template <typename T>
   UnsafeAny(T &&value) : store_(new StoreImpl<T>(std::forward<T>(value))) {}
 
-  template <typename TT, typename T = typename std::decay<TT>::type>
+  template <typename T>
   Option<T> Of() {
     if (StoreImpl<T> *store = dynamic_cast<StoreImpl<T> *>(store_)) {
       return store->Get();
