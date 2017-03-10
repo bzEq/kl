@@ -19,7 +19,7 @@ LexBuffer::LexBuffer(const char *data)
 LexBuffer::LexBuffer(const char *data, size_t len)
     : data_(data), len_(len), cursor_(0) {}
 
-bool LexBuffer::HasNext() { return cursor_ < len_; }
+bool LexBuffer::HasNext() const { return cursor_ < len_; }
 
 int LexBuffer::Next() {
   if (HasNext()) {
@@ -28,7 +28,7 @@ int LexBuffer::Next() {
   return 0;
 }
 
-int LexBuffer::LookAhead() {
+int LexBuffer::LookAhead() const {
   if (HasNext()) {
     return data_[cursor_];
   }
@@ -43,18 +43,18 @@ void LexBuffer::SkipWhitespaces() {
 
 void LexBuffer::Skip(size_t k) { cursor_ = std::min(cursor_ + k, len_); }
 
-void LexBuffer::Reset() {}
+void LexBuffer::Reset() { cursor_ = 0; }
 
-bool LexBuffer::Expect(int c) { return LookAhead() == c; }
+bool LexBuffer::Expect(int c) const { return LookAhead() == c; }
 
-int LexBuffer::LookAhead(size_t k) {
+int LexBuffer::LookAhead(size_t k) const {
   if (cursor_ + k < len_) {
     return data_[cursor_ + k];
   }
   return 0;
 }
 
-bool LexBuffer::Expect(const std::string &s) {
+bool LexBuffer::Expect(const std::string &s) const {
   for (size_t i = 0; i < s.size(); ++i) {
     if (LookAhead(i) != s[i]) {
       return false;
@@ -76,4 +76,10 @@ void LexBuffer::Next(Slice *s) {
   }
 }
 
+size_t LexBuffer::Remaining() const {
+  assert(cursor_ <= len_);
+  return len_ - cursor_;
+}
+
+size_t LexBuffer::Length() const { return len_; }
 }  // namespace kl
