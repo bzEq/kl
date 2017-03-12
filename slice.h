@@ -11,7 +11,7 @@ namespace kl {
 struct Slice {
   const char *data;
   size_t len;
-  Slice() : data(nullptr), len(0) {}
+  Slice() : data(""), len(0) {}
   Slice(const Slice &) = default;
   Slice(Slice &&) = default;
   explicit Slice(const std::string &s) : data(s.data()), len(s.size()) {}
@@ -24,6 +24,7 @@ struct Slice {
     }
     return comp;
   }
+  std::string ToString() const { return std::string(data, len); }
 };
 
 }  // namespace kl

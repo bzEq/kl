@@ -6,7 +6,7 @@
 
 namespace kl {
 
-LexBuffer::LexBuffer() : data_(nullptr), len_(0), cursor_(0) {}
+LexBuffer::LexBuffer() : data_(""), len_(0), cursor_(0) {}
 
 LexBuffer::LexBuffer(const Slice &s) : data_(s.data), len_(s.len), cursor_(0) {}
 
@@ -64,7 +64,7 @@ bool LexBuffer::Expect(const std::string &s) const {
 }
 
 void LexBuffer::Clear() {
-  data_ = nullptr;
+  data_ = "";
   cursor_ = 0;
   len_ = 0;
 }
