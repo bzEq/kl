@@ -21,6 +21,9 @@ $(TESTS): %_test: %_test.o
 $(STATIC_LIB): $(OBJECTS)
 	ar rcsv $@ $^
 
+utf8_main: utf8_main.o
+	$(CXX) $(CXXFLAGS) $< -o $@ $(LDFLAGS)
+
 test: $(TESTS)
 	@for test in $^; do ./$$test || exit 1; done
 	@echo "==== CONG! ALL TESTS PASSED."
