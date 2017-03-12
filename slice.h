@@ -17,6 +17,10 @@ struct Slice {
   explicit Slice(const std::string &s) : data(s.data()), len(s.size()) {}
   explicit Slice(const char *s) : data(s), len(strlen(s)) {}
   Slice(const char *d, size_t l) : data(d), len(l) {}
+  void Clear() {
+    data = "";
+    len = 0;
+  }
   int Compare(const Slice &s) {
     int comp = strncmp(data, s.data, std::min(len, s.len));
     if (comp == 0) {

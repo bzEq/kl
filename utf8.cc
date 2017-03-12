@@ -37,6 +37,7 @@ Iterator::Iterator(const char *s, size_t len) : buffer_(s, len) {}
 // 1110xxxx 10xxxxxx 10xxxxxx
 // 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
 void Iterator::Next(Slice *s) {
+  s->Clear();
   if (!buffer_.HasNext()) {
     return;
   }
