@@ -1,7 +1,8 @@
-OBJECTS := testkit.o epoll.o logger.o scheduler.o lex_buffer.o utf8.o buffer.o
+OBJECTS := testkit.o epoll.o logger.o scheduler.o lex_buffer.o \
+	utf8.o buffer.o
 TESTS := $(patsubst %.cc, %, $(wildcard *_test.cc))
 STATIC_LIB := libkl.a
-CXX := clang++
+CXX := g++
 CXXFLAGS := -std=c++14 -g -Wall -Werror
 LDFLAGS := -L. -lkl -lpthread
 
