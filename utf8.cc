@@ -54,12 +54,12 @@ void Iterator::Next(Slice *s) {
     if (PrefixEqual(fst, 0xff << (9 - k), k)) {
       for (uint8_t i = 0; i < k - 2; ++i) {
         if (!buffer_.HasNext()) {
-          s->data = nullptr;
+          s->Clear();
           return;
         }
         uint8_t sub = static_cast<uint8_t>(buffer_.Next());
         if (!PrefixWith(sub, 0x2)) {
-          s->data = nullptr;
+          s->Clear();
           return;
         }
         ++s->len;
