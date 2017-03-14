@@ -34,9 +34,24 @@ private:
 class Any {
 public:
   Any() : store_(nullptr) {}
+  Any(const Any &) = delete;
+  Any(Any &&any) : store_(nullptr) { std::swap(store_, any.store_); }
+
+  Any &operator=(const Any &) = delete;
+  Any &operator=(Any &&rhs) {
+    std::swap(store_, rhs.store_);
+    return *this;
+  }
 
   template <typename T, typename V = typename std::decay<T>::type>
   Any(T &&value) : store_(new StoreImpl<V>(std::forward<T>(value))) {}
+
+  template <typename T, typename V = typename std::decay<T>::type>
+  Any &operator=(T &&value) {
+    delete store_;
+    store_ = new StoreImpl<V>(std::forward<T>(value));
+    return *this;
+  }
 
   template <typename T>
   Option<T> Of() const {

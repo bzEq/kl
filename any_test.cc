@@ -23,4 +23,22 @@ TEST(T, Any1) {
   ASSERT(!store);
 }
 
+TEST(T, Any2) {
+  kl::Any any;
+  any = 1;
+  ASSERT(any.Of<int>());
+  any = std::string("wtf");
+  ASSERT(!any.Of<int>());
+  ASSERT(any.Of<std::string>());
+}
+
+TEST(T, Any3) {
+  kl::Any a, b;
+  a = static_cast<uint64_t>(0U);
+  b = std::string("wtf");
+  std::swap(a, b);
+  ASSERT(a.Of<std::string>());
+  ASSERT(b.Of<uint64_t>());
+}
+
 int main() { return KL_TEST(); }
