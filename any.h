@@ -24,7 +24,7 @@ public:
   StoreImpl() = default;
   template <typename V>  // just a trick of utilizing forwarding reference
   StoreImpl(V &&value) : store_(std::make_unique<T>(std::forward<V>(value))) {}
-  const T &Get() const { return *store_; }
+  T *Get() { return store_.get(); }
 
 private:
   std::unique_ptr<T> store_;
@@ -54,13 +54,19 @@ public:
   }
 
   template <typename T>
-  Option<T> Of() const {
+  T *CastTo() {
     // no need to check if store_ is nullptr
-    if (const StoreImpl<T> *store =
-            dynamic_cast<const StoreImpl<T> *>(store_)) {
-      return store->Get();
+    StoreImpl<T> *store = dynamic_cast<StoreImpl<T> *>(store_);
+    if (!store) {
+      return nullptr;
     }
-    return None();
+    return store->Get();
+  }
+
+  template <typename T>
+  bool IsOf() const {
+    // no need to check if store_ is nullptr
+    return dynamic_cast<const StoreImpl<T> *>(store_) != nullptr;
   }
 
   ~Any() { delete store_; }

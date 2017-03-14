@@ -13,23 +13,23 @@ class T {};
 TEST(T, Any) {
   const std::string str("wtf");
   kl::Any any(str);
-  auto store = any.Of<std::string>();
+  auto store = any.IsOf<std::string>();
   ASSERT(store);
 }
 
 TEST(T, Any1) {
   kl::Any any(std::string("wtf"));
-  auto store = any.Of<int>();
+  auto store = any.IsOf<int>();
   ASSERT(!store);
 }
 
 TEST(T, Any2) {
   kl::Any any;
   any = 1;
-  ASSERT(any.Of<int>());
+  ASSERT(any.IsOf<int>());
   any = std::string("wtf");
-  ASSERT(!any.Of<int>());
-  ASSERT(any.Of<std::string>());
+  ASSERT(!any.IsOf<int>());
+  ASSERT(any.IsOf<std::string>());
 }
 
 TEST(T, Any3) {
@@ -37,8 +37,10 @@ TEST(T, Any3) {
   a = static_cast<uint64_t>(0U);
   b = std::string("wtf");
   std::swap(a, b);
-  ASSERT(a.Of<std::string>());
-  ASSERT(b.Of<uint64_t>());
+  ASSERT(a.IsOf<std::string>());
+  ASSERT(!a.CastTo<uint64_t>());
+  ASSERT(b.IsOf<uint64_t>());
+  ASSERT(!b.CastTo<std::string>());
 }
 
 int main() { return KL_TEST(); }
