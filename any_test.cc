@@ -38,9 +38,9 @@ TEST(T, Any3) {
   b = std::string("wtf");
   std::swap(a, b);
   ASSERT(a.IsOf<std::string>());
-  ASSERT(!a.CastTo<uint64_t>());
+  ASSERT(!a.Of<uint64_t>());
   ASSERT(b.IsOf<uint64_t>());
-  ASSERT(!b.CastTo<std::string>());
+  ASSERT(!b.Of<std::string>());
 }
 
 int main() { return KL_TEST(); }

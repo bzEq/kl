@@ -54,7 +54,7 @@ public:
   }
 
   template <typename T>
-  T *CastTo() {
+  T *Of() {
     // no need to check if store_ is nullptr
     StoreImpl<T> *store = dynamic_cast<StoreImpl<T> *>(store_);
     if (!store) {
