@@ -9,12 +9,15 @@ namespace kl {
 namespace logging {
 const char *kLogLevelString[5] = {"INFO", "DEBUG", "WARN", "ERROR", "FATAL"};
 
-Logger::Logger(std::function<void(const char *)> &&output)
+Logger::Logger(std::function<void(const std::string &)> &&output)
     : log_level_(kInfo), output_(std::move(output)) {}
-Logger::Logger(int log_level, std::function<void(const char *)> &&output)
+
+Logger::Logger(int log_level, std::function<void(const std::string &)> &&output)
     : log_level_(log_level), output_(std::move(output)) {}
-std::unique_ptr<Logger> Logger::default_logger_(new Logger([](const char *msg) {
-  std::fprintf(stderr, "%s\n", msg);
+
+std::unique_ptr<Logger>
+Logger::default_logger_(new Logger([](const std::string &message) {
+  std::fprintf(stderr, "%s\n", message.c_str());
 }));
 
 void Logger::Logging(int log_level, const char *file, const char *func,

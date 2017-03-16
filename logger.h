@@ -30,8 +30,8 @@ public:
   Logger() = delete;
   Logger(const Logger &) = delete;
   Logger(Logger &&) = default;
-  explicit Logger(std::function<void(const char *)> &&output);
-  Logger(int log_level, std::function<void(const char *)> &&output);
+  explicit Logger(std::function<void(const std::string &)> &&output);
+  Logger(int log_level, std::function<void(const std::string &)> &&output);
   void SetLogLevel(int log_level);
   void Logging(int log_level, const char *file, const char *func, int line,
                const char *fmt, ...);
@@ -42,7 +42,7 @@ private:
 
   static std::unique_ptr<Logger> default_logger_;
   int log_level_;
-  std::function<void(const char *)> output_;
+  std::function<void(const std::string &)> output_;
 };
 }  // namespace logging
 }  // namespace kl

@@ -19,9 +19,8 @@ Scheduler::Scheduler(size_t num_of_worker_threads)
       stop_(false), task_queues_(nullptr), queue_round_robin_(0) {
   task_queues_ =
       new kl::Chan<std::function<void(void)>>[num_of_worker_threads_];
-  logger_ = std::make_unique<kl::logging::Logger>([this](const char *message) {
-    logging_queue_.Push(std::string(message));
-  });
+  logger_ = std::make_unique<kl::logging::Logger>(
+      [this](const std::string &message) { logging_queue_.Push(message); });
 }
 
 Scheduler::Scheduler(size_t num_of_worker_threads, bool enable_epoll)
@@ -30,9 +29,8 @@ Scheduler::Scheduler(size_t num_of_worker_threads, bool enable_epoll)
       queue_round_robin_(0) {
   task_queues_ =
       new kl::Chan<std::function<void(void)>>[num_of_worker_threads_];
-  logger_ = std::make_unique<kl::logging::Logger>([this](const char *message) {
-    logging_queue_.Push(std::string(message));
-  });
+  logger_ = std::make_unique<kl::logging::Logger>(
+      [this](const std::string &message) { logging_queue_.Push(message); });
 }
 
 Scheduler::~Scheduler() {
