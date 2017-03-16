@@ -27,20 +27,19 @@ public:
   bool Closed() { return closed_; }
   size_t Size() const { return q_.size(); }
 
-  friend bool operator<<(Chan &c, T &&v) {
-    std::unique_lock<std::mutex> l(c.mu_);
-    if (c.closed_) {
+  template <typename V>
+  bool Push(V &&v) {
+    std::unique_lock<std::mutex> l(mu_);
+    if (closed_) {
       return false;
     }
-    c.q_.push(std::forward<T>(v));
+    q_.push(std::forward<V>(v));
     // Manual unlocking is done before notifying, to avoid waking up
     // the waiting thread only to block again.
     l.unlock();
-    c.cv_.notify_one();
+    cv_.notify_one();
     return true;
   }
-
-  bool Push(T &&v) { return *this << std::forward<T>(v); }
 
   Option<T> Pop() {
     std::unique_lock<std::mutex> l(mu_);

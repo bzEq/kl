@@ -14,7 +14,7 @@ class C {};
 TEST(C, PushAndPop) {
   auto ch = std::make_shared<kl::Chan<int>>();
   auto t = std::thread([ch]() {
-    *ch << 17;
+    ch->Push(17);
     ch->Push(19);
     ch->Close();
   });
