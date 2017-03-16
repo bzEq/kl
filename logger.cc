@@ -53,7 +53,7 @@ void Logger::Logging(int log_level, const char *file, const char *func,
   va_end(backup_ap);
 
   int buf_size = prefix_size + msg_size + 1;
-  char *buf = new char[buf_size];
+  char *buf = new char[buf_size + 1];  // to contain '\n'
   const char *base = buf;
   prefix_size =
       std::snprintf(buf, buf_size, kPrefixFormat, kLogLevelString[log_level],
@@ -62,6 +62,8 @@ void Logger::Logging(int log_level, const char *file, const char *func,
   buf += prefix_size;
   assert(buf_size >= prefix_size);
   std::vsnprintf(buf, buf_size - prefix_size, fmt, ap);
+  buf[buf_size - 1] = '\n';
+  buf[buf_size] = 0;
   output_(base);
   delete[] base;
 }
