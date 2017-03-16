@@ -17,7 +17,7 @@ Logger::Logger(int log_level, std::function<void(const std::string &)> &&output)
 
 std::unique_ptr<Logger>
 Logger::default_logger_(new Logger([](const std::string &message) {
-  std::fprintf(stderr, "%s\n", message.c_str());
+  std::fprintf(stderr, "%s", message.c_str());
 }));
 
 void Logger::Logging(int log_level, const char *file, const char *func,
@@ -61,9 +61,11 @@ void Logger::Logging(int log_level, const char *file, const char *func,
                     t.tm_min, t.tm_sec, now.tv_usec, file, func, line);
   buf += prefix_size;
   assert(buf_size >= prefix_size);
-  std::vsnprintf(buf, buf_size - prefix_size, fmt, ap);
-  buf[buf_size - 1] = '\n';
-  buf[buf_size] = 0;
+  buf += std::vsnprintf(buf, buf_size - prefix_size, fmt, ap);
+  *buf = '\n';
+  ++buf;
+  *buf = '\0';
+  assert(buf - base <= buf_size + 1);
   output_(base);
   delete[] base;
 }
