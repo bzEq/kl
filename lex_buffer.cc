@@ -43,6 +43,14 @@ void LexBuffer::SkipWhitespaces() {
 
 void LexBuffer::Skip(size_t k) { cursor_ = std::min(cursor_ + k, len_); }
 
+void LexBuffer::Back(size_t k) {
+  if (k > cursor_) {
+    cursor_ = 0;
+  } else {
+    cursor_ -= k;
+  }
+}
+
 void LexBuffer::Reset() { cursor_ = 0; }
 
 bool LexBuffer::Expect(int c) const { return LookAhead() == c; }

@@ -23,6 +23,7 @@ public:
   bool HasNext() const;
   int Next();
   void Skip(size_t k);
+  void Back(size_t k);
   int LookAhead() const;
   int LookAhead(size_t k) const;
   bool Expect(int c) const;
