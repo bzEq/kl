@@ -9,6 +9,7 @@
 #include <atomic>
 #include <cstdint>
 #include <map>
+#include <memory>
 #include <mutex>
 #include <string>
 
@@ -45,7 +46,7 @@ private:
   std::mutex exit_reason_mutex_;
   std::string exit_reason_;
   kl::Chan<std::string> logging_queue_;
-  std::map<int, EpollHandler> callbacks_;
+  std::map<int, std::shared_ptr<EpollHandler>> callbacks_;
   kl::rwlock::Lock callback_mapping_rwlock_;
   kl::WaitGroup sync_;
   kl::Epoll epoll_;

@@ -68,7 +68,8 @@ kl::Status Scheduler::RegisterEpollEvent(int fd, uint32_t events,
     return status;
   }
   callback_mapping_rwlock_.WLock();
-  callbacks_.insert(std::make_pair(fd, std::move(callback)));
+  callbacks_.insert(
+      std::make_pair(fd, std::make_shared<EpollHandler>(std::move(callback))));
   callback_mapping_rwlock_.WUnlock();
   return kl::Ok();
 }
@@ -117,7 +118,8 @@ kl::Status Scheduler::LaunchEpollThread() {
           KL_DEBUG_L(Logger(), "callback for fd %d is empty");
           continue;
         }
-        SubmitTask([ handler = iter->second, events ] { handler(events); });
+        SubmitTask(
+            [ callback = iter->second, events ] { (*callback)(events); });
       }
     }
   }).detach();
