@@ -6,24 +6,19 @@
 #define KL_TIMER_H_
 #include <chrono>
 
+#include "env.h"
+
 namespace kl {
 namespace timer {
-// FIXME(Kai Luo): any trick to decrease function overloading?
 
 template <typename T, typename F, typename... Args>
-inline void FunctionCost(std::chrono::duration<T> *cost, F &&func,
+inline auto FunctionCost(std::chrono::duration<T> *cost, F &&func,
                          Args &&... args) {
   auto start = std::chrono::high_resolution_clock::now();
-  func(std::forward<Args>(args)...);
-  *cost = std::chrono::high_resolution_clock::now() - start;
-}
-
-template <typename T, typename R, typename F, typename... Args>
-inline void FunctionCost(std::chrono::duration<T> *cost, R *result, F &&func,
-                         Args &&... args) {
-  auto start = std::chrono::high_resolution_clock::now();
-  *result = func(std::forward<Args>(args)...);
-  *cost = std::chrono::high_resolution_clock::now() - start;
+  kl::env::Defer defer([start, cost] {
+    *cost = std::chrono::high_resolution_clock::now() - start;
+  });
+  return func(std::forward<Args>(args)...);
 }
 
 }  // namespace timer

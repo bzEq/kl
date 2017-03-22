@@ -23,17 +23,20 @@ public:
 
 TEST(T, Sum) {
   std::chrono::duration<float> diff;
-  int sum;
-  kl::timer::FunctionCost(&diff, &sum, Sum, 100);
+  int sum = kl::timer::FunctionCost(&diff, &Sum, 100);
   ASSERT(sum == 5050);
   KL_DEBUG("Sum costs %fs", diff.count());
+}
+
+TEST(T, Sum1) {
+  std::chrono::duration<float> diff;
+  kl::timer::FunctionCost(&diff, Sum, 100);
 }
 
 TEST(T, SumUp) {
   std::chrono::duration<float> diff;
   T test;
-  int sum;
-  kl::timer::FunctionCost(&diff, &sum, [&test] { return test.SumUp(100); });
+  int sum = kl::timer::FunctionCost(&diff, [&test] { return test.SumUp(100); });
   ASSERT(sum == 5050);
   KL_DEBUG("SumUp costs %fs", diff.count());
 }
