@@ -7,20 +7,22 @@
 namespace kl {
 namespace utf8 {
 
-// CAUTIOUS: It's *not* an general routine.
-// REQUIRES: prefix > 0
-bool PrefixWith(uint8_t byte, uint8_t prefix) {
-  assert(prefix > 0);
-  uint8_t shift = __builtin_clz(prefix) - 24;
-  return !((byte & (0xff << shift)) ^ (prefix << shift));
-}
-
+namespace {
 uint8_t Prefix(uint8_t x, uint8_t bits_of_prefix) {
   return x & ~(0xff >> bits_of_prefix);
 }
 
 bool PrefixEqual(uint8_t x, uint8_t y, uint8_t bits_of_prefix) {
   return !(Prefix(x, bits_of_prefix) ^ Prefix(y, bits_of_prefix));
+}
+}  // namespace
+
+// CAUTIOUS: It's *not* an general routine.
+// REQUIRES: prefix > 0
+bool PrefixWith(uint8_t byte, uint8_t prefix) {
+  assert(prefix > 0);
+  uint8_t shift = __builtin_clz(prefix) - 24;
+  return !((byte & (0xff << shift)) ^ (prefix << shift));
 }
 
 Iterator::Iterator(const std::string &s) : buffer_(s) {}
