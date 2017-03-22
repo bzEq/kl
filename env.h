@@ -216,6 +216,13 @@ inline bool IsRegularFile(const char *fname) {
   return true;
 }
 
+inline Status WritePidToFile(const char *fname) {
+  // This function is always successful.
+  pid_t pid = getpid();
+  std::string s = std::to_string(pid);
+  return FillFileWith(fname, s);
+}
+
 }  // namespace env
 }  // namespace kl
 #endif

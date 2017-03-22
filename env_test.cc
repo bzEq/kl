@@ -58,4 +58,15 @@ TEST(E, Children) {
   KL_DEBUG(result.c_str());
 }
 
+TEST(E, WritePidToFile) {
+  std::string fname = kl::env::MakeTempName("/tmp/env_test");
+  kl::env::Defer defer([fname] { kl::env::DeleteFile(fname.c_str()); });
+  auto status = kl::env::WritePidToFile(fname.c_str());
+  ASSERT(status);
+  auto data = kl::env::ReadFile(fname.c_str());
+  ASSERT(data);
+  auto pid = std::strtoll(data->c_str(), nullptr, 10);
+  ASSERT(pid == getpid());
+}
+
 int main() { return KL_TEST(); }
