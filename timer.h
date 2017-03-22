@@ -15,7 +15,7 @@ template <typename T, typename F, typename... Args>
 inline auto FunctionCost(std::chrono::duration<T> *cost, F &&func,
                          Args &&... args) {
   auto start = std::chrono::high_resolution_clock::now();
-  kl::env::Defer defer([start, cost] {
+  kl::env::Defer defer([ start = std::move(start), cost ] {
     *cost = std::chrono::high_resolution_clock::now() - start;
   });
   return func(std::forward<Args>(args)...);
