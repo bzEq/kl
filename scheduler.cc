@@ -50,8 +50,7 @@ kl::Status Scheduler::LaunchLoggingThread() {
         break;
       }
       if (next) {
-        std::string &message = *next;
-        std::fprintf(stderr, "%s", message.c_str());
+        std::fprintf(stderr, "%s", next->c_str());
       }
     }
   }).detach();
