@@ -40,4 +40,11 @@ States &States::Union(const States &rhs) {
   return *this;
 }
 
+void States::Encode(std::string *result) { *result = states_; }
+
+bool States::Decode(const std::string &code) {
+  states_ = code;
+  return true;
+}
+
 }  // namespace kl

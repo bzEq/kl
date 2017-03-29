@@ -19,6 +19,8 @@ public:
   States &Set(uint64_t state);
   bool Contains(uint64_t state) const;
   States &Union(const States &states);
+  void Encode(std::string *result);
+  bool Decode(const std::string &code);
 
 private:
   std::string states_;
