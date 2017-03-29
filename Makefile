@@ -1,5 +1,5 @@
 OBJECTS := testkit.o epoll.o logger.o scheduler.o lex_buffer.o \
-	utf8.o buffer.o
+	utf8.o buffer.o states.o
 LLVM_ASM := $(patsubst %.cc, %.ll, $(wildcard *.cc))
 TESTS := $(patsubst %.cc, %, $(wildcard *_test.cc))
 STATIC_LIB := libkl.a
@@ -15,7 +15,7 @@ all: $(STATIC_LIB) $(TESTS)
 $(TESTS): $(STATIC_LIB)
 
 %.o: %.cc
-	$(CXX) $(CXXFLAGS) -c $<
+	$(CXX) -fPIC $(CXXFLAGS) -c $<
 
 llvm-ir: $(LLVM_ASM)
 
