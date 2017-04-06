@@ -8,6 +8,16 @@
 
 class E {};
 
+TEST(E, EnvpBuilder) {
+  kl::env::EnvpBuilder builder;
+  builder.Put("HOME", "/home/kyne");
+  builder.Put("PWD", "/tmp");
+  auto result = builder.Build();
+  ASSERT(result.size() == 2);
+  ASSERT(std::string(result[0]) == "HOME=/home/kyne");
+  ASSERT(std::string(result[1]) == "PWD=/tmp");
+}
+
 TEST(E, CreateAndDeleteDir) {
   static const char *dir = "/tmp/env_test";
   ASSERT(kl::env::CreateDir(dir));

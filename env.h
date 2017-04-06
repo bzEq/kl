@@ -16,15 +16,62 @@
 #include <cstring>
 
 #include <functional>
+#include <map>
 #include <stack>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "error.h"
 #include "random.h"
 
 namespace kl {
 namespace env {
+
+class ArgvBuilder {
+public:
+  std::vector<char *> Build() {
+    std::vector<char *> result;
+    for (auto &arg : argv_) {
+      result.push_back(&arg[0]);
+    }
+    return result;
+  }
+
+  void Append(const std::string &arg) { argv_.push_back(arg); }
+
+  void Append(std::string &&arg) { argv_.push_back(std::move(arg)); }
+
+private:
+  std::vector<std::string> argv_;
+};
+
+class EnvpBuilder {
+public:
+  std::vector<char *> Build() {
+    build_store_.clear();
+    for (auto &iter : env_) {
+      std::string kv;
+      kv.append(iter.first);
+      kv.append("=");
+      kv.append(iter.second);
+      build_store_.push_back(kv);
+    }
+    std::vector<char *> result;
+    for (auto &kv : build_store_) {
+      result.push_back(&kv[0]);
+    }
+    return result;
+  }
+
+  void Put(const std::string &key, const std::string &value) {
+    env_.insert(std::make_pair(key, value));
+  }
+
+private:
+  std::map<std::string, std::string> env_;
+  std::vector<std::string> build_store_;
+};
 
 class Defer {
 public:
