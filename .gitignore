@@ -9,3 +9,5 @@ cscope.out
 *.pb.cc
 *.pb.h
 *_test
+*.bc
+*.ll
