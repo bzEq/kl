@@ -19,7 +19,7 @@ TEST(E, SafeInitialize) {
   ASSERT(*my_name.Get() == "wtf");
 }
 
-TEST(E, SafeInitialize) {
+TEST(E, SafeInitialize1) {
   kl::env::SafeInitializer<std::string> my_name;
   // two template functions are generated,
   // since char[4] differs from char[5].
