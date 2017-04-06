@@ -8,6 +8,27 @@
 
 class E {};
 
+TEST(E, SafeInitialize) {
+  kl::env::SafeInitializer<std::string> my_name;
+  // only one template function is generated.
+  std::string name("wtf");
+  my_name.InitAndGet(name);
+  ASSERT(*my_name.Get() == "wtf");
+  name = "rofl";
+  my_name.InitAndGet(name);
+  ASSERT(*my_name.Get() == "wtf");
+}
+
+TEST(E, SafeInitialize) {
+  kl::env::SafeInitializer<std::string> my_name;
+  // two template functions are generated,
+  // since char[4] differs from char[5].
+  my_name.InitAndGet("wtf");
+  ASSERT(*my_name.Get() == "wtf");
+  my_name.InitAndGet("rofl");
+  ASSERT(*my_name.Get() == "rofl");
+}
+
 TEST(E, EnvpBuilder) {
   kl::env::EnvpBuilder builder;
   builder.Put("HOME", "/home/kyne");

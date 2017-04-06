@@ -15,6 +15,7 @@
 #include <cstdio>
 #include <cstring>
 
+#include <atomic>
 #include <functional>
 #include <map>
 #include <stack>
@@ -27,6 +28,27 @@
 
 namespace kl {
 namespace env {
+
+// A {thread,dependency}-safe initialize wrapper
+template <typename T>
+class SafeInitializer {
+public:
+  SafeInitializer() : store_(nullptr) {}
+
+  template <typename... Args>
+  T *InitAndGet(Args &&... args) {
+    static T v(std::forward<Args>(args)...);
+    store_ = &v;
+    return store_;
+  }
+
+  bool Inited() { return store_ != nullptr; }
+
+  T *Get() { return store_; }
+
+private:
+  std::atomic<T *> store_;
+};
 
 class ArgvBuilder {
 public:
