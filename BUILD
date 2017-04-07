@@ -1,6 +1,6 @@
 cc_library(
     visibility = ["//visibility:public"],
-    name = "libkl",
+    name = "kl",
     srcs = ["buffer.cc", "epoll.cc",
             "lex_buffer.cc", "logger.cc",
             "scheduler.cc", "states.cc", "testkit.cc",
