@@ -9,7 +9,9 @@
 #include "chan.h"
 #include "testkit.h"
 
+namespace {
 class C {};
+}
 
 TEST(C, PushAndPop) {
   auto ch = std::make_shared<kl::Chan<int>>();
@@ -32,5 +34,3 @@ TEST(C, PopTimeout) {
   auto ret = ch->Pop(2000);
   ASSERT(!ret);
 }
-
-int main() { return KL_TEST(); }

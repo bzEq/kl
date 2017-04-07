@@ -8,6 +8,7 @@
 #include "testkit.h"
 #include "timer.h"
 
+namespace {
 static int Sum(int n) {
   int sum = 0;
   for (int i = 1; i <= n; ++i) {
@@ -20,6 +21,7 @@ class T {
 public:
   int SumUp(int n) { return Sum(n); }
 };
+}
 
 TEST(T, Sum) {
   std::chrono::duration<float> diff;
@@ -40,5 +42,3 @@ TEST(T, SumUp) {
   ASSERT(sum == 5050);
   KL_DEBUG("SumUp costs %fs", diff.count());
 }
-
-int main() { return KL_TEST(); }

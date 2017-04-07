@@ -59,7 +59,7 @@ extern bool RegisterTest(const char *base, const char *name,
 
 template <typename T>
 inline void Assert(const char *file, int line, const char *expr, T &&v) {
-  if (!std::forward<T>(v)) {
+  if (!v) {
     char buf[1024];
     std::snprintf(buf, sizeof(buf), "[%s:%d] assert expression `%s' failed",
                   file, line, expr);

@@ -31,5 +31,3 @@ TEST(kl::Heap<uint32_t>, RandomInsert) {
   ASSERT(std::is_sorted(result.begin(), result.end()));
   KL_DEBUG("cost %fs", cost.count());
 }
-
-int main() { KL_TEST(); }

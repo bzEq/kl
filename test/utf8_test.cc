@@ -6,7 +6,9 @@
 #include "testkit.h"
 #include "utf8.h"
 
+namespace {
 class T {};
+}
 
 TEST(T, PrefixWith) {
   ASSERT(kl::utf8::PrefixWith(0xc0, 0x03));
@@ -24,5 +26,3 @@ TEST(kl::utf8::Iterator, Iterate, std::string("$")) {
   ASSERT(s.data);
   ASSERT(s.len == 1);
 }
-
-int main() { return KL_TEST(); }

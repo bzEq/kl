@@ -20,5 +20,3 @@ TEST(kl::ObjectPool<std::string>, New) {
   ASSERT(!Empty());
   ASSERT(Size() == 2048);
 }
-
-int main() { return KL_TEST(); }

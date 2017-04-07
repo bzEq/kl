@@ -42,14 +42,15 @@ struct TestCase {
   const char *name;
   void (*func)();
 };
-std::unique_ptr<std::vector<TestCase>> tests;
+}
+
+static std::vector<TestCase> *TestDriver() {
+  static std::vector<TestCase> tests;
+  return &tests;
 }
 
 bool RegisterTest(const char *base, const char *name, void (*func)(void)) {
-  if (!tests) {
-    tests = std::make_unique<std::vector<TestCase>>();
-  }
-  tests->push_back(TestCase{
+  TestDriver()->push_back(TestCase{
       .base = base, .name = name, .func = func,
   });
   return true;
@@ -57,22 +58,20 @@ bool RegisterTest(const char *base, const char *name, void (*func)(void)) {
 
 int RunAllTests() {
   size_t passed = 0;
-  if (tests) {
-    for (size_t i = 0; i < tests->size(); ++i) {
-      const auto &t = (*tests)[i];
-      std::fprintf(stderr, "==== Test %s.%s\n", t.base, t.name);
-      try {
-        (*t.func)();
-        ++passed;
-      } catch (const std::exception &e) {
-        std::fprintf(stderr, "==== Test %s.%s exception caught, %s\n", t.base,
-                     t.name, e.what());
-      }
+  for (size_t i = 0; i < TestDriver()->size(); ++i) {
+    const auto &t = (*TestDriver())[i];
+    std::fprintf(stderr, "==== Test %s.%s\n", t.base, t.name);
+    try {
+      (*t.func)();
+      ++passed;
+    } catch (const std::exception &e) {
+      std::fprintf(stderr, "==== Test %s.%s exception caught, %s\n", t.base,
+                   t.name, e.what());
     }
   }
   std::fprintf(stderr, "==== %lu/%lu TESTS PASSED\n", passed,
-               tests ? tests->size() : 0);
-  if (tests && passed != tests->size()) {
+               TestDriver()->size());
+  if (passed != TestDriver()->size()) {
     return 1;
   }
   return 0;

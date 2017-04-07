@@ -5,7 +5,9 @@
 #include "slice.h"
 #include "testkit.h"
 
+namespace {
 class T {};
+}
 
 TEST(T, Compare) {
   const char *str = "wtf";
@@ -29,5 +31,3 @@ TEST(T, Compare2) {
   kl::Slice t(str1);
   ASSERT(s.Compare(t) > 0);
 }
-
-int main() { return KL_TEST(); }

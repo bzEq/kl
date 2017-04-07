@@ -5,7 +5,10 @@
 #include "logger.h"
 #include "testkit.h"
 
+namespace {
 class L {};
+}
+
 TEST(L, DefaultLogger) {
   KL_DEBUG("message from %s", "rofl");
   KL_DEBUG_L(kl::logging::Logger::DefaultLogger(), "message from %s", "wtf");
@@ -15,5 +18,3 @@ TEST(L, DefaultLogger) {
   kl::logging::Logger::SetDefaultLogger(std::move(discard));
   KL_DEBUG("message from %s", "imfao");
 }
-
-int main() { return KL_TEST(); }

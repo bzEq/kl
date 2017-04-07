@@ -9,10 +9,11 @@
 #include "option.h"
 #include "testkit.h"
 
+namespace {
 class O {};
-
 kl::Option<int> Foo() { return kl::Some(13); }
 kl::Option<int> Spam() { return kl::None(); }
+}
 
 TEST(O, foo) {
   auto foo = Foo();
@@ -50,5 +51,3 @@ TEST(O, MethodAccess) {
   ASSERT(f->Value() == 7);
   ASSERT(f->String() == "Foobar");
 }
-
-int main() { return KL_TEST(); }

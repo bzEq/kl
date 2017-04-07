@@ -8,7 +8,9 @@
 #include "subprocess.h"
 #include "testkit.h"
 
+namespace {
 class T {};
+}
 
 TEST(T, CallLs) {
   kl::env::ArgvBuilder argv;
@@ -25,5 +27,3 @@ TEST(T, CallGCC) {
   auto exit_status = kl::subprocess::Call("gcc", argv.Build(), envp.Build());
   ASSERT(exit_status);
 }
-
-int main() { return KL_TEST(); }

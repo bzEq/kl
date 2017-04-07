@@ -56,5 +56,3 @@ TEST(kl::LexBuffer, Next1, "wtf") {
   ASSERT(std::string(s.data, s.len) == "tf");
   ASSERT(!HasNext());
 }
-
-int main() { return KL_TEST(); }

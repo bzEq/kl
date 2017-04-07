@@ -7,7 +7,10 @@
 #include "netdev.h"
 #include "testkit.h"
 
+namespace {
 class N {};
+}
+
 TEST(N, ListIPv4Interfaces) {
   auto list = kl::netdev::ListIPv4Interfaces();
   ASSERT(list);
@@ -47,5 +50,3 @@ TEST(N, GetMTU) {
     std::cout << ifr.ifr_name << "'s mtu: " << *mtu << "\n";
   }
 }
-
-int main() { return KL_TEST(); }

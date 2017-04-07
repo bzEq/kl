@@ -5,7 +5,9 @@
 #include "states.h"
 #include "testkit.h"
 
+namespace {
 class T {};
+}
 
 TEST(T, Equal) {
   kl::States a, b;
@@ -20,5 +22,3 @@ TEST(T, Equal) {
   b.Encode(&b_encode);
   ASSERT(a_encode == b_encode);
 }
-
-int main() { return KL_TEST(); }

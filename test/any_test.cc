@@ -8,6 +8,7 @@
 #include "any.h"
 #include "testkit.h"
 
+namespace {
 class T {};
 
 TEST(T, Any) {
@@ -42,5 +43,4 @@ TEST(T, Any3) {
   ASSERT(b.IsOf<uint64_t>());
   ASSERT(!b.Of<std::string>());
 }
-
-int main() { return KL_TEST(); }
+}

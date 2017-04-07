@@ -24,5 +24,3 @@ TEST(kl::Buffer, Idle) {
   ASSERT(Cap() == cap);
   ASSERT(1 + Avail() == Idle());
 }
-
-int main() { return KL_TEST(); }

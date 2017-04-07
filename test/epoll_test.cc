@@ -7,7 +7,10 @@
 #include "testkit.h"
 #include "udp.h"
 
+namespace {
 class T {};
+}
+
 TEST(T, EpollTimeout) {
   kl::Epoll ep;
   int fd = *kl::udp::Socket();
@@ -19,5 +22,3 @@ TEST(T, EpollTimeout) {
   ASSERT(wait);
   KL_DEBUG("number of events %d", (*wait).size());
 }
-
-int main() { return KL_TEST(); }

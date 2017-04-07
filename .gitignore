@@ -11,3 +11,4 @@ cscope.out
 *_test
 *.bc
 *.ll
+bazel-*

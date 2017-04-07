@@ -8,6 +8,7 @@
 #include "scheduler.h"
 #include "testkit.h"
 
+namespace {
 class T {};
 
 TEST(kl::Scheduler, Constructor, 8) {}
@@ -28,5 +29,4 @@ TEST(kl::Scheduler, Stop, 8) {
   ASSERT(!status);
   stop_thread.join();
 }
-
-int main() { return KL_TEST(); }
+}

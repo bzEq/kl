@@ -5,10 +5,11 @@
 #include "error.h"
 #include "testkit.h"
 
+namespace {
 class E {};
 
-static kl::Status Ok() { return kl::Ok(); }
-static kl::Status Error() { return kl::Err("error"); }
+kl::Status Ok() { return kl::Ok(); }
+kl::Status Error() { return kl::Err("error"); }
 
 TEST(E, MoveErrString) {
   kl::Result<int> res(kl::Err("wtf"));
@@ -28,5 +29,4 @@ TEST(E, Constructor) {
   ASSERT(ok1);
   ASSERT(str.empty());
 }
-
-int main() { return KL_TEST(); }
+}

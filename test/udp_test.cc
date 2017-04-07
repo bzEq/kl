@@ -9,6 +9,7 @@
 #include "testkit.h"
 #include "udp.h"
 
+namespace {
 class T {};
 
 TEST(T, Socket) { ASSERT(kl::udp::Socket()); }
@@ -34,5 +35,4 @@ TEST(T, SendAndRecv) {
   buf[nread] = '\0';
   ASSERT(std::string(buf) == message);
 }
-
-int main() { return KL_TEST(); }
+}
