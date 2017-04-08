@@ -45,6 +45,14 @@ inline std::vector<std::string> SplitString(const char *str,
   return result;
 }
 
+inline void ReplaceChar(std::string *s, char origin, char target) {
+  for (size_t i = 0; i < s->size(); ++i) {
+    if ((*s)[i] == origin) {
+      (*s)[i] = target;
+    }
+  }
+}
+
 }  // namespace string
 }  // namespace kl
 #endif

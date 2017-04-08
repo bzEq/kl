@@ -26,4 +26,11 @@ TEST(T, SplitString1) {
   ASSERT(result[1] == "string");
   ASSERT(result[2] == "SplitString");
 }
+
+TEST(T, ReplaceChar) {
+  std::string object("java.lang.object");
+  kl::string::ReplaceChar(&object, '.', '/');
+  ASSERT(object == "java/lang/object");
+}
+
 }  // namespace
