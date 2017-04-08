@@ -7,7 +7,6 @@
 
 namespace {
 class T {};
-}
 
 TEST(T, SplitString) {
   const char *ip = "127.0.0.1";
@@ -27,3 +26,4 @@ TEST(T, SplitString1) {
   ASSERT(result[1] == "string");
   ASSERT(result[2] == "SplitString");
 }
+}  // namespace

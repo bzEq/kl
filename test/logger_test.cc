@@ -7,7 +7,6 @@
 
 namespace {
 class L {};
-}
 
 TEST(L, DefaultLogger) {
   KL_DEBUG("message from %s", "rofl");
@@ -18,3 +17,4 @@ TEST(L, DefaultLogger) {
   kl::logging::Logger::SetDefaultLogger(std::move(discard));
   KL_DEBUG("message from %s", "imfao");
 }
+}  // namespace

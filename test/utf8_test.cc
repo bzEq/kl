@@ -8,7 +8,6 @@
 
 namespace {
 class T {};
-}
 
 TEST(T, PrefixWith) {
   ASSERT(kl::utf8::PrefixWith(0xc0, 0x03));
@@ -26,3 +25,4 @@ TEST(kl::utf8::Iterator, Iterate, std::string("$")) {
   ASSERT(s.data);
   ASSERT(s.len == 1);
 }
+}  // namespace

@@ -29,4 +29,4 @@ TEST(kl::Scheduler, Stop, 8) {
   ASSERT(!status);
   stop_thread.join();
 }
-}
+}  // namespace

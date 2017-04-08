@@ -29,4 +29,4 @@ TEST(E, Constructor) {
   ASSERT(ok1);
   ASSERT(str.empty());
 }
-}
+}  // namespace

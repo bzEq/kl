@@ -7,10 +7,10 @@
 
 namespace {
 class T {};
-}
 
 TEST(T, GetBigEndianInteger) {
   kl::Slice s("\x01\x03", 2);
   auto x = kl::coding::GetBigEndianInteger<uint16_t>(s);
   ASSERT(x == 259);
 }
+}  // namespace

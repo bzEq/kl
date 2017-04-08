@@ -7,6 +7,7 @@
 #include "bitset.h"
 #include "testkit.h"
 
+namespace {
 TEST(kl::BitSet, C0, 0) { ASSERT(Size() == 8); }
 TEST(kl::BitSet, C1, 1) { ASSERT(Size() == 8); }
 TEST(kl::BitSet, C2, 2) { ASSERT(Size() == 8); }
@@ -56,3 +57,4 @@ TEST(kl::BitSet, NoMoreZeroBit, kNumOfBits) {
   int i = SetFirstZeroBit();
   ASSERT(i == -1);
 }
+}  // namespace

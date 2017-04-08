@@ -50,4 +50,4 @@ TEST(O, MethodAccess) {
   auto f = kl::Some(Foobar());
   ASSERT(f->Value() == 7);
   ASSERT(f->String() == "Foobar");
-}
+}  // namespace

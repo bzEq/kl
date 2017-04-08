@@ -10,7 +10,6 @@
 
 namespace {
 class T {};
-}
 
 TEST(T, CallLs) {
   kl::env::ArgvBuilder argv;
@@ -27,3 +26,4 @@ TEST(T, CallGCC) {
   auto exit_status = kl::subprocess::Call("gcc", argv.Build(), envp.Build());
   ASSERT(exit_status);
 }
+}  // namespace

@@ -10,7 +10,6 @@
 
 namespace {
 class T {};
-}
 
 TEST(T, Concurrency) {
   auto temp = kl::env::MakeTempFile("filelock");
@@ -36,3 +35,4 @@ TEST(T, Concurrency) {
   ASSERT(!lock.TryLock(false, true));
   trylock1_done.Happened();
 }
+}  // namespace

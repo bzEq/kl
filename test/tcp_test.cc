@@ -9,7 +9,6 @@
 
 namespace {
 class T {};
-}
 
 TEST(T, ListenAndSetNonBlocking) {
   auto listen = kl::tcp::Listen("127.0.0.1", 4000);
@@ -39,3 +38,4 @@ TEST(T, Connect) {
   ASSERT(connect);
   defer([fd = *connect]() { ::close(fd); });
 }
+}  // namespace

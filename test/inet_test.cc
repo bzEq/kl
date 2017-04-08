@@ -7,7 +7,6 @@
 
 namespace {
 class T {};
-}
 
 TEST(T, InetSockAddr) {
   auto addr0 = kl::inet::InetSockAddr("192.168.1.1", 3000);
@@ -24,3 +23,4 @@ TEST(T, SplitAddr) {
   auto split1 = kl::inet::SplitAddr("192.168.1.13000", &host, &port);
   ASSERT(!split1);
 }
+}  // namespace

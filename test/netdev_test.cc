@@ -9,7 +9,6 @@
 
 namespace {
 class N {};
-}
 
 TEST(N, ListIPv4Interfaces) {
   auto list = kl::netdev::ListIPv4Interfaces();
@@ -50,3 +49,4 @@ TEST(N, GetMTU) {
     std::cout << ifr.ifr_name << "'s mtu: " << *mtu << "\n";
   }
 }
+}  // namespace

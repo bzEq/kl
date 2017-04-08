@@ -11,7 +11,6 @@
 
 namespace {
 class C {};
-}
 
 TEST(C, PushAndPop) {
   auto ch = std::make_shared<kl::Chan<int>>();
@@ -34,3 +33,4 @@ TEST(C, PopTimeout) {
   auto ret = ch->Pop(2000);
   ASSERT(!ret);
 }
+}  // namespace

@@ -9,7 +9,6 @@
 
 namespace {
 class T {};
-}
 
 TEST(T, EpollTimeout) {
   kl::Epoll ep;
@@ -22,3 +21,4 @@ TEST(T, EpollTimeout) {
   ASSERT(wait);
   KL_DEBUG("number of events %d", (*wait).size());
 }
+}  // namespace

@@ -8,6 +8,7 @@
 #include "object_pool.h"
 #include "testkit.h"
 
+namespace {
 TEST(kl::ObjectPool<std::string>, New) {
   for (int i = 0; i < 1024; ++i) {
     std::string *p = New("wtf");
@@ -20,3 +21,4 @@ TEST(kl::ObjectPool<std::string>, New) {
   ASSERT(!Empty());
   ASSERT(Size() == 2048);
 }
+}  // namespace

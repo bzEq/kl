@@ -6,6 +6,7 @@
 #include "slice.h"
 #include "testkit.h"
 
+namespace {
 TEST(kl::LexBuffer, SkipWhitespaces, "     wtf") {
   KL_DEBUG("buffer len: %u", Length());
   SkipWhitespaces();
@@ -56,3 +57,4 @@ TEST(kl::LexBuffer, Next1, "wtf") {
   ASSERT(std::string(s.data, s.len) == "tf");
   ASSERT(!HasNext());
 }
+}  // namespace

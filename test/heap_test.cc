@@ -9,6 +9,7 @@
 #include "testkit.h"
 #include "timer.h"
 
+namespace {
 TEST(kl::Heap<uint32_t>, RandomInsert) {
   static const size_t kMaxSize = 1 << 20;
   std::vector<uint32_t> sample;
@@ -31,3 +32,4 @@ TEST(kl::Heap<uint32_t>, RandomInsert) {
   ASSERT(std::is_sorted(result.begin(), result.end()));
   KL_DEBUG("cost %fs", cost.count());
 }
+}  // namespace

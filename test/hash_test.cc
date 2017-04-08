@@ -9,7 +9,6 @@
 
 namespace {
 class H {};
-}
 
 TEST(H, CompareEqual) {
   std::string data("こんにちは");
@@ -25,3 +24,4 @@ TEST(H, CompareUnequal) {
   uint16_t hash1 = kl::hash::Fletcher16(en.c_str(), en.size());
   ASSERT(hash0 != hash1);
 }
+}  // namespace

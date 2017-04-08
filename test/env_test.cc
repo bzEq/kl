@@ -8,7 +8,6 @@
 
 namespace {
 class E {};
-}
 
 TEST(E, SafeInitialize) {
   kl::env::SafeInitializer<std::string> my_name;
@@ -101,3 +100,4 @@ TEST(E, WritePidToFile) {
   auto pid = std::strtoll(data->c_str(), nullptr, 10);
   ASSERT(pid == getpid());
 }
+}  // namespace

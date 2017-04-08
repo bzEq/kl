@@ -21,4 +21,4 @@ TEST(kl::WaitGroup, Sum) {
   Wait();
   ASSERT(sum == 5050);
 }
-}
+}  // namespace

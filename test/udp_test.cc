@@ -35,4 +35,4 @@ TEST(T, SendAndRecv) {
   buf[nread] = '\0';
   ASSERT(std::string(buf) == message);
 }
-}
+}  // namespace

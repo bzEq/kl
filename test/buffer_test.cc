@@ -5,6 +5,7 @@
 #include "buffer.h"
 #include "testkit.h"
 
+namespace {
 TEST(kl::Buffer, Constructor, 1024) { ASSERT(Cap() == 1024); }
 
 TEST(kl::Buffer, ExtendTo) {
@@ -24,3 +25,4 @@ TEST(kl::Buffer, Idle) {
   ASSERT(Cap() == cap);
   ASSERT(1 + Avail() == Idle());
 }
+}  // namespace

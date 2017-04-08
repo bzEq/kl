@@ -43,4 +43,4 @@ TEST(T, Any3) {
   ASSERT(b.IsOf<uint64_t>());
   ASSERT(!b.Of<std::string>());
 }
-}
+}  // namespace

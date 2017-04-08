@@ -9,7 +9,6 @@
 
 namespace {
 class R {};
-}
 
 TEST(R, UniformSample) {
   static const float kEPS = 1e-2;
@@ -23,3 +22,4 @@ TEST(R, UniformSample) {
   sum /= kNumOfSamples;
   ASSERT(std::abs(sum - 0.5) <= kEPS);
 }
+}  // namespace
