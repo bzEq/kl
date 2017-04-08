@@ -21,4 +21,13 @@ TEST(kl::ObjectPool<std::string>, New) {
   ASSERT(!Empty());
   ASSERT(Size() == 2048);
 }
+
+TEST(kl::ObjectPool<uint8_t>, NewArray) {
+  auto a = NewArray(1024);
+  ASSERT(Size() == 1);
+  for (int i = 0; i < 1024; ++i) {
+    ASSERT(a[i] == 0);
+  }
+}
+
 }  // namespace
