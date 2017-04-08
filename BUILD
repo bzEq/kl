@@ -1,4 +1,5 @@
 cc_library(
+    licenses = ["notice"],
     visibility = ["//visibility:public"],
     name = "kl",
     srcs = ["buffer.cc", "epoll.cc",
