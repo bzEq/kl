@@ -3,8 +3,8 @@
 // the LICENSE file.
 #include <string>
 
-#include "testkit.h"
-#include "utf8.h"
+#include "kl/testkit.h"
+#include "kl/utf8.h"
 
 namespace {
 class T {};

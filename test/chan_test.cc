@@ -6,8 +6,8 @@
 #include <memory>
 #include <thread>
 
-#include "chan.h"
-#include "testkit.h"
+#include "kl/chan.h"
+#include "kl/testkit.h"
 
 namespace {
 class C {};

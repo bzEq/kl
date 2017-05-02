@@ -4,9 +4,9 @@
 #include <iostream>
 #include <string>
 
-#include "logger.h"
-#include "object_pool.h"
-#include "testkit.h"
+#include "kl/logger.h"
+#include "kl/object_pool.h"
+#include "kl/testkit.h"
 
 namespace {
 TEST(kl::ObjectPool<std::string>, New) {

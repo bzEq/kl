@@ -4,8 +4,8 @@
 
 #include <iostream>
 
-#include "bitset.h"
-#include "testkit.h"
+#include "kl/bitset.h"
+#include "kl/testkit.h"
 
 namespace {
 TEST(kl::BitSet, C0, 0) { ASSERT(Size() == 8); }

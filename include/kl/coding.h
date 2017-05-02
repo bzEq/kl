@@ -4,7 +4,7 @@
 
 #include <cassert>
 
-#include "slice.h"
+#include "kl/slice.h"
 
 namespace kl {
 namespace coding {

@@ -4,8 +4,8 @@
 
 #include <string>
 
-#include "hash.h"
-#include "testkit.h"
+#include "kl/hash.h"
+#include "kl/testkit.h"
 
 namespace {
 class H {};

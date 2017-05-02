@@ -1,10 +1,11 @@
 // Copyright (c) 2017 Kai Luo <gluokai@gmail.com>. All rights reserved.
 // Use of this source code is governed by the BSD license that can be found in
 // the LICENSE file.
-#include "lex_buffer.h"
-#include "logger.h"
-#include "slice.h"
-#include "testkit.h"
+
+#include "kl/lex_buffer.h"
+#include "kl/logger.h"
+#include "kl/slice.h"
+#include "kl/testkit.h"
 
 namespace {
 TEST(kl::LexBuffer, SkipWhitespaces, "     wtf") {

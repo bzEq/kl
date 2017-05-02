@@ -2,8 +2,8 @@
 // Use of this source code is governed by the BSD license that can be found in
 // the LICENSE file.
 
-#include "inet.h"
-#include "testkit.h"
+#include "kl/inet.h"
+#include "kl/testkit.h"
 
 namespace {
 class T {};

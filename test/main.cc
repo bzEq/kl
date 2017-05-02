@@ -2,6 +2,6 @@
 // Use of this source code is governed by the BSD license that can be found in
 // the LICENSE file.
 
-#include "testkit.h"
+#include "kl/testkit.h"
 
 int main() { return KL_TEST(); }

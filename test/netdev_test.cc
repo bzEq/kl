@@ -4,8 +4,8 @@
 
 #include <iostream>
 
-#include "netdev.h"
-#include "testkit.h"
+#include "kl/netdev.h"
+#include "kl/testkit.h"
 
 namespace {
 class N {};

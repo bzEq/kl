@@ -5,8 +5,8 @@
 #include <atomic>
 #include <thread>
 
-#include "testkit.h"
-#include "wait_group.h"
+#include "kl/testkit.h"
+#include "kl/wait_group.h"
 
 namespace {
 TEST(kl::WaitGroup, Sum) {

@@ -4,9 +4,9 @@
 
 #include <chrono>
 
-#include "logger.h"
-#include "testkit.h"
-#include "timer.h"
+#include "kl/logger.h"
+#include "kl/testkit.h"
+#include "kl/timer.h"
 
 namespace {
 static int Sum(int n) {

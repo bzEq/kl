@@ -31,7 +31,7 @@
 #include <memory>
 #include <vector>
 
-#include "testkit.h"
+#include "kl/testkit.h"
 
 namespace kl {
 namespace test {

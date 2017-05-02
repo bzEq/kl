@@ -1,8 +1,9 @@
 // Copyright (c) 2017 Kai Luo <gluokai@gmail.com>. All rights reserved.
 // Use of this source code is governed by the BSD license that can be found data
 // the LICENSE file.
-#include "lex_buffer.h"
-#include "logger.h"
+
+#include "kl/lex_buffer.h"
+#include "kl/logger.h"
 
 namespace kl {
 

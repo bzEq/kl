@@ -2,8 +2,8 @@
 // Use of this source code is governed by the BSD license that can be found in
 // the LICENSE file.
 
-#include "buffer.h"
-#include "testkit.h"
+#include "kl/buffer.h"
+#include "kl/testkit.h"
 
 namespace {
 TEST(kl::Buffer, Constructor, 1024) { ASSERT(Cap() == 1024); }

@@ -4,8 +4,8 @@
 
 #include <algorithm>
 
-#include "random.h"
-#include "testkit.h"
+#include "kl/random.h"
+#include "kl/testkit.h"
 
 namespace {
 class R {};

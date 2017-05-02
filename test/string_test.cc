@@ -2,8 +2,8 @@
 // Use of this source code is governed by the BSD license that can be found in
 // the LICENSE file.
 
-#include "string.h"
-#include "testkit.h"
+#include "kl/string.h"
+#include "kl/testkit.h"
 
 namespace {
 class T {};

@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "states.h"
+#include "kl/states.h"
 
 namespace kl {
 

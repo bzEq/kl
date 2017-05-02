@@ -3,10 +3,10 @@
 // the LICENSE file.
 #include <thread>
 
-#include "env.h"
-#include "event_order.h"
-#include "filelock.h"
-#include "testkit.h"
+#include "kl/env.h"
+#include "kl/event_order.h"
+#include "kl/filelock.h"
+#include "kl/testkit.h"
 
 namespace {
 class T {};

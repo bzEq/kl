@@ -5,8 +5,8 @@
 #include <chrono>
 #include <thread>
 
-#include "scheduler.h"
-#include "testkit.h"
+#include "kl/scheduler.h"
+#include "kl/testkit.h"
 
 namespace {
 class T {};

@@ -3,7 +3,7 @@
 // the LICENSE file.
 #include <sys/time.h>
 
-#include "logger.h"
+#include "kl/logger.h"
 
 namespace kl {
 namespace logging {
