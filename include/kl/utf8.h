@@ -6,11 +6,11 @@
 #define KL_UTF8_H_
 #include <string>
 
-#include "error.h"
-#include "lex_buffer.h"
-#include "logger.h"
-#include "option.h"
-#include "slice.h"
+#include "kl/error.h"
+#include "kl/lex_buffer.h"
+#include "kl/logger.h"
+#include "kl/option.h"
+#include "kl/slice.h"
 
 namespace kl {
 namespace utf8 {

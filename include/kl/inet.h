@@ -16,8 +16,8 @@
 #include <cstdlib>
 #include <cstring>
 
-#include "error.h"
-#include "string.h"
+#include "kl/error.h"
+#include "kl/string.h"
 
 namespace kl {
 namespace inet {

@@ -6,8 +6,8 @@
 #include <cstring>
 #include <string>
 
-#include "option.h"
-#include "slice.h"
+#include "kl/option.h"
+#include "kl/slice.h"
 
 namespace kl {
 class LexBuffer {

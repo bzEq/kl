@@ -23,8 +23,8 @@
 #include <utility>
 #include <vector>
 
-#include "error.h"
-#include "random.h"
+#include "kl/error.h"
+#include "kl/random.h"
 
 namespace kl {
 namespace env {

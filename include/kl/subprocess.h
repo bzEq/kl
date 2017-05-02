@@ -12,7 +12,7 @@
 #include <string>
 #include <vector>
 
-#include "error.h"
+#include "kl/error.h"
 
 namespace kl {
 namespace subprocess {

@@ -15,8 +15,8 @@
 #include <cerrno>
 #include <cstring>
 
-#include "error.h"
-#include "inet.h"
+#include "kl/error.h"
+#include "kl/inet.h"
 
 namespace kl {
 namespace udp {

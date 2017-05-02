@@ -8,8 +8,8 @@
 #include <string>
 #include <vector>
 
-#include "result.h"
-#include "string.h"
+#include "kl/result.h"
+#include "kl/string.h"
 
 namespace kl {
 
