@@ -13,24 +13,6 @@
 
 namespace kl {
 
-class Store {
-public:
-  virtual ~Store() {}
-};
-
-template <typename T>
-class StoreImpl : public Store {
-public:
-  StoreImpl() = default;
-  template <typename V>  // just a trick of utilizing forwarding reference
-  StoreImpl(V &&value) : store_(std::make_unique<T>(std::forward<V>(value))) {}
-  T *Get() { return store_.get(); }
-
-private:
-  std::unique_ptr<T> store_;
-};
-
-// it seems safe.
 class Any {
 public:
   Any() : store_(nullptr) {}
@@ -55,7 +37,6 @@ public:
 
   template <typename T>
   T *Of() {
-    // no need to check if store_ is nullptr
     StoreImpl<T> *store = dynamic_cast<StoreImpl<T> *>(store_);
     if (!store) {
       return nullptr;
@@ -65,13 +46,31 @@ public:
 
   template <typename T>
   bool IsOf() const {
-    // no need to check if store_ is nullptr
     return dynamic_cast<const StoreImpl<T> *>(store_) != nullptr;
   }
 
   ~Any() { delete store_; }
 
 private:
+  class Store {
+  public:
+    virtual ~Store() {}
+  };
+
+  template <typename T>
+  class StoreImpl : public Store {
+  public:
+    template <typename V>
+    StoreImpl(V &&value) : store_(new T(std::forward<V>(value))) {}
+
+    T *Get() { return store_; }
+
+    ~StoreImpl() { delete store_; }
+
+  private:
+    T *store_;
+  };
+
   Store *store_;
 };
 
