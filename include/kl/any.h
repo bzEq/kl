@@ -9,8 +9,6 @@
 #include <memory>
 #include <utility>
 
-#include "kl/option.h"
-
 namespace kl {
 
 class Any {
