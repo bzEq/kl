@@ -4,7 +4,11 @@ cc_library(
     name = "kl",
     srcs = glob(["*.cc"]),
     hdrs = glob(["include/kl/*.h"]),
-    copts = ["-std=c++14", "-Wall", "-Werror",
-             "-g", "-Iinclude"],
+    includes = ["include"],
+    copts = [
+        "-std=c++14",
+        "-Wall",
+        "-Werror",
+    ],
     linkopts = ["-lpthread"],
 )
