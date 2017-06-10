@@ -9,16 +9,13 @@ namespace kl {
 namespace logging {
 const char *kLogLevelString[5] = {"INFO", "DEBUG", "WARN", "ERROR", "FATAL"};
 
+std::unique_ptr<Logger> Logger::default_logger_;
+
 Logger::Logger(std::function<void(const std::string &)> &&output)
     : log_level_(kInfo), output_(std::move(output)) {}
 
 Logger::Logger(int log_level, std::function<void(const std::string &)> &&output)
     : log_level_(log_level), output_(std::move(output)) {}
-
-std::unique_ptr<Logger>
-Logger::default_logger_(new Logger([](const std::string &message) {
-  std::fprintf(stderr, "%s", message.c_str());
-}));
 
 void Logger::Logging(int log_level, const char *file, const char *func,
                      int line, const char *fmt, ...) {
@@ -53,7 +50,7 @@ void Logger::Logging(int log_level, const char *file, const char *func,
   va_end(backup_ap);
 
   int buf_size = prefix_size + msg_size + 1;
-  char *buf = new char[buf_size + 1];  // to contain '\n'
+  char *buf = new char[buf_size + 1]; // to contain '\n'
   const char *base = buf;
   prefix_size =
       std::snprintf(buf, buf_size, kPrefixFormat, kLogLevelString[log_level],
@@ -71,7 +68,13 @@ void Logger::Logging(int log_level, const char *file, const char *func,
 }
 
 Logger &Logger::DefaultLogger() {
-  assert(default_logger_);
+  static std::unique_ptr<Logger> init_logger =
+      std::make_unique<Logger>([](const std::string &message) {
+        std::fprintf(stderr, "%s", message.c_str());
+      });
+  if (!default_logger_) {
+    default_logger_ = std::move(init_logger);
+  }
   return *default_logger_;
 }
 
@@ -81,5 +84,5 @@ void Logger::SetDefaultLogger(Logger &&logger) {
 
 void Logger::SetLogLevel(int log_level) { log_level_ = log_level; }
 
-}  // namespace logging
-}  // namespace kl
+} // namespace logging
+} // namespace kl
