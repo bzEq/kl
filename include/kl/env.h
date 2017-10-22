@@ -97,25 +97,22 @@ private:
 
 class Defer {
 public:
-  Defer() = default;
-  Defer(const Defer &) = delete;
-  Defer(Defer &&) = default;
-  explicit Defer(std::function<void(void)> &&f) { defer.push(std::move(f)); }
-  Defer &operator()(std::function<void(void)> &&f) {
-    defer.push(std::move(f));
-    return *this;
-  }
+  template<typename Callable>
+  explicit Defer(Callable &&defer): defer_(std::forward<Callable>(defer)) {}
+
   ~Defer() {
-    while (!defer.empty()) {
-      auto f = std::move(defer.top());
-      defer.pop();
-      f();
-    }
+    if (defer_)
+      defer_();
   }
 
 private:
-  std::stack<std::function<void(void)>> defer;
+  std::function<void()> defer_;
 };
+
+#define CONCAT_(a, b) a##b
+#define CONCAT(a, b) CONCAT_(a,b)
+#define DEFER(lambda) kl::env::Defer CONCAT(__defer__, __LINE__)(lambda)
+
 
 inline bool FileExists(const char *file) {
   struct stat buff;

@@ -20,12 +20,12 @@ TEST(T, SendAndRecv) {
   const std::string message("wtf");
   auto recv_sock = kl::udp::Socket();
   ASSERT(recv_sock);
-  kl::env::Defer defer([fd = *recv_sock] { ::close(fd); });
+  DEFER([fd = *recv_sock] { ::close(fd); });
   auto bind = kl::inet::Bind(*recv_sock, host, port);
   ASSERT(bind);
   auto send_sock = kl::udp::Socket();
   ASSERT(send_sock);
-  defer([fd = *send_sock] { ::close(fd); });
+  DEFER([fd = *send_sock] { ::close(fd); });
   ASSERT(kl::inet::Sendto(*send_sock, message.c_str(), message.size(), 0, host,
                           port));
   char buf[65536];
